@@ -16,3 +16,4 @@ release_assets/*.tar
 release_assets/*.tar.gz
 release_assets/*.tgz
 release_assets/*.zip
+CLAUDE.MD

@@ -1,0 +1,43 @@
+x86_64
+Ubuntu 24.04.5 LTS
+ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39
+uid=1000(fuzz) gid=1000(fuzz) groups=1000(fuzz)
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+cargo 1.99.1 (5f94df478 2026-08-27)
+/opt/riscv/bin/riscv64-unknown-elf-gcc: riscv64-unknown-elf-gcc (g6afcc4f6d) 16.1.0
+/opt/riscv/bin/riscv64-unknown-elf-as: GNU assembler (GNU Binutils) 2.47.20260726
+/opt/riscv/bin/riscv64-unknown-elf-ld: GNU ld (GNU Binutils) 2.47.20260726
+/opt/riscv/bin/riscv64-unknown-elf-objdump: GNU objdump (GNU Binutils) 2.47.20260726
+/opt/riscv/bin/riscv64-unknown-elf-nm: GNU nm (GNU Binutils) 2.47.20260726
+RISCV=/opt/riscv
+RISCV_WRAPPER_BOOM_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/boom_v3_medium_rv64
+RISCV_WRAPPER_BOOM_V3_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/boom_v3_medium_rv64
+RISCV_WRAPPER_BOOM_V4_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/boom_v4_medium_rv64
+RISCV_WRAPPER_CVA6_RV32_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/cva6_rv32
+RISCV_WRAPPER_CVA6_RV64_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/cva6_rv64
+RISCV_WRAPPER_KRONOS_RV32_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/kronos_rv32
+RISCV_WRAPPER_PICORV32_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/picorv32
+RISCV_WRAPPER_ROCKET_RV32_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/rocket_rv32
+RISCV_WRAPPER_ROCKET_RV32_NO_D_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/rocket_rv32_no_d
+RISCV_WRAPPER_ROCKET_RV64_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/rocket_rv64
+RISCV_WRAPPER_SPIKE_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/spike
+RISCV_WRAPPER_SRV32_BIN=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/srv32
+boom_v3_medium_rv64: exec  libriscv.so => not found  libdramsim.so => not found 
+boom_v3_medium_rv64_coverage: exec  libriscv.so => not found  libdramsim.so => not found 
+boom_v3_small_rv64: exec  libriscv.so => not found  libdramsim.so => not found 
+boom_v3_small_rv64_cov: exec  libriscv.so => not found  libdramsim.so => not found 
+boom_v4_medium_rv64: exec  libriscv.so => not found  libdramsim.so => not found 
+boom_v4_medium_rv64_cov: exec  libriscv.so => not found  libdramsim.so => not found 
+boom_v4_small_rv64_cov: exec  libriscv.so => not found  libdramsim.so => not found 
+cva6_rv32: exec  libriscv.so => not found 
+cva6_rv64: exec  libriscv.so => not found 
+kronos_rv32: exec all libs resolved
+kronos_rv32_1: exec all libs resolved
+picorv32: exec all libs resolved
+rocket_rv32: exec all libs resolved
+rocket_rv32_no_d: exec all libs resolved
+rocket_rv64: exec all libs resolved
+spike: exec all libs resolved
+srv32: exec all libs resolved
+srv32_cov: exec all libs resolved
+-rwxr-xr-x 2 fuzz fuzz 14896560 Oct 30 10:03 target/release/DRVFuzz

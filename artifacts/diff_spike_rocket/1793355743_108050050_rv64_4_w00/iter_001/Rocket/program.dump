@@ -1,0 +1,3124 @@
+
+/home/fuzz/runs/diff_spike_rocket/1793355743_108050050_rv64_4_w00/iter_001/Rocket/program.elf:     file format elf64-littleriscv
+
+
+Disassembly of section .text.init:
+
+0000000080000000 <_start>:
+    .section .text
+    .globl  _start
+
+_start:
+    la      t0, trap_handler
+    80000000:	00002297          	auipc	x5,0x2
+    80000004:	8a428293          	addi	x5,x5,-1884 # 800018a4 <trap_handler>
+    csrw    mtvec, t0
+    80000008:	30529073          	csrrw	x0,mtvec,x5
+
+    csrr    t0, mstatus
+    8000000c:	300022f3          	csrrs	x5,mstatus,x0
+    li      t1, 0x00003000       # set FS field to Dirty (0b11) so FP regs usable
+    80000010:	630d                	c.lui	x6,0x3
+    or      t0, t0, t1
+    80000012:	0062e2b3          	or	x5,x5,x6
+    csrw    mstatus, t0
+    80000016:	30029073          	csrrw	x0,mstatus,x5
+    csrw    fcsr, x0             # clear floating-point status
+    8000001a:	00301073          	csrrw	x0,fcsr,x0
+
+    j       user_code
+    8000001e:	a009                	c.j	80000020 <user_code>
+
+0000000080000020 <user_code>:
+
+user_code:
+li x13, 0x9d129a9c0c91acd1
+    80000020:	fce896b7          	lui	x13,0xfce89
+    80000024:	4d56869b          	addiw	x13,x13,1237 # fffffffffce894d5 <fromhost+0xffffffff7ce874cd>
+    80000028:	06b6                	c.slli	x13,0xd
+    8000002a:	c0d68693          	addi	x13,x13,-1011
+    8000002e:	06b2                	c.slli	x13,0xc
+    80000030:	91b68693          	addi	x13,x13,-1765
+    80000034:	06b2                	c.slli	x13,0xc
+    80000036:	cd168693          	addi	x13,x13,-815
+li x14, 0x97355d73bc22566a
+    8000003a:	ff2e7737          	lui	x14,0xff2e7
+    8000003e:	abb7071b          	addiw	x14,x14,-1349 # ffffffffff2e6abb <fromhost+0xffffffff7f2e4ab3>
+    80000042:	0736                	c.slli	x14,0xd
+    80000044:	cef70713          	addi	x14,x14,-785
+    80000048:	073a                	c.slli	x14,0xe
+    8000004a:	22570713          	addi	x14,x14,549
+    8000004e:	0732                	c.slli	x14,0xc
+    80000050:	66a70713          	addi	x14,x14,1642
+li x15, 0x1b7e83edabab96ad
+    80000054:	0006e7b7          	lui	x15,0x6e
+    80000058:	fa17879b          	addiw	x15,x15,-95 # 6dfa1 <_start-0x7ff9205f>
+    8000005c:	07c2                	c.slli	x15,0x10
+    8000005e:	b6b78793          	addi	x15,x15,-1173
+    80000062:	07ba                	c.slli	x15,0xe
+    80000064:	ab978793          	addi	x15,x15,-1351
+    80000068:	07b2                	c.slli	x15,0xc
+    8000006a:	6ad78793          	addi	x15,x15,1709
+li x16, 0x6ad4074a14ccb0d9
+    8000006e:	06ad4837          	lui	x16,0x6ad4
+    80000072:	0758081b          	addiw	x16,x16,117 # 6ad4075 <_start-0x7952bf8b>
+    80000076:	0832                	c.slli	x16,0xc
+    80000078:	a1580813          	addi	x16,x16,-1515
+    8000007c:	0832                	c.slli	x16,0xc
+    8000007e:	ccb80813          	addi	x16,x16,-821
+    80000082:	0832                	c.slli	x16,0xc
+    80000084:	0d980813          	addi	x16,x16,217
+li x17, 0xea351fe9266aa8f
+    80000088:	000758b7          	lui	x17,0x75
+    8000008c:	1a98889b          	addiw	x17,x17,425 # 751a9 <_start-0x7ff8ae57>
+    80000090:	08c2                	c.slli	x17,0x10
+    80000092:	f4988893          	addi	x17,x17,-183
+    80000096:	08b6                	c.slli	x17,0xd
+    80000098:	66b88893          	addi	x17,x17,1643
+    8000009c:	08b2                	c.slli	x17,0xc
+    8000009e:	a8f88893          	addi	x17,x17,-1393
+li x18, 0xdfcd1c336722ed8f
+    800000a2:	fdfcd937          	lui	x18,0xfdfcd
+    800000a6:	1c39091b          	addiw	x18,x18,451 # fffffffffdfcd1c3 <fromhost+0xffffffff7dfcb1bb>
+    800000aa:	0932                	c.slli	x18,0xc
+    800000ac:	36790913          	addi	x18,x18,871
+    800000b0:	0932                	c.slli	x18,0xc
+    800000b2:	22f90913          	addi	x18,x18,559
+    800000b6:	0932                	c.slli	x18,0xc
+    800000b8:	d8f90913          	addi	x18,x18,-625
+li x19, 0xee8a187ae1add5f1
+    800000bc:	ffdd19b7          	lui	x19,0xffdd1
+    800000c0:	4319899b          	addiw	x19,x19,1073 # ffffffffffdd1431 <fromhost+0xffffffff7fdcf429>
+    800000c4:	09ba                	c.slli	x19,0xe
+    800000c6:	d7198993          	addi	x19,x19,-655
+    800000ca:	09b6                	c.slli	x19,0xd
+    800000cc:	add98993          	addi	x19,x19,-1315
+    800000d0:	09b2                	c.slli	x19,0xc
+    800000d2:	5f198993          	addi	x19,x19,1521
+li x20, 0xc1546d458c99043e
+    800000d6:	ffc15a37          	lui	x20,0xffc15
+    800000da:	46da0a1b          	addiw	x20,x20,1133 # ffffffffffc1546d <fromhost+0xffffffff7fc13465>
+    800000de:	0a32                	c.slli	x20,0xc
+    800000e0:	459a0a13          	addi	x20,x20,1113
+    800000e4:	0a32                	c.slli	x20,0xc
+    800000e6:	c99a0a13          	addi	x20,x20,-871
+    800000ea:	0a42                	c.slli	x20,0x10
+    800000ec:	43ea0a13          	addi	x20,x20,1086
+li x8, 0x143e7178ee86cf8f
+    800000f0:	00288437          	lui	x8,0x288
+    800000f4:	ce34041b          	addiw	x8,x8,-797 # 287ce3 <_start-0x7fd7831d>
+    800000f8:	043e                	c.slli	x8,0xf
+    800000fa:	8ef40413          	addi	x8,x8,-1809
+    800000fe:	0432                	c.slli	x8,0xc
+    80000100:	86d40413          	addi	x8,x8,-1939
+    80000104:	0432                	c.slli	x8,0xc
+    80000106:	f8f40413          	addi	x8,x8,-113
+fmv.d.x f13, x8
+    8000010a:	f20406d3          	fmv.d.x	f13,x8
+li x8, 0x496a3057e82f436
+    8000010e:	00049437          	lui	x8,0x49
+    80000112:	6a34041b          	addiw	x8,x8,1699 # 496a3 <_start-0x7ffb695d>
+    80000116:	0442                	c.slli	x8,0x10
+    80000118:	57f40413          	addi	x8,x8,1407
+    8000011c:	0432                	c.slli	x8,0xc
+    8000011e:	82f40413          	addi	x8,x8,-2001
+    80000122:	0432                	c.slli	x8,0xc
+    80000124:	43640413          	addi	x8,x8,1078
+fmv.d.x f14, x8
+    80000128:	f2040753          	fmv.d.x	f14,x8
+li x8, 0x71f0084de5e37239
+    8000012c:	01c7c437          	lui	x8,0x1c7c
+    80000130:	0214041b          	addiw	x8,x8,33 # 1c7c021 <_start-0x7e383fdf>
+    80000134:	0436                	c.slli	x8,0xd
+    80000136:	6f340413          	addi	x8,x8,1779
+    8000013a:	0436                	c.slli	x8,0xd
+    8000013c:	e3740413          	addi	x8,x8,-457
+    80000140:	0432                	c.slli	x8,0xc
+    80000142:	23940413          	addi	x8,x8,569
+fmv.d.x f15, x8
+    80000146:	f20407d3          	fmv.d.x	f15,x8
+li x8, 0x30038c68d214fde1
+    8000014a:	000c0437          	lui	x8,0xc0
+    8000014e:	0e34041b          	addiw	x8,x8,227 # c00e3 <_start-0x7ff3ff1d>
+    80000152:	043a                	c.slli	x8,0xe
+    80000154:	68d40413          	addi	x8,x8,1677
+    80000158:	0432                	c.slli	x8,0xc
+    8000015a:	21540413          	addi	x8,x8,533
+    8000015e:	0442                	c.slli	x8,0x10
+    80000160:	de140413          	addi	x8,x8,-543
+fmv.d.x f16, x8
+    80000164:	f2040853          	fmv.d.x	f16,x8
+li x8, 0x30b7f4ac15b65ddb
+    80000168:	0185c437          	lui	x8,0x185c
+    8000016c:	fa54041b          	addiw	x8,x8,-91 # 185bfa5 <_start-0x7e7a405b>
+    80000170:	0432                	c.slli	x8,0xc
+    80000172:	60b40413          	addi	x8,x8,1547
+    80000176:	0432                	c.slli	x8,0xc
+    80000178:	db340413          	addi	x8,x8,-589
+    8000017c:	0436                	c.slli	x8,0xd
+    8000017e:	ddb40413          	addi	x8,x8,-549
+fmv.d.x f17, x8
+    80000182:	f20408d3          	fmv.d.x	f17,x8
+li x8, 0xd7e39751554ed414
+    80000186:	fd7e4437          	lui	x8,0xfd7e4
+    8000018a:	9754041b          	addiw	x8,x8,-1675 # fffffffffd7e3975 <fromhost+0xffffffff7d7e196d>
+    8000018e:	0432                	c.slli	x8,0xc
+    80000190:	15540413          	addi	x8,x8,341
+    80000194:	0432                	c.slli	x8,0xc
+    80000196:	4ed40413          	addi	x8,x8,1261
+    8000019a:	0432                	c.slli	x8,0xc
+    8000019c:	41440413          	addi	x8,x8,1044
+fmv.d.x f18, x8
+    800001a0:	f2040953          	fmv.d.x	f18,x8
+li x8, 0x3d3bccc71bf5b05b
+    800001a4:	00f4f437          	lui	x8,0xf4f
+    800001a8:	f334041b          	addiw	x8,x8,-205 # f4ef33 <_start-0x7f0b10cd>
+    800001ac:	0432                	c.slli	x8,0xc
+    800001ae:	1c740413          	addi	x8,x8,455
+    800001b2:	043a                	c.slli	x8,0xe
+    800001b4:	f5b40413          	addi	x8,x8,-165
+    800001b8:	0432                	c.slli	x8,0xc
+    800001ba:	05b40413          	addi	x8,x8,91
+fmv.d.x f19, x8
+    800001be:	f20409d3          	fmv.d.x	f19,x8
+li x8, 0x2069eeb655bc82b8
+    800001c2:	0040d437          	lui	x8,0x40d
+    800001c6:	3dd4041b          	addiw	x8,x8,989 # 40d3dd <_start-0x7fbf2c23>
+    800001ca:	0432                	c.slli	x8,0xc
+    800001cc:	6cb40413          	addi	x8,x8,1739
+    800001d0:	0432                	c.slli	x8,0xc
+    800001d2:	b7940413          	addi	x8,x8,-1159
+    800001d6:	043e                	c.slli	x8,0xf
+    800001d8:	2b840413          	addi	x8,x8,696
+fmv.d.x f20, x8
+    800001dc:	f2040a53          	fmv.d.x	f20,x8
+li x9, 0x8fffffb8
+    800001e0:	0090049b          	addiw	x9,x0,9
+    800001e4:	04f2                	c.slli	x9,0x1c
+    800001e6:	fb848493          	addi	x9,x9,-72
+li x10, 0xed037a8c00bc4bcf
+    800001ea:	fed03537          	lui	x10,0xfed03
+    800001ee:	7a95051b          	addiw	x10,x10,1961 # fffffffffed037a9 <fromhost+0xffffffff7ed017a1>
+    800001f2:	0532                	c.slli	x10,0xc
+    800001f4:	c0150513          	addi	x10,x10,-1023
+    800001f8:	0532                	c.slli	x10,0xc
+    800001fa:	bc550513          	addi	x10,x10,-1083
+    800001fe:	0532                	c.slli	x10,0xc
+    80000200:	bcf50513          	addi	x10,x10,-1073
+sd x10, 0(x9)
+    80000204:	e088                	c.sd	x10,0(x9)
+li x10, 0x30088d6b4e2c74ff
+    80000206:	01804537          	lui	x10,0x1804
+    8000020a:	46b5051b          	addiw	x10,x10,1131 # 180446b <_start-0x7e7fbb95>
+    8000020e:	0532                	c.slli	x10,0xc
+    80000210:	5a750513          	addi	x10,x10,1447
+    80000214:	0536                	c.slli	x10,0xd
+    80000216:	2c750513          	addi	x10,x10,711
+    8000021a:	0532                	c.slli	x10,0xc
+    8000021c:	4ff50513          	addi	x10,x10,1279
+sd x10, 8(x9)
+    80000220:	e488                	c.sd	x10,8(x9)
+li x10, 0xb684e0a7338817b1
+    80000222:	feda1537          	lui	x10,0xfeda1
+    80000226:	3835051b          	addiw	x10,x10,899 # fffffffffeda1383 <fromhost+0xffffffff7ed9f37b>
+    8000022a:	0532                	c.slli	x10,0xc
+    8000022c:	9cd50513          	addi	x10,x10,-1587
+    80000230:	053a                	c.slli	x10,0xe
+    80000232:	88150513          	addi	x10,x10,-1919
+    80000236:	0532                	c.slli	x10,0xc
+    80000238:	7b150513          	addi	x10,x10,1969
+sd x10, 16(x9)
+    8000023c:	e888                	c.sd	x10,16(x9)
+li x10, 0x9bb020967bb2b72f
+    8000023e:	ff376537          	lui	x10,0xff376
+    80000242:	0415051b          	addiw	x10,x10,65 # ffffffffff376041 <fromhost+0xffffffff7f374039>
+    80000246:	0536                	c.slli	x10,0xd
+    80000248:	59f50513          	addi	x10,x10,1439
+    8000024c:	053a                	c.slli	x10,0xe
+    8000024e:	b2b50513          	addi	x10,x10,-1237
+    80000252:	0532                	c.slli	x10,0xc
+    80000254:	72f50513          	addi	x10,x10,1839
+sd x10, 24(x9)
+    80000258:	ec88                	c.sd	x10,24(x9)
+li x10, 0x4c71ad9f3814f8d
+    8000025a:	00132537          	lui	x10,0x132
+    8000025e:	c6b5051b          	addiw	x10,x10,-917 # 131c6b <_start-0x7fece395>
+    80000262:	0532                	c.slli	x10,0xc
+    80000264:	67d50513          	addi	x10,x10,1661
+    80000268:	053a                	c.slli	x10,0xe
+    8000026a:	81550513          	addi	x10,x10,-2027
+    8000026e:	0532                	c.slli	x10,0xc
+    80000270:	f8d50513          	addi	x10,x10,-115
+sd x10, 32(x9)
+    80000274:	f088                	c.sd	x10,32(x9)
+li x10, 0x5497065ed207a494
+    80000276:	02a4c537          	lui	x10,0x2a4c
+    8000027a:	8335051b          	addiw	x10,x10,-1997 # 2a4b833 <_start-0x7d5b47cd>
+    8000027e:	0532                	c.slli	x10,0xc
+    80000280:	f6950513          	addi	x10,x10,-151
+    80000284:	0532                	c.slli	x10,0xc
+    80000286:	03d50513          	addi	x10,x10,61
+    8000028a:	0536                	c.slli	x10,0xd
+    8000028c:	49450513          	addi	x10,x10,1172
+sd x10, 40(x9)
+    80000290:	f488                	c.sd	x10,40(x9)
+li x10, 0x2e8d6a454821963f
+    80000292:	005d2537          	lui	x10,0x5d2
+    80000296:	ad55051b          	addiw	x10,x10,-1323 # 5d1ad5 <_start-0x7fa2e52b>
+    8000029a:	0532                	c.slli	x10,0xc
+    8000029c:	8a950513          	addi	x10,x10,-1879
+    800002a0:	053e                	c.slli	x10,0xf
+    800002a2:	21950513          	addi	x10,x10,537
+    800002a6:	0532                	c.slli	x10,0xc
+    800002a8:	63f50513          	addi	x10,x10,1599
+sd x10, 48(x9)
+    800002ac:	f888                	c.sd	x10,48(x9)
+li x10, 0xaa735d2a78f506fa
+    800002ae:	fffd5537          	lui	x10,0xfffd5
+    800002b2:	39b5051b          	addiw	x10,x10,923 # fffffffffffd539b <fromhost+0xffffffff7ffd3393>
+    800002b6:	053a                	c.slli	x10,0xe
+    800002b8:	a5550513          	addi	x10,x10,-1451
+    800002bc:	053e                	c.slli	x10,0xf
+    800002be:	8f550513          	addi	x10,x10,-1803
+    800002c2:	0542                	c.slli	x10,0x10
+    800002c4:	6fa50513          	addi	x10,x10,1786
+sd x10, 56(x9)
+    800002c8:	fc88                	c.sd	x10,56(x9)
+li x8, 0
+    800002ca:	4401                	c.li	x8,0
+li x9, 0
+    800002cc:	4481                	c.li	x9,0
+li x10, 0
+    800002ce:	4501                	c.li	x10,0
+li x11, 0
+    800002d0:	4581                	c.li	x11,0
+li x12, 0
+    800002d2:	4601                	c.li	x12,0
+flt.h x20, f20, f20
+    800002d4:	a54a1a53          	flt.h	x20,f20,f20
+csrrs x13, fflags, x0
+    800002d8:	001026f3          	csrrs	x13,fflags,x0
+bset x18, x20, x13
+    800002dc:	28da1933          	bset	x18,x20,x13
+fsgnj.d f18, f16, f19
+    800002e0:	23380953          	fsgnj.d	f18,f16,f19
+csrrs x15, fflags, x0
+    800002e4:	001027f3          	csrrs	x15,fflags,x0
+li x11, 2415919040
+    800002e8:	0090059b          	addiw	x11,x0,9
+    800002ec:	05f2                	c.slli	x11,0x1c
+    800002ee:	fc058593          	addi	x11,x11,-64
+c.sw x15, 16(x11)
+    800002f2:	c99c                	c.sw	x15,16(x11)
+li x9, 2415919068
+    800002f4:	0090049b          	addiw	x9,x0,9
+    800002f8:	04f2                	c.slli	x9,0x1c
+    800002fa:	fdc48493          	addi	x9,x9,-36
+amomin.d.aqrl x20, x16, (x9)
+    800002fe:	8704ba2f          	amomin.d.aqrl	x20,x16,(x9)
+fsub.d f13, f16, f14, dyn
+    80000302:	0ae876d3          	fsub.d	f13,f16,f14
+csrrs x17, fflags, x0
+    80000306:	001028f3          	csrrs	x17,fflags,x0
+csrrs x13, fflags, x0
+    8000030a:	001026f3          	csrrs	x13,fflags,x0
+czero.eqz x14, x14, x16
+    8000030e:	0f075733          	czero.eqz	x14,x14,x16
+srlw x19, x15, x19
+    80000312:	0137d9bb          	srlw	x19,x15,x19
+fnmsub.d f13, f15, f16, f16, rtz
+    80000316:	830796cb          	fnmsub.d	f13,f15,f16,f16,rtz
+csrrs x17, fflags, x0
+    8000031a:	001028f3          	csrrs	x17,fflags,x0
+fcvt.s.h f20, f19
+    8000031e:	40298a53          	fcvt.s.h	f20,f19
+csrrs x20, fflags, x0
+    80000322:	00102a73          	csrrs	x20,fflags,x0
+fsgnjx.h f14, f18, f15
+    80000326:	24f92753          	fsgnjx.h	f14,f18,f15
+csrrs x13, fflags, x0
+    8000032a:	001026f3          	csrrs	x13,fflags,x0
+fence.i
+    8000032e:	0000100f          	fence.i
+fsub.h f16, f13, f13, rmm
+    80000332:	0cd6c853          	fsub.h	f16,f13,f13,rmm
+csrrs x19, fflags, x0
+    80000336:	001029f3          	csrrs	x19,fflags,x0
+fsgnjn.s f17, f17, f19
+    8000033a:	213898d3          	fsgnjn.s	f17,f17,f19
+csrrs x13, fflags, x0
+    8000033e:	001026f3          	csrrs	x13,fflags,x0
+li x11, 2415919067
+    80000342:	0090059b          	addiw	x11,x0,9
+    80000346:	05f2                	c.slli	x11,0x1c
+    80000348:	fdb58593          	addi	x11,x11,-37
+amominu.w x16, x20, (x11)
+    8000034c:	c145a82f          	amominu.w	x16,x20,(x11)
+csrrs x14, fflags, x0
+    80000350:	00102773          	csrrs	x14,fflags,x0
+li x10, 2415919067
+    80000354:	0090051b          	addiw	x10,x0,9
+    80000358:	0572                	c.slli	x10,0x1c
+    8000035a:	fdb50513          	addi	x10,x10,-37
+amoadd.d x16, x13, (x10)
+    8000035e:	00d5382f          	amoadd.d	x16,x13,(x10)
+fsgnjn.s f13, f20, f14
+    80000362:	20ea16d3          	fsgnjn.s	f13,f20,f14
+csrrs x13, fflags, x0
+    80000366:	001026f3          	csrrs	x13,fflags,x0
+fsgnjx.d f17, f13, f19
+    8000036a:	2336a8d3          	fsgnjx.d	f17,f13,f19
+csrrs x15, fflags, x0
+    8000036e:	001027f3          	csrrs	x15,fflags,x0
+li x9, 2415919067
+    80000372:	0090049b          	addiw	x9,x0,9
+    80000376:	04f2                	c.slli	x9,0x1c
+    80000378:	fdb48493          	addi	x9,x9,-37
+sd x17, 2(x9)
+    8000037c:	0114b123          	sd	x17,2(x9)
+li x11, 2415919045
+    80000380:	0090059b          	addiw	x11,x0,9
+    80000384:	05f2                	c.slli	x11,0x1c
+    80000386:	fc558593          	addi	x11,x11,-59
+lhu x16, 9(x11)
+    8000038a:	0095d803          	lhu	x16,9(x11)
+sext.b x17, x13
+    8000038e:	60469893          	sext.b	x17,x13
+or x13, x14, x14
+    80000392:	00e766b3          	or	x13,x14,x14
+fnmsub.h f13, f13, f19, f13, dyn
+    80000396:	6d36f6cb          	fnmsub.h	f13,f13,f19,f13
+csrrs x17, fflags, x0
+    8000039a:	001028f3          	csrrs	x17,fflags,x0
+add x13, x13, x17
+    8000039e:	96c6                	c.add	x13,x17
+slliw x13, x20, 26
+    800003a0:	01aa169b          	slliw	x13,x20,0x1a
+fadd.h f18, f17, f20, rup
+    800003a4:	0548b953          	fadd.h	f18,f17,f20,rup
+csrrs x13, fflags, x0
+    800003a8:	001026f3          	csrrs	x13,fflags,x0
+c.addi x15, -22
+    800003ac:	17a9                	c.addi	x15,-22
+c.ebreak
+    800003ae:	9002                	c.ebreak
+li x9, 2415919033
+    800003b0:	0090049b          	addiw	x9,x0,9
+    800003b4:	04f2                	c.slli	x9,0x1c
+    800003b6:	fb948493          	addi	x9,x9,-71
+amoand.d.aq x18, x17, (x9)
+    800003ba:	6514b92f          	amoand.d.aq	x18,x17,(x9)
+fcvt.s.d f17, f18, rne
+    800003be:	401908d3          	fcvt.s.d	f17,f18,rne
+csrrs x20, fflags, x0
+    800003c2:	00102a73          	csrrs	x20,fflags,x0
+feq.h x17, f15, f20
+    800003c6:	a547a8d3          	feq.h	x17,f15,f20
+csrrs x14, fflags, x0
+    800003ca:	00102773          	csrrs	x14,fflags,x0
+fclass.d x20, f20
+    800003ce:	e20a1a53          	fclass.d	x20,f20
+csrrs x14, fflags, x0
+    800003d2:	00102773          	csrrs	x14,fflags,x0
+fsub.s f20, f17, f19, rne
+    800003d6:	09388a53          	fsub.s	f20,f17,f19,rne
+csrrs x14, fflags, x0
+    800003da:	00102773          	csrrs	x14,fflags,x0
+li x9, 2415919061
+    800003de:	0090049b          	addiw	x9,x0,9
+    800003e2:	04f2                	c.slli	x9,0x1c
+    800003e4:	fd548493          	addi	x9,x9,-43
+amoadd.w.aq x18, x20, (x9)
+    800003e8:	0544a92f          	amoadd.w.aq	x18,x20,(x9)
+c.lui x17, 0xfffec
+    800003ec:	78b1                	c.lui	x17,0xfffec
+li x12, 2415919054
+    800003ee:	0090061b          	addiw	x12,x0,9
+    800003f2:	0672                	c.slli	x12,0x1c
+    800003f4:	fce60613          	addi	x12,x12,-50
+sb x19, 10(x12)
+    800003f8:	01360523          	sb	x19,10(x12)
+li x10, 2415919046
+    800003fc:	0090051b          	addiw	x10,x0,9
+    80000400:	0572                	c.slli	x10,0x1c
+    80000402:	fc650513          	addi	x10,x10,-58
+fsh f14, 12(x10)
+    80000406:	00e51627          	fsh	f14,12(x10)
+csrrs x19, fflags, x0
+    8000040a:	001029f3          	csrrs	x19,fflags,x0
+c.slli x20, 5
+    8000040e:	0a16                	c.slli	x20,0x5
+li x10, 2415919063
+    80000410:	0090051b          	addiw	x10,x0,9
+    80000414:	0572                	c.slli	x10,0x1c
+    80000416:	fd750513          	addi	x10,x10,-41
+amomin.w x13, x15, (x10)
+    8000041a:	80f526af          	amomin.w	x13,x15,(x10)
+xor x16, x15, x15
+    8000041e:	00f7c833          	xor	x16,x15,x15
+add x19, x17, x16
+    80000422:	010889b3          	add	x19,x17,x16
+fmsub.s f19, f15, f13, f18, rne
+    80000426:	90d789c7          	fmsub.s	f19,f15,f13,f18,rne
+csrrs x19, fflags, x0
+    8000042a:	001029f3          	csrrs	x19,fflags,x0
+fmadd.d f17, f20, f17, f19, dyn
+    8000042e:	9b1a78c3          	fmadd.d	f17,f20,f17,f19
+csrrs x16, fflags, x0
+    80000432:	00102873          	csrrs	x16,fflags,x0
+li x12, 2415919054
+    80000436:	0090061b          	addiw	x12,x0,9
+    8000043a:	0672                	c.slli	x12,0x1c
+    8000043c:	fce60613          	addi	x12,x12,-50
+amomaxu.w x13, x15, (x12)
+    80000440:	e0f626af          	amomaxu.w	x13,x15,(x12)
+fnmsub.s f17, f20, f20, f13, rmm
+    80000444:	694a48cb          	fnmsub.s	f17,f20,f20,f13,rmm
+csrrs x16, fflags, x0
+    80000448:	00102873          	csrrs	x16,fflags,x0
+mulhsu x19, x19, x14
+    8000044c:	02e9a9b3          	mulhsu	x19,x19,x14
+li x8, 2415919038
+    80000450:	0090041b          	addiw	x8,x0,9
+    80000454:	0472                	c.slli	x8,0x1c
+    80000456:	fbe40413          	addi	x8,x8,-66
+amoxor.d.rl x17, x19, (x8)
+    8000045a:	233438af          	amoxor.d.rl	x17,x19,(x8)
+li x2, 2415919054
+    8000045e:	0090011b          	addiw	x2,x0,9
+    80000462:	0172                	c.slli	x2,0x1c
+    80000464:	fce10113          	addi	x2,x2,-50
+c.ldsp x16, 16(sp)
+    80000468:	6842                	c.ldsp	x16,16(x2)
+li x14, 28
+    8000046a:	4771                	c.li	x14,28
+csrrc x18, fflags, x14
+    8000046c:	00173973          	csrrc	x18,fflags,x14
+srli x19, x19, 17
+    80000470:	0119d993          	srli	x19,x19,0x11
+binv x14, x16, x20
+    80000474:	69481733          	binv	x14,x16,x20
+fcvt.w.h x18, f16, dyn
+    80000478:	c4087953          	fcvt.w.h	x18,f16
+csrrs x15, fflags, x0
+    8000047c:	001027f3          	csrrs	x15,fflags,x0
+li x12, 2415919045
+    80000480:	0090061b          	addiw	x12,x0,9
+    80000484:	0672                	c.slli	x12,0x1c
+    80000486:	fc560613          	addi	x12,x12,-59
+amomaxu.d x14, x14, (x12)
+    8000048a:	e0e6372f          	amomaxu.d	x14,x14,(x12)
+bext x13, x17, x13
+    8000048e:	48d8d6b3          	bext	x13,x17,x13
+li x12, 2415919035
+    80000492:	0090061b          	addiw	x12,x0,9
+    80000496:	0672                	c.slli	x12,0x1c
+    80000498:	fbb60613          	addi	x12,x12,-69
+amominu.w.rl x17, x16, (x12)
+    8000049c:	c30628af          	amominu.w.rl	x17,x16,(x12)
+flt.h x14, f13, f18
+    800004a0:	a5269753          	flt.h	x14,f13,f18
+csrrs x15, fflags, x0
+    800004a4:	001027f3          	csrrs	x15,fflags,x0
+fcvt.h.w f17, x16, rtz
+    800004a8:	d40818d3          	fcvt.h.w	f17,x16,rtz
+csrrs x14, fflags, x0
+    800004ac:	00102773          	csrrs	x14,fflags,x0
+c.and x15, x13
+    800004b0:	8ff5                	c.and	x15,x13
+sraw x17, x16, x17
+    800004b2:	411858bb          	sraw	x17,x16,x17
+slt x14, x13, x20
+    800004b6:	0146a733          	slt	x14,x13,x20
+c.ebreak
+    800004ba:	9002                	c.ebreak
+fmul.s f17, f15, f15, rmm
+    800004bc:	10f7c8d3          	fmul.s	f17,f15,f15,rmm
+csrrs x16, fflags, x0
+    800004c0:	00102873          	csrrs	x16,fflags,x0
+fle.h x19, f19, f14
+    800004c4:	a4e989d3          	fle.h	x19,f19,f14
+csrrs x17, fflags, x0
+    800004c8:	001028f3          	csrrs	x17,fflags,x0
+sh1add.uw x19, x15, x18
+    800004cc:	2127a9bb          	sh1add.uw	x19,x15,x18
+fcvt.l.d x14, f19, rtz
+    800004d0:	c2299753          	fcvt.l.d	x14,f19,rtz
+csrrs x17, fflags, x0
+    800004d4:	001028f3          	csrrs	x17,fflags,x0
+fsgnjx.h f18, f15, f15
+    800004d8:	24f7a953          	fsgnjx.h	f18,f15,f15
+csrrs x15, fflags, x0
+    800004dc:	001027f3          	csrrs	x15,fflags,x0
+fsgnjx.d f19, f20, f20
+    800004e0:	234a29d3          	fsgnjx.d	f19,f20,f20
+csrrs x14, fflags, x0
+    800004e4:	00102773          	csrrs	x14,fflags,x0
+li x2, 2415919062
+    800004e8:	0090011b          	addiw	x2,x0,9
+    800004ec:	0172                	c.slli	x2,0x1c
+    800004ee:	fd610113          	addi	x2,x2,-42
+c.ldsp x20, 0(sp)
+    800004f2:	6a02                	c.ldsp	x20,0(x2)
+fle.s x20, f19, f16
+    800004f4:	a1098a53          	fle.s	x20,f19,f16
+csrrs x19, fflags, x0
+    800004f8:	001029f3          	csrrs	x19,fflags,x0
+fmin.s f16, f20, f15
+    800004fc:	28fa0853          	fmin.s	f16,f20,f15
+csrrs x15, fflags, x0
+    80000500:	001027f3          	csrrs	x15,fflags,x0
+fle.s x13, f14, f17
+    80000504:	a11706d3          	fle.s	x13,f14,f17
+csrrs x17, fflags, x0
+    80000508:	001028f3          	csrrs	x17,fflags,x0
+slli x15, x20, 22
+    8000050c:	016a1793          	slli	x15,x20,0x16
+li x2, 2415919066
+    80000510:	0090011b          	addiw	x2,x0,9
+    80000514:	0172                	c.slli	x2,0x1c
+    80000516:	fda10113          	addi	x2,x2,-38
+c.ldsp x18, 8(sp)
+    8000051a:	6922                	c.ldsp	x18,8(x2)
+csrrs x17, fflags, x0
+    8000051c:	001028f3          	csrrs	x17,fflags,x0
+fence.i
+    80000520:	0000100f          	fence.i
+fdiv.d f19, f20, f20, dyn
+    80000524:	1b4a79d3          	fdiv.d	f19,f20,f20
+csrrs x17, fflags, x0
+    80000528:	001028f3          	csrrs	x17,fflags,x0
+fcvt.l.h x17, f17, dyn
+    8000052c:	c428f8d3          	fcvt.l.h	x17,f17
+csrrs x14, fflags, x0
+    80000530:	00102773          	csrrs	x14,fflags,x0
+fdiv.s f19, f19, f16, dyn
+    80000534:	1909f9d3          	fdiv.s	f19,f19,f16
+csrrs x20, fflags, x0
+    80000538:	00102a73          	csrrs	x20,fflags,x0
+ori x17, x16, -235
+    8000053c:	f1586893          	ori	x17,x16,-235
+csrrs x20, fflags, x0
+    80000540:	00102a73          	csrrs	x20,fflags,x0
+divw x20, x19, x18
+    80000544:	0329ca3b          	divw	x20,x19,x18
+fnmadd.s f14, f14, f20, f13, rdn
+    80000548:	6947274f          	fnmadd.s	f14,f14,f20,f13,rdn
+csrrs x19, fflags, x0
+    8000054c:	001029f3          	csrrs	x19,fflags,x0
+li x11, 2415919034
+    80000550:	0090059b          	addiw	x11,x0,9
+    80000554:	05f2                	c.slli	x11,0x1c
+    80000556:	fba58593          	addi	x11,x11,-70
+fsd f18, 10(x11)
+    8000055a:	0125b527          	fsd	f18,10(x11)
+csrrs x15, fflags, x0
+    8000055e:	001027f3          	csrrs	x15,fflags,x0
+fcvt.w.d x16, f19, dyn
+    80000562:	c209f853          	fcvt.w.d	x16,f19
+csrrs x15, fflags, x0
+    80000566:	001027f3          	csrrs	x15,fflags,x0
+fcvt.s.d f16, f13, dyn
+    8000056a:	4016f853          	fcvt.s.d	f16,f13
+csrrs x18, fflags, x0
+    8000056e:	00102973          	csrrs	x18,fflags,x0
+fcvt.lu.d x14, f14, dyn
+    80000572:	c2377753          	fcvt.lu.d	x14,f14
+csrrs x17, fflags, x0
+    80000576:	001028f3          	csrrs	x17,fflags,x0
+li x8, 2415919057
+    8000057a:	0090041b          	addiw	x8,x0,9
+    8000057e:	0472                	c.slli	x8,0x1c
+    80000580:	fd140413          	addi	x8,x8,-47
+fsw f17, 16(x8)
+    80000584:	01142827          	fsw	f17,16(x8)
+csrrs x13, fflags, x0
+    80000588:	001026f3          	csrrs	x13,fflags,x0
+fcvt.s.lu f18, x13, dyn
+    8000058c:	d036f953          	fcvt.s.lu	f18,x13
+csrrs x20, fflags, x0
+    80000590:	00102a73          	csrrs	x20,fflags,x0
+fle.h x16, f19, f13
+    80000594:	a4d98853          	fle.h	x16,f19,f13
+csrrs x20, fflags, x0
+    80000598:	00102a73          	csrrs	x20,fflags,x0
+czero.nez x13, x15, x17
+    8000059c:	0f17f6b3          	czero.nez	x13,x15,x17
+csrrs x16, fflags, x0
+    800005a0:	00102873          	csrrs	x16,fflags,x0
+li x2, 2415919060
+    800005a4:	0090011b          	addiw	x2,x0,9
+    800005a8:	0172                	c.slli	x2,0x1c
+    800005aa:	fd410113          	addi	x2,x2,-44
+c.swsp x17, 12(sp)
+    800005ae:	c646                	c.swsp	x17,12(x2)
+fmin.s f20, f17, f17
+    800005b0:	29188a53          	fmin.s	f20,f17,f17
+csrrs x15, fflags, x0
+    800005b4:	001027f3          	csrrs	x15,fflags,x0
+fcvt.d.wu f18, x14
+    800005b8:	d2170953          	fcvt.d.wu	f18,x14
+csrrs x19, fflags, x0
+    800005bc:	001029f3          	csrrs	x19,fflags,x0
+fmsub.s f20, f15, f13, f16, rdn
+    800005c0:	80d7aa47          	fmsub.s	f20,f15,f13,f16,rdn
+csrrs x19, fflags, x0
+    800005c4:	001029f3          	csrrs	x19,fflags,x0
+fcvt.h.lu f20, x15, rne
+    800005c8:	d4378a53          	fcvt.h.lu	f20,x15,rne
+csrrs x17, fflags, x0
+    800005cc:	001028f3          	csrrs	x17,fflags,x0
+fcvt.h.w f19, x16, rup
+    800005d0:	d40839d3          	fcvt.h.w	f19,x16,rup
+csrrs x19, fflags, x0
+    800005d4:	001029f3          	csrrs	x19,fflags,x0
+fle.h x14, f20, f19
+    800005d8:	a53a0753          	fle.h	x14,f20,f19
+csrrs x15, fflags, x0
+    800005dc:	001027f3          	csrrs	x15,fflags,x0
+fadd.d f18, f14, f19, dyn
+    800005e0:	03377953          	fadd.d	f18,f14,f19
+csrrs x18, fflags, x0
+    800005e4:	00102973          	csrrs	x18,fflags,x0
+bclr x17, x19, x13
+    800005e8:	48d998b3          	bclr	x17,x19,x13
+sh1add.uw x18, x17, x18
+    800005ec:	2128a93b          	sh1add.uw	x18,x17,x18
+lui x18, 425984
+    800005f0:	68000937          	lui	x18,0x68000
+fcvt.d.lu f13, x16, rmm
+    800005f4:	d23846d3          	fcvt.d.lu	f13,x16,rmm
+csrrs x19, fflags, x0
+    800005f8:	001029f3          	csrrs	x19,fflags,x0
+ori x15, x19, -1361
+    800005fc:	aaf9e793          	ori	x15,x19,-1361
+slli x16, x19, 21
+    80000600:	01599813          	slli	x16,x19,0x15
+slliw x19, x18, 11
+    80000604:	00b9199b          	slliw	x19,x18,0xb
+bset x20, x14, x13
+    80000608:	28d71a33          	bset	x20,x14,x13
+sltiu x15, x15, 1103
+    8000060c:	44f7b793          	sltiu	x15,x15,1103
+csrrs x16, fflags, x0
+    80000610:	00102873          	csrrs	x16,fflags,x0
+addiw x14, x14, 1410
+    80000614:	5827071b          	addiw	x14,x14,1410
+xori x19, x13, 1567
+    80000618:	61f6c993          	xori	x19,x13,1567
+ctzw x14, x15
+    8000061c:	6017971b          	ctzw	x14,x15
+flt.s x15, f14, f20
+    80000620:	a14717d3          	flt.s	x15,f14,f20
+csrrs x18, fflags, x0
+    80000624:	00102973          	csrrs	x18,fflags,x0
+csrrs x19, fflags, x0
+    80000628:	001029f3          	csrrs	x19,fflags,x0
+li x9, 2415919067
+    8000062c:	0090049b          	addiw	x9,x0,9
+    80000630:	04f2                	c.slli	x9,0x1c
+    80000632:	fdb48493          	addi	x9,x9,-37
+sb x16, 7(x9)
+    80000636:	010483a3          	sb	x16,7(x9)
+fcvt.l.d x20, f20, rup
+    8000063a:	c22a3a53          	fcvt.l.d	x20,f20,rup
+csrrs x18, fflags, x0
+    8000063e:	00102973          	csrrs	x18,fflags,x0
+fcvt.l.h x20, f20, rtz
+    80000642:	c42a1a53          	fcvt.l.h	x20,f20,rtz
+csrrs x19, fflags, x0
+    80000646:	001029f3          	csrrs	x19,fflags,x0
+fence.i
+    8000064a:	0000100f          	fence.i
+fadd.h f17, f13, f15, dyn
+    8000064e:	04f6f8d3          	fadd.h	f17,f13,f15
+csrrs x17, fflags, x0
+    80000652:	001028f3          	csrrs	x17,fflags,x0
+fmsub.d f13, f20, f18, f18, rmm
+    80000656:	932a46c7          	fmsub.d	f13,f20,f18,f18,rmm
+csrrs x20, fflags, x0
+    8000065a:	00102a73          	csrrs	x20,fflags,x0
+c.subw x15, x14
+    8000065e:	9f99                	c.subw	x15,x14
+fcvt.h.wu f16, x14, rmm
+    80000660:	d4174853          	fcvt.h.wu	f16,x14,rmm
+csrrs x17, fflags, x0
+    80000664:	001028f3          	csrrs	x17,fflags,x0
+feq.h x14, f15, f17
+    80000668:	a517a753          	feq.h	x14,f15,f17
+csrrs x20, fflags, x0
+    8000066c:	00102a73          	csrrs	x20,fflags,x0
+fle.s x20, f16, f17
+    80000670:	a1180a53          	fle.s	x20,f16,f17
+csrrs x16, fflags, x0
+    80000674:	00102873          	csrrs	x16,fflags,x0
+li x9, 2415919069
+    80000678:	0090049b          	addiw	x9,x0,9
+    8000067c:	04f2                	c.slli	x9,0x1c
+    8000067e:	fdd48493          	addi	x9,x9,-35
+amoor.d.aq x17, x14, (x9)
+    80000682:	44e4b8af          	amoor.d.aq	x17,x14,(x9)
+fdiv.s f18, f20, f20, rmm
+    80000686:	194a4953          	fdiv.s	f18,f20,f20,rmm
+csrrs x13, fflags, x0
+    8000068a:	001026f3          	csrrs	x13,fflags,x0
+fcvt.d.wu f14, x14
+    8000068e:	d2170753          	fcvt.d.wu	f14,x14
+csrrs x15, fflags, x0
+    80000692:	001027f3          	csrrs	x15,fflags,x0
+fcvt.lu.h x17, f17, dyn
+    80000696:	c438f8d3          	fcvt.lu.h	x17,f17
+csrrs x13, fflags, x0
+    8000069a:	001026f3          	csrrs	x13,fflags,x0
+fsub.h f15, f13, f20, dyn
+    8000069e:	0d46f7d3          	fsub.h	f15,f13,f20
+csrrs x17, fflags, x0
+    800006a2:	001028f3          	csrrs	x17,fflags,x0
+remuw x16, x18, x17
+    800006a6:	0319783b          	remuw	x16,x18,x17
+flt.h x13, f20, f19
+    800006aa:	a53a16d3          	flt.h	x13,f20,f19
+csrrs x16, fflags, x0
+    800006ae:	00102873          	csrrs	x16,fflags,x0
+fsgnjx.d f14, f19, f19
+    800006b2:	2339a753          	fsgnjx.d	f14,f19,f19
+csrrs x16, fflags, x0
+    800006b6:	00102873          	csrrs	x16,fflags,x0
+binv x20, x19, x19
+    800006ba:	69399a33          	binv	x20,x19,x19
+fmsub.d f16, f17, f15, f14, dyn
+    800006be:	72f8f847          	fmsub.d	f16,f17,f15,f14
+csrrs x13, fflags, x0
+    800006c2:	001026f3          	csrrs	x13,fflags,x0
+li x8, 2415919043
+    800006c6:	0090041b          	addiw	x8,x0,9
+    800006ca:	0472                	c.slli	x8,0x1c
+    800006cc:	fc340413          	addi	x8,x8,-61
+amoand.d x18, x14, (x8)
+    800006d0:	60e4392f          	amoand.d	x18,x14,(x8)
+fcvt.h.l f14, x16, rne
+    800006d4:	d4280753          	fcvt.h.l	f14,x16,rne
+csrrs x20, fflags, x0
+    800006d8:	00102a73          	csrrs	x20,fflags,x0
+fence.i
+    800006dc:	0000100f          	fence.i
+feq.d x14, f20, f13
+    800006e0:	a2da2753          	feq.d	x14,f20,f13
+csrrs x18, fflags, x0
+    800006e4:	00102973          	csrrs	x18,fflags,x0
+csrrs x15, fflags, x0
+    800006e8:	001027f3          	csrrs	x15,fflags,x0
+csrrwi x16, frm, 1
+    800006ec:	0020d873          	csrrwi	x16,frm,1
+c.li x16, -2
+    800006f0:	5879                	c.li	x16,-2
+li x2, 2415919035
+    800006f2:	0090011b          	addiw	x2,x0,9
+    800006f6:	0172                	c.slli	x2,0x1c
+    800006f8:	fbb10113          	addi	x2,x2,-69
+c.swsp x20, 0(sp)
+    800006fc:	c052                	c.swsp	x20,0(x2)
+mulw x13, x17, x13
+    800006fe:	02d886bb          	mulw	x13,x17,x13
+min x20, x14, x16
+    80000702:	0b074a33          	min	x20,x14,x16
+csrrs x15, fflags, x0
+    80000706:	001027f3          	csrrs	x15,fflags,x0
+fnmsub.d f20, f15, f20, f18, dyn
+    8000070a:	9347fa4b          	fnmsub.d	f20,f15,f20,f18
+csrrs x14, fflags, x0
+    8000070e:	00102773          	csrrs	x14,fflags,x0
+fmadd.h f13, f15, f19, f13, rup
+    80000712:	6d37b6c3          	fmadd.h	f13,f15,f19,f13,rup
+csrrs x19, fflags, x0
+    80000716:	001029f3          	csrrs	x19,fflags,x0
+li x11, 2415919037
+    8000071a:	0090059b          	addiw	x11,x0,9
+    8000071e:	05f2                	c.slli	x11,0x1c
+    80000720:	fbd58593          	addi	x11,x11,-67
+lwu x19, 6(x11)
+    80000724:	0065e983          	lwu	x19,6(x11)
+minu x20, x18, x15
+    80000728:	0af95a33          	minu	x20,x18,x15
+li x10, 2415919069
+    8000072c:	0090051b          	addiw	x10,x0,9
+    80000730:	0572                	c.slli	x10,0x1c
+    80000732:	fdd50513          	addi	x10,x10,-35
+sw x13, 8(x10)
+    80000736:	c514                	c.sw	x13,8(x10)
+fsgnjn.s f15, f18, f19
+    80000738:	213917d3          	fsgnjn.s	f15,f18,f19
+csrrs x17, fflags, x0
+    8000073c:	001028f3          	csrrs	x17,fflags,x0
+li x9, 2415919063
+    80000740:	0090049b          	addiw	x9,x0,9
+    80000744:	04f2                	c.slli	x9,0x1c
+    80000746:	fd748493          	addi	x9,x9,-41
+c.ld x15, 16(x9)
+    8000074a:	689c                	c.ld	x15,16(x9)
+li x8, 2415919037
+    8000074c:	0090041b          	addiw	x8,x0,9
+    80000750:	0472                	c.slli	x8,0x1c
+    80000752:	fbd40413          	addi	x8,x8,-67
+lw x14, 4(x8)
+    80000756:	4058                	c.lw	x14,4(x8)
+fcvt.wu.d x18, f16, rtz
+    80000758:	c2181953          	fcvt.wu.d	x18,f16,rtz
+csrrs x14, fflags, x0
+    8000075c:	00102773          	csrrs	x14,fflags,x0
+li x8, 2415919042
+    80000760:	0090041b          	addiw	x8,x0,9
+    80000764:	0472                	c.slli	x8,0x1c
+    80000766:	fc240413          	addi	x8,x8,-62
+c.ld x15, 8(x8)
+    8000076a:	641c                	c.ld	x15,8(x8)
+csrrs x14, fflags, x0
+    8000076c:	00102773          	csrrs	x14,fflags,x0
+fmax.s f14, f16, f17
+    80000770:	29181753          	fmax.s	f14,f16,f17
+csrrs x15, fflags, x0
+    80000774:	001027f3          	csrrs	x15,fflags,x0
+csrrs x15, fflags, x0
+    80000778:	001027f3          	csrrs	x15,fflags,x0
+fsgnjx.s f17, f18, f16
+    8000077c:	210928d3          	fsgnjx.s	f17,f18,f16
+csrrs x18, fflags, x0
+    80000780:	00102973          	csrrs	x18,fflags,x0
+li x8, 2415919070
+    80000784:	0090041b          	addiw	x8,x0,9
+    80000788:	0472                	c.slli	x8,0x1c
+    8000078a:	fde40413          	addi	x8,x8,-34
+sh x16, 6(x8)
+    8000078e:	01041323          	sh	x16,6(x8)
+fcvt.d.l f15, x13, dyn
+    80000792:	d226f7d3          	fcvt.d.l	f15,x13
+csrrs x17, fflags, x0
+    80000796:	001028f3          	csrrs	x17,fflags,x0
+c.slli x19, 33
+    8000079a:	1986                	c.slli	x19,0x21
+fsgnjn.s f18, f15, f19
+    8000079c:	21379953          	fsgnjn.s	f18,f15,f19
+csrrs x16, fflags, x0
+    800007a0:	00102873          	csrrs	x16,fflags,x0
+c.addi16sp sp, 16
+    800007a4:	6141                	c.addi16sp	x2,16
+csrrs x16, fflags, x0
+    800007a6:	00102873          	csrrs	x16,fflags,x0
+li x9, 2415919061
+    800007aa:	0090049b          	addiw	x9,x0,9
+    800007ae:	04f2                	c.slli	x9,0x1c
+    800007b0:	fd548493          	addi	x9,x9,-43
+lw x17, 15(x9)
+    800007b4:	00f4a883          	lw	x17,15(x9)
+fdiv.d f15, f18, f18, rup
+    800007b8:	1b2937d3          	fdiv.d	f15,f18,f18,rup
+csrrs x13, fflags, x0
+    800007bc:	001026f3          	csrrs	x13,fflags,x0
+sllw x19, x18, x13
+    800007c0:	00d919bb          	sllw	x19,x18,x13
+li x10, 2415919065
+    800007c4:	0090051b          	addiw	x10,x0,9
+    800007c8:	0572                	c.slli	x10,0x1c
+    800007ca:	fd950513          	addi	x10,x10,-39
+lhu x20, 15(x10)
+    800007ce:	00f55a03          	lhu	x20,15(x10)
+li x9, 2415919068
+    800007d2:	0090049b          	addiw	x9,x0,9
+    800007d6:	04f2                	c.slli	x9,0x1c
+    800007d8:	fdc48493          	addi	x9,x9,-36
+sd x15, 10(x9)
+    800007dc:	00f4b523          	sd	x15,10(x9)
+fmv.d.x f17, x19
+    800007e0:	f20988d3          	fmv.d.x	f17,x19
+csrrs x19, fflags, x0
+    800007e4:	001029f3          	csrrs	x19,fflags,x0
+csrrs x15, fflags, x0
+    800007e8:	001027f3          	csrrs	x15,fflags,x0
+bext x14, x19, x16
+    800007ec:	4909d733          	bext	x14,x19,x16
+c.srli x14, 35
+    800007f0:	930d                	c.srli	x14,0x23
+feq.h x16, f15, f13
+    800007f2:	a4d7a853          	feq.h	x16,f15,f13
+csrrs x15, fflags, x0
+    800007f6:	001027f3          	csrrs	x15,fflags,x0
+csrrs x15, fflags, x0
+    800007fa:	001027f3          	csrrs	x15,fflags,x0
+fsgnjx.d f18, f14, f18
+    800007fe:	23272953          	fsgnjx.d	f18,f14,f18
+csrrs x19, fflags, x0
+    80000802:	001029f3          	csrrs	x19,fflags,x0
+li x9, 2415919037
+    80000806:	0090049b          	addiw	x9,x0,9
+    8000080a:	04f2                	c.slli	x9,0x1c
+    8000080c:	fbd48493          	addi	x9,x9,-67
+sh x15, 4(x9)
+    80000810:	00f49223          	sh	x15,4(x9)
+fcvt.s.lu f13, x14, rmm
+    80000814:	d03746d3          	fcvt.s.lu	f13,x14,rmm
+csrrs x16, fflags, x0
+    80000818:	00102873          	csrrs	x16,fflags,x0
+li x11, 2415919059
+    8000081c:	0090059b          	addiw	x11,x0,9
+    80000820:	05f2                	c.slli	x11,0x1c
+    80000822:	fd358593          	addi	x11,x11,-45
+sd x19, 3(x11)
+    80000826:	0135b1a3          	sd	x19,3(x11)
+fmadd.h f17, f13, f13, f14, rne
+    8000082a:	74d688c3          	fmadd.h	f17,f13,f13,f14,rne
+csrrs x14, fflags, x0
+    8000082e:	00102773          	csrrs	x14,fflags,x0
+binvi x16, x17, 43
+    80000832:	6ab89813          	binvi	x16,x17,0x2b
+c.add x13, x13
+    80000836:	96b6                	c.add	x13,x13
+li x12, 2415919033
+    80000838:	0090061b          	addiw	x12,x0,9
+    8000083c:	0672                	c.slli	x12,0x1c
+    8000083e:	fb960613          	addi	x12,x12,-71
+amoand.w.aqrl x16, x13, (x12)
+    80000842:	66d6282f          	amoand.w.aqrl	x16,x13,(x12)
+c.and x13, x14
+    80000846:	8ef9                	c.and	x13,x14
+fnmsub.d f19, f14, f15, f13, dyn
+    80000848:	6af779cb          	fnmsub.d	f19,f14,f15,f13
+csrrs x14, fflags, x0
+    8000084c:	00102773          	csrrs	x14,fflags,x0
+fmsub.h f13, f19, f13, f17, rmm
+    80000850:	8cd9c6c7          	fmsub.h	f13,f19,f13,f17,rmm
+csrrs x19, fflags, x0
+    80000854:	001029f3          	csrrs	x19,fflags,x0
+bclri x20, x16, 54
+    80000858:	4b681a13          	bclri	x20,x16,0x36
+fcvt.w.d x17, f14, rup
+    8000085c:	c20738d3          	fcvt.w.d	x17,f14,rup
+csrrs x18, fflags, x0
+    80000860:	00102973          	csrrs	x18,fflags,x0
+fcvt.s.wu f15, x15, rmm
+    80000864:	d017c7d3          	fcvt.s.wu	f15,x15,rmm
+csrrs x14, fflags, x0
+    80000868:	00102773          	csrrs	x14,fflags,x0
+csrrs x19, fflags, x0
+    8000086c:	001029f3          	csrrs	x19,fflags,x0
+li x8, 2415919067
+    80000870:	0090041b          	addiw	x8,x0,9
+    80000874:	0472                	c.slli	x8,0x1c
+    80000876:	fdb40413          	addi	x8,x8,-37
+amoor.d.aqrl x15, x19, (x8)
+    8000087a:	473437af          	amoor.d.aqrl	x15,x19,(x8)
+slliw x17, x15, 5
+    8000087e:	0057989b          	slliw	x17,x15,0x5
+fmsub.s f19, f19, f17, f17, dyn
+    80000882:	8919f9c7          	fmsub.s	f19,f19,f17,f17
+csrrs x14, fflags, x0
+    80000886:	00102773          	csrrs	x14,fflags,x0
+csrrs x20, fflags, x0
+    8000088a:	00102a73          	csrrs	x20,fflags,x0
+fcvt.h.lu f19, x16, dyn
+    8000088e:	d43879d3          	fcvt.h.lu	f19,x16
+csrrs x15, fflags, x0
+    80000892:	001027f3          	csrrs	x15,fflags,x0
+csrrs x15, fflags, x0
+    80000896:	001027f3          	csrrs	x15,fflags,x0
+c.or x13, x14
+    8000089a:	8ed9                	c.or	x13,x14
+fnmsub.h f14, f19, f18, f17, rmm
+    8000089c:	8d29c74b          	fnmsub.h	f14,f19,f18,f17,rmm
+csrrs x17, fflags, x0
+    800008a0:	001028f3          	csrrs	x17,fflags,x0
+li x10, 2415919061
+    800008a4:	0090051b          	addiw	x10,x0,9
+    800008a8:	0572                	c.slli	x10,0x1c
+    800008aa:	fd550513          	addi	x10,x10,-43
+ld x20, 8(x10)
+    800008ae:	00853a03          	ld	x20,8(x10)
+addiw x13, x16, -898
+    800008b2:	c7e8069b          	addiw	x13,x16,-898
+fmul.d f16, f16, f19, rdn
+    800008b6:	13382853          	fmul.d	f16,f16,f19,rdn
+csrrs x16, fflags, x0
+    800008ba:	00102873          	csrrs	x16,fflags,x0
+fcvt.h.d f20, f18, rup
+    800008be:	44193a53          	fcvt.h.d	f20,f18,rup
+csrrs x13, fflags, x0
+    800008c2:	001026f3          	csrrs	x13,fflags,x0
+ctzw x16, x14
+    800008c6:	6017181b          	ctzw	x16,x14
+fcvt.d.lu f17, x18, rup
+    800008ca:	d23938d3          	fcvt.d.lu	f17,x18,rup
+csrrs x19, fflags, x0
+    800008ce:	001029f3          	csrrs	x19,fflags,x0
+mulh x14, x15, x16
+    800008d2:	03079733          	mulh	x14,x15,x16
+fmadd.d f13, f18, f16, f15, dyn
+    800008d6:	7b0976c3          	fmadd.d	f13,f18,f16,f15
+csrrs x13, fflags, x0
+    800008da:	001026f3          	csrrs	x13,fflags,x0
+li x11, 2415919065
+    800008de:	0090059b          	addiw	x11,x0,9
+    800008e2:	05f2                	c.slli	x11,0x1c
+    800008e4:	fd958593          	addi	x11,x11,-39
+amomaxu.d x14, x13, (x11)
+    800008e8:	e0d5b72f          	amomaxu.d	x14,x13,(x11)
+and x17, x17, x13
+    800008ec:	00d8f8b3          	and	x17,x17,x13
+li x12, 2415919054
+    800008f0:	0090061b          	addiw	x12,x0,9
+    800008f4:	0672                	c.slli	x12,0x1c
+    800008f6:	fce60613          	addi	x12,x12,-50
+amomaxu.w.aqrl x19, x19, (x12)
+    800008fa:	e73629af          	amomaxu.w.aqrl	x19,x19,(x12)
+li x11, 2415919051
+    800008fe:	0090059b          	addiw	x11,x0,9
+    80000902:	05f2                	c.slli	x11,0x1c
+    80000904:	fcb58593          	addi	x11,x11,-53
+c.sd x13, 8(x11)
+    80000908:	e594                	c.sd	x13,8(x11)
+sh2add.uw x14, x19, x14
+    8000090a:	20e9c73b          	sh2add.uw	x14,x19,x14
+csrrs x15, fflags, x0
+    8000090e:	001027f3          	csrrs	x15,fflags,x0
+czero.eqz x13, x18, x15
+    80000912:	0ef956b3          	czero.eqz	x13,x18,x15
+fdiv.d f19, f20, f14, dyn
+    80000916:	1aea79d3          	fdiv.d	f19,f20,f14
+csrrs x16, fflags, x0
+    8000091a:	00102873          	csrrs	x16,fflags,x0
+fcvt.wu.d x17, f14, rne
+    8000091e:	c21708d3          	fcvt.wu.d	x17,f14,rne
+csrrs x13, fflags, x0
+    80000922:	001026f3          	csrrs	x13,fflags,x0
+li x11, 2415919040
+    80000926:	0090059b          	addiw	x11,x0,9
+    8000092a:	05f2                	c.slli	x11,0x1c
+    8000092c:	fc058593          	addi	x11,x11,-64
+flw f16, 13(x11)
+    80000930:	00d5a807          	flw	f16,13(x11)
+csrrs x19, fflags, x0
+    80000934:	001029f3          	csrrs	x19,fflags,x0
+sltiu x15, x15, -212
+    80000938:	f2c7b793          	sltiu	x15,x15,-212
+li x8, 2415919070
+    8000093c:	0090041b          	addiw	x8,x0,9
+    80000940:	0472                	c.slli	x8,0x1c
+    80000942:	fde40413          	addi	x8,x8,-34
+amomaxu.w.rl x20, x13, (x8)
+    80000946:	e2d42a2f          	amomaxu.w.rl	x20,x13,(x8)
+binv x15, x19, x14
+    8000094a:	68e997b3          	binv	x15,x19,x14
+csrrs x19, fflags, x0
+    8000094e:	001029f3          	csrrs	x19,fflags,x0
+csrrs x15, fflags, x0
+    80000952:	001027f3          	csrrs	x15,fflags,x0
+slti x14, x13, 77
+    80000956:	04d6a713          	slti	x14,x13,77
+li x8, 2415919068
+    8000095a:	0090041b          	addiw	x8,x0,9
+    8000095e:	0472                	c.slli	x8,0x1c
+    80000960:	fdc40413          	addi	x8,x8,-36
+amoadd.w.aq x20, x14, (x8)
+    80000964:	04e42a2f          	amoadd.w.aq	x20,x14,(x8)
+fcvt.d.h f14, f15
+    80000968:	42278753          	fcvt.d.h	f14,f15
+csrrs x14, fflags, x0
+    8000096c:	00102773          	csrrs	x14,fflags,x0
+csrrs x16, fflags, x0
+    80000970:	00102873          	csrrs	x16,fflags,x0
+or x13, x16, x14
+    80000974:	00e866b3          	or	x13,x16,x14
+mulw x15, x20, x20
+    80000978:	034a07bb          	mulw	x15,x20,x20
+fmax.d f13, f13, f18
+    8000097c:	2b2696d3          	fmax.d	f13,f13,f18
+csrrs x19, fflags, x0
+    80000980:	001029f3          	csrrs	x19,fflags,x0
+csrrs x14, fflags, x0
+    80000984:	00102773          	csrrs	x14,fflags,x0
+bset x18, x19, x19
+    80000988:	29399933          	bset	x18,x19,x19
+li x2, 2415919055
+    8000098c:	0090011b          	addiw	x2,x0,9
+    80000990:	0172                	c.slli	x2,0x1c
+    80000992:	fcf10113          	addi	x2,x2,-49
+c.sdsp x15, 0(sp)
+    80000996:	e03e                	c.sdsp	x15,0(x2)
+fsgnj.d f14, f18, f14
+    80000998:	22e90753          	fsgnj.d	f14,f18,f14
+csrrs x13, fflags, x0
+    8000099c:	001026f3          	csrrs	x13,fflags,x0
+li x12, 2415919043
+    800009a0:	0090061b          	addiw	x12,x0,9
+    800009a4:	0672                	c.slli	x12,0x1c
+    800009a6:	fc360613          	addi	x12,x12,-61
+c.ld x13, 0(x12)
+    800009aa:	6214                	c.ld	x13,0(x12)
+fcvt.w.d x13, f20, dyn
+    800009ac:	c20a76d3          	fcvt.w.d	x13,f20
+csrrs x19, fflags, x0
+    800009b0:	001029f3          	csrrs	x19,fflags,x0
+csrrs x17, fflags, x0
+    800009b4:	001028f3          	csrrs	x17,fflags,x0
+csrrs x15, fflags, x0
+    800009b8:	001027f3          	csrrs	x15,fflags,x0
+flt.d x18, f19, f16
+    800009bc:	a3099953          	flt.d	x18,f19,f16
+csrrs x17, fflags, x0
+    800009c0:	001028f3          	csrrs	x17,fflags,x0
+fcvt.h.lu f13, x17, rtz
+    800009c4:	d43896d3          	fcvt.h.lu	f13,x17,rtz
+csrrs x20, fflags, x0
+    800009c8:	00102a73          	csrrs	x20,fflags,x0
+csrrs x18, fflags, x0
+    800009cc:	00102973          	csrrs	x18,fflags,x0
+fmax.h f20, f15, f19
+    800009d0:	2d379a53          	fmax.h	f20,f15,f19
+csrrs x20, fflags, x0
+    800009d4:	00102a73          	csrrs	x20,fflags,x0
+sltiu x16, x20, 1410
+    800009d8:	582a3813          	sltiu	x16,x20,1410
+fcvt.s.l f17, x15, rdn
+    800009dc:	d027a8d3          	fcvt.s.l	f17,x15,rdn
+csrrs x17, fflags, x0
+    800009e0:	001028f3          	csrrs	x17,fflags,x0
+fcvt.s.h f18, f15
+    800009e4:	40278953          	fcvt.s.h	f18,f15
+csrrs x13, fflags, x0
+    800009e8:	001026f3          	csrrs	x13,fflags,x0
+fcvt.w.h x16, f16, rtz
+    800009ec:	c4081853          	fcvt.w.h	x16,f16,rtz
+csrrs x15, fflags, x0
+    800009f0:	001027f3          	csrrs	x15,fflags,x0
+fmv.x.d x17, f20
+    800009f4:	e20a08d3          	fmv.x.d	x17,f20
+csrrs x18, fflags, x0
+    800009f8:	00102973          	csrrs	x18,fflags,x0
+li x8, 2415919056
+    800009fc:	0090041b          	addiw	x8,x0,9
+    80000a00:	0472                	c.slli	x8,0x1c
+    80000a02:	fd040413          	addi	x8,x8,-48
+fsh f17, 2(x8)
+    80000a06:	01141127          	fsh	f17,2(x8)
+csrrs x18, fflags, x0
+    80000a0a:	00102973          	csrrs	x18,fflags,x0
+csrrs x14, fflags, x0
+    80000a0e:	00102773          	csrrs	x14,fflags,x0
+sub x15, x13, x18
+    80000a12:	412687b3          	sub	x15,x13,x18
+remuw x14, x17, x14
+    80000a16:	02e8f73b          	remuw	x14,x17,x14
+fdiv.d f19, f20, f13, rdn
+    80000a1a:	1ada29d3          	fdiv.d	f19,f20,f13,rdn
+csrrs x16, fflags, x0
+    80000a1e:	00102873          	csrrs	x16,fflags,x0
+srlw x20, x16, x18
+    80000a22:	01285a3b          	srlw	x20,x16,x18
+maxu x16, x15, x20
+    80000a26:	0b47f833          	maxu	x16,x15,x20
+slli.uw x15, x18, 54
+    80000a2a:	0b69179b          	slli.uw	x15,x18,0x36
+li x9, 2415919044
+    80000a2e:	0090049b          	addiw	x9,x0,9
+    80000a32:	04f2                	c.slli	x9,0x1c
+    80000a34:	fc448493          	addi	x9,x9,-60
+amominu.w.aq x20, x14, (x9)
+    80000a38:	c4e4aa2f          	amominu.w.aq	x20,x14,(x9)
+li x12, 2415919047
+    80000a3c:	0090061b          	addiw	x12,x0,9
+    80000a40:	0672                	c.slli	x12,0x1c
+    80000a42:	fc760613          	addi	x12,x12,-57
+c.ld x13, 16(x12)
+    80000a46:	6a14                	c.ld	x13,16(x12)
+czero.eqz x20, x13, x18
+    80000a48:	0f26da33          	czero.eqz	x20,x13,x18
+li x10, 2415919040
+    80000a4c:	0090051b          	addiw	x10,x0,9
+    80000a50:	0572                	c.slli	x10,0x1c
+    80000a52:	fc050513          	addi	x10,x10,-64
+amoadd.d x20, x17, (x10)
+    80000a56:	01153a2f          	amoadd.d	x20,x17,(x10)
+fence.tso
+    80000a5a:	8330000f          	fence.tso
+li x2, 2415919032
+    80000a5e:	0090011b          	addiw	x2,x0,9
+    80000a62:	0172                	c.slli	x2,0x1c
+    80000a64:	fb810113          	addi	x2,x2,-72
+c.lwsp x14, 4(sp)
+    80000a68:	4712                	c.lwsp	x14,4(x2)
+cpop x18, x16
+    80000a6a:	60281913          	cpop	x18,x16
+czero.eqz x17, x16, x19
+    80000a6e:	0f3858b3          	czero.eqz	x17,x16,x19
+cpop x17, x20
+    80000a72:	602a1893          	cpop	x17,x20
+li x12, 2415919037
+    80000a76:	0090061b          	addiw	x12,x0,9
+    80000a7a:	0672                	c.slli	x12,0x1c
+    80000a7c:	fbd60613          	addi	x12,x12,-67
+amoadd.d.aq x20, x17, (x12)
+    80000a80:	05163a2f          	amoadd.d.aq	x20,x17,(x12)
+srai x17, x17, 56
+    80000a84:	4388d893          	srai	x17,x17,0x38
+fclass.d x13, f20
+    80000a88:	e20a16d3          	fclass.d	x13,f20
+csrrs x17, fflags, x0
+    80000a8c:	001028f3          	csrrs	x17,fflags,x0
+fmv.w.x f15, x17
+    80000a90:	f00887d3          	fmv.w.x	f15,x17
+csrrs x14, fflags, x0
+    80000a94:	00102773          	csrrs	x14,fflags,x0
+bclr x18, x14, x20
+    80000a98:	49471933          	bclr	x18,x14,x20
+max x20, x20, x16
+    80000a9c:	0b0a6a33          	max	x20,x20,x16
+fcvt.l.d x20, f19, rdn
+    80000aa0:	c229aa53          	fcvt.l.d	x20,f19,rdn
+csrrs x20, fflags, x0
+    80000aa4:	00102a73          	csrrs	x20,fflags,x0
+sh1add x14, x16, x19
+    80000aa8:	21382733          	sh1add	x14,x16,x19
+bset x13, x14, x13
+    80000aac:	28d716b3          	bset	x13,x14,x13
+li x9, 2415919033
+    80000ab0:	0090049b          	addiw	x9,x0,9
+    80000ab4:	04f2                	c.slli	x9,0x1c
+    80000ab6:	fb948493          	addi	x9,x9,-71
+sw x20, 11(x9)
+    80000aba:	0144a5a3          	sw	x20,11(x9)
+fcvt.s.lu f19, x14, dyn
+    80000abe:	d03779d3          	fcvt.s.lu	f19,x14
+csrrs x15, fflags, x0
+    80000ac2:	001027f3          	csrrs	x15,fflags,x0
+fsgnj.d f14, f16, f14
+    80000ac6:	22e80753          	fsgnj.d	f14,f16,f14
+csrrs x14, fflags, x0
+    80000aca:	00102773          	csrrs	x14,fflags,x0
+c.xor x13, x14
+    80000ace:	8eb9                	c.xor	x13,x14
+lui x14, 262144
+    80000ad0:	40000737          	lui	x14,0x40000
+fmadd.h f13, f13, f17, f15, rdn
+    80000ad4:	7d16a6c3          	fmadd.h	f13,f13,f17,f15,rdn
+csrrs x19, fflags, x0
+    80000ad8:	001029f3          	csrrs	x19,fflags,x0
+feq.h x15, f16, f18
+    80000adc:	a52827d3          	feq.h	x15,f16,f18
+csrrs x13, fflags, x0
+    80000ae0:	001026f3          	csrrs	x13,fflags,x0
+fclass.s x13, f16
+    80000ae4:	e00816d3          	fclass.s	x13,f16
+csrrs x20, fflags, x0
+    80000ae8:	00102a73          	csrrs	x20,fflags,x0
+minu x14, x16, x13
+    80000aec:	0ad85733          	minu	x14,x16,x13
+fmsub.h f16, f17, f19, f17, dyn
+    80000af0:	8d38f847          	fmsub.h	f16,f17,f19,f17
+csrrs x14, fflags, x0
+    80000af4:	00102773          	csrrs	x14,fflags,x0
+fclass.h x17, f15
+    80000af8:	e40798d3          	fclass.h	x17,f15
+csrrs x17, fflags, x0
+    80000afc:	001028f3          	csrrs	x17,fflags,x0
+sltu x13, x13, x18
+    80000b00:	0126b6b3          	sltu	x13,x13,x18
+fle.h x13, f16, f16
+    80000b04:	a50806d3          	fle.h	x13,f16,f16
+csrrs x16, fflags, x0
+    80000b08:	00102873          	csrrs	x16,fflags,x0
+bset x15, x16, x13
+    80000b0c:	28d817b3          	bset	x15,x16,x13
+mulhsu x18, x20, x13
+    80000b10:	02da2933          	mulhsu	x18,x20,x13
+li x10, 2415919060
+    80000b14:	0090051b          	addiw	x10,x0,9
+    80000b18:	0572                	c.slli	x10,0x1c
+    80000b1a:	fd450513          	addi	x10,x10,-44
+amoadd.w.aqrl x17, x19, (x10)
+    80000b1e:	073528af          	amoadd.w.aqrl	x17,x19,(x10)
+ctz x15, x16
+    80000b22:	60181793          	ctz	x15,x16
+li x8, 2415919062
+    80000b26:	0090041b          	addiw	x8,x0,9
+    80000b2a:	0472                	c.slli	x8,0x1c
+    80000b2c:	fd640413          	addi	x8,x8,-42
+c.lw x15, 8(x8)
+    80000b30:	441c                	c.lw	x15,8(x8)
+li x2, 2415919053
+    80000b32:	0090011b          	addiw	x2,x0,9
+    80000b36:	0172                	c.slli	x2,0x1c
+    80000b38:	fcd10113          	addi	x2,x2,-51
+c.swsp x13, 4(sp)
+    80000b3c:	c236                	c.swsp	x13,4(x2)
+li x8, 2415919035
+    80000b3e:	0090041b          	addiw	x8,x0,9
+    80000b42:	0472                	c.slli	x8,0x1c
+    80000b44:	fbb40413          	addi	x8,x8,-69
+fsw f18, 3(x8)
+    80000b48:	012421a7          	fsw	f18,3(x8)
+csrrs x13, fflags, x0
+    80000b4c:	001026f3          	csrrs	x13,fflags,x0
+clz x20, x15
+    80000b50:	60079a13          	clz	x20,x15
+remuw x13, x13, x17
+    80000b54:	0316f6bb          	remuw	x13,x13,x17
+fmadd.h f15, f15, f18, f18, rne
+    80000b58:	952787c3          	fmadd.h	f15,f15,f18,f18,rne
+csrrs x13, fflags, x0
+    80000b5c:	001026f3          	csrrs	x13,fflags,x0
+fcvt.d.w f18, x20
+    80000b60:	d20a0953          	fcvt.d.w	f18,x20
+csrrs x19, fflags, x0
+    80000b64:	001029f3          	csrrs	x19,fflags,x0
+fcvt.s.lu f15, x19, dyn
+    80000b68:	d039f7d3          	fcvt.s.lu	f15,x19
+csrrs x19, fflags, x0
+    80000b6c:	001029f3          	csrrs	x19,fflags,x0
+fcvt.s.l f18, x19, rmm
+    80000b70:	d029c953          	fcvt.s.l	f18,x19,rmm
+csrrs x16, fflags, x0
+    80000b74:	00102873          	csrrs	x16,fflags,x0
+srlw x13, x16, x16
+    80000b78:	010856bb          	srlw	x13,x16,x16
+li x12, 2415919070
+    80000b7c:	0090061b          	addiw	x12,x0,9
+    80000b80:	0672                	c.slli	x12,0x1c
+    80000b82:	fde60613          	addi	x12,x12,-34
+amoor.w.rl x20, x17, (x12)
+    80000b86:	43162a2f          	amoor.w.rl	x20,x17,(x12)
+add.uw x14, x16, x14
+    80000b8a:	08e8073b          	add.uw	x14,x16,x14
+fmin.h f18, f14, f18
+    80000b8e:	2d270953          	fmin.h	f18,f14,f18
+csrrs x19, fflags, x0
+    80000b92:	001029f3          	csrrs	x19,fflags,x0
+fmax.h f17, f14, f16
+    80000b96:	2d0718d3          	fmax.h	f17,f14,f16
+csrrs x18, fflags, x0
+    80000b9a:	00102973          	csrrs	x18,fflags,x0
+fmul.h f18, f15, f15, rmm
+    80000b9e:	14f7c953          	fmul.h	f18,f15,f15,rmm
+csrrs x18, fflags, x0
+    80000ba2:	00102973          	csrrs	x18,fflags,x0
+li x11, 2415919042
+    80000ba6:	0090059b          	addiw	x11,x0,9
+    80000baa:	05f2                	c.slli	x11,0x1c
+    80000bac:	fc258593          	addi	x11,x11,-62
+c.ld x13, 16(x11)
+    80000bb0:	6994                	c.ld	x13,16(x11)
+fcvt.s.lu f19, x18, rne
+    80000bb2:	d03909d3          	fcvt.s.lu	f19,x18,rne
+csrrs x15, fflags, x0
+    80000bb6:	001027f3          	csrrs	x15,fflags,x0
+feq.s x17, f14, f19
+    80000bba:	a13728d3          	feq.s	x17,f14,f19
+csrrs x17, fflags, x0
+    80000bbe:	001028f3          	csrrs	x17,fflags,x0
+csrrs x17, fflags, x0
+    80000bc2:	001028f3          	csrrs	x17,fflags,x0
+fsgnjx.h f15, f14, f16
+    80000bc6:	250727d3          	fsgnjx.h	f15,f14,f16
+csrrs x18, fflags, x0
+    80000bca:	00102973          	csrrs	x18,fflags,x0
+fence.i
+    80000bce:	0000100f          	fence.i
+lui x13, 606208
+    80000bd2:	940006b7          	lui	x13,0x94000
+fence.i
+    80000bd6:	0000100f          	fence.i
+czero.eqz x16, x15, x16
+    80000bda:	0f07d833          	czero.eqz	x16,x15,x16
+li x8, 2415919043
+    80000bde:	0090041b          	addiw	x8,x0,9
+    80000be2:	0472                	c.slli	x8,0x1c
+    80000be4:	fc340413          	addi	x8,x8,-61
+ld x17, 5(x8)
+    80000be8:	00543883          	ld	x17,5(x8)
+fmv.d.x f15, x19
+    80000bec:	f20987d3          	fmv.d.x	f15,x19
+csrrs x14, fflags, x0
+    80000bf0:	00102773          	csrrs	x14,fflags,x0
+sh2add x17, x13, x18
+    80000bf4:	2126c8b3          	sh2add	x17,x13,x18
+csrrs x14, fflags, x0
+    80000bf8:	00102773          	csrrs	x14,fflags,x0
+li x11, 2415919052
+    80000bfc:	0090059b          	addiw	x11,x0,9
+    80000c00:	05f2                	c.slli	x11,0x1c
+    80000c02:	fcc58593          	addi	x11,x11,-52
+amoswap.d.aq x16, x16, (x11)
+    80000c06:	0d05b82f          	amoswap.d.aq	x16,x16,(x11)
+li x9, 2415919069
+    80000c0a:	0090049b          	addiw	x9,x0,9
+    80000c0e:	04f2                	c.slli	x9,0x1c
+    80000c10:	fdd48493          	addi	x9,x9,-35
+flw f19, 4(x9)
+    80000c14:	0044a987          	flw	f19,4(x9)
+csrrs x15, fflags, x0
+    80000c18:	001027f3          	csrrs	x15,fflags,x0
+li x10, 2415919049
+    80000c1c:	0090051b          	addiw	x10,x0,9
+    80000c20:	0572                	c.slli	x10,0x1c
+    80000c22:	fc950513          	addi	x10,x10,-55
+amomaxu.w.aq x16, x18, (x10)
+    80000c26:	e525282f          	amomaxu.w.aq	x16,x18,(x10)
+remw x19, x20, x16
+    80000c2a:	030a69bb          	remw	x19,x20,x16
+bexti x14, x15, 54
+    80000c2e:	4b67d713          	bexti	x14,x15,0x36
+bexti x17, x19, 53
+    80000c32:	4b59d893          	bexti	x17,x19,0x35
+csrrs x15, fflags, x0
+    80000c36:	001027f3          	csrrs	x15,fflags,x0
+li x12, 2415919045
+    80000c3a:	0090061b          	addiw	x12,x0,9
+    80000c3e:	0672                	c.slli	x12,0x1c
+    80000c40:	fc560613          	addi	x12,x12,-59
+c.lw x13, 12(x12)
+    80000c44:	4654                	c.lw	x13,12(x12)
+divw x17, x18, x20
+    80000c46:	034948bb          	divw	x17,x18,x20
+lui x14, 888832
+    80000c4a:	d9000737          	lui	x14,0xd9000
+srl x14, x17, x14
+    80000c4e:	00e8d733          	srl	x14,x17,x14
+li x2, 2415919045
+    80000c52:	0090011b          	addiw	x2,x0,9
+    80000c56:	0172                	c.slli	x2,0x1c
+    80000c58:	fc510113          	addi	x2,x2,-59
+c.lwsp x18, 12(sp)
+    80000c5c:	4932                	c.lwsp	x18,12(x2)
+csrrs x15, fflags, x0
+    80000c5e:	001027f3          	csrrs	x15,fflags,x0
+sltu x17, x17, x16
+    80000c62:	0108b8b3          	sltu	x17,x17,x16
+li x11, 2415919049
+    80000c66:	0090059b          	addiw	x11,x0,9
+    80000c6a:	05f2                	c.slli	x11,0x1c
+    80000c6c:	fc958593          	addi	x11,x11,-55
+sb x20, 0(x11)
+    80000c70:	01458023          	sb	x20,0(x11)
+li x10, 2415919038
+    80000c74:	0090051b          	addiw	x10,x0,9
+    80000c78:	0572                	c.slli	x10,0x1c
+    80000c7a:	fbe50513          	addi	x10,x10,-66
+lh x19, 7(x10)
+    80000c7e:	00751983          	lh	x19,7(x10)
+fle.s x15, f19, f20
+    80000c82:	a14987d3          	fle.s	x15,f19,f20
+csrrs x17, fflags, x0
+    80000c86:	001028f3          	csrrs	x17,fflags,x0
+feq.h x14, f14, f19
+    80000c8a:	a5372753          	feq.h	x14,f14,f19
+csrrs x19, fflags, x0
+    80000c8e:	001029f3          	csrrs	x19,fflags,x0
+c.subw x14, x15
+    80000c92:	9f1d                	c.subw	x14,x15
+maxu x15, x20, x13
+    80000c94:	0ada77b3          	maxu	x15,x20,x13
+divu x15, x17, x17
+    80000c98:	0318d7b3          	divu	x15,x17,x17
+sh2add.uw x15, x20, x17
+    80000c9c:	211a47bb          	sh2add.uw	x15,x20,x17
+fence.i
+    80000ca0:	0000100f          	fence.i
+li x11, 2415919059
+    80000ca4:	0090059b          	addiw	x11,x0,9
+    80000ca8:	05f2                	c.slli	x11,0x1c
+    80000caa:	fd358593          	addi	x11,x11,-45
+fsh f13, 11(x11)
+    80000cae:	00d595a7          	fsh	f13,11(x11)
+csrrs x13, fflags, x0
+    80000cb2:	001026f3          	csrrs	x13,fflags,x0
+li x10, 2415919055
+    80000cb6:	0090051b          	addiw	x10,x0,9
+    80000cba:	0572                	c.slli	x10,0x1c
+    80000cbc:	fcf50513          	addi	x10,x10,-49
+c.lw x14, 8(x10)
+    80000cc0:	4518                	c.lw	x14,8(x10)
+li x12, 2415919062
+    80000cc2:	0090061b          	addiw	x12,x0,9
+    80000cc6:	0672                	c.slli	x12,0x1c
+    80000cc8:	fd660613          	addi	x12,x12,-42
+sb x17, 9(x12)
+    80000ccc:	011604a3          	sb	x17,9(x12)
+fsub.d f15, f20, f19, dyn
+    80000cd0:	0b3a77d3          	fsub.d	f15,f20,f19
+csrrs x18, fflags, x0
+    80000cd4:	00102973          	csrrs	x18,fflags,x0
+csrrs x19, fflags, x0
+    80000cd8:	001029f3          	csrrs	x19,fflags,x0
+c.and x15, x15
+    80000cdc:	8ffd                	c.and	x15,x15
+fsgnj.d f16, f18, f13
+    80000cde:	22d90853          	fsgnj.d	f16,f18,f13
+csrrs x15, fflags, x0
+    80000ce2:	001027f3          	csrrs	x15,fflags,x0
+fmv.x.h x14, f15
+    80000ce6:	e4078753          	fmv.x.h	x14,f15
+csrrs x15, fflags, x0
+    80000cea:	001027f3          	csrrs	x15,fflags,x0
+max x13, x16, x14
+    80000cee:	0ae866b3          	max	x13,x16,x14
+li x9, 2415919037
+    80000cf2:	0090049b          	addiw	x9,x0,9
+    80000cf6:	04f2                	c.slli	x9,0x1c
+    80000cf8:	fbd48493          	addi	x9,x9,-67
+lw x20, 9(x9)
+    80000cfc:	0094aa03          	lw	x20,9(x9)
+fcvt.s.wu f17, x17, rdn
+    80000d00:	d018a8d3          	fcvt.s.wu	f17,x17,rdn
+csrrs x13, fflags, x0
+    80000d04:	001026f3          	csrrs	x13,fflags,x0
+feq.s x19, f19, f18
+    80000d08:	a129a9d3          	feq.s	x19,f19,f18
+csrrs x20, fflags, x0
+    80000d0c:	00102a73          	csrrs	x20,fflags,x0
+fcvt.l.d x19, f17, dyn
+    80000d10:	c228f9d3          	fcvt.l.d	x19,f17
+csrrs x13, fflags, x0
+    80000d14:	001026f3          	csrrs	x13,fflags,x0
+sllw x18, x19, x17
+    80000d18:	0119993b          	sllw	x18,x19,x17
+li x10, 2415919066
+    80000d1c:	0090051b          	addiw	x10,x0,9
+    80000d20:	0572                	c.slli	x10,0x1c
+    80000d22:	fda50513          	addi	x10,x10,-38
+amomax.d.aqrl x18, x17, (x10)
+    80000d26:	a715392f          	amomax.d.aqrl	x18,x17,(x10)
+binvi x16, x15, 50
+    80000d2a:	6b279813          	binvi	x16,x15,0x32
+li x10, 2415919050
+    80000d2e:	0090051b          	addiw	x10,x0,9
+    80000d32:	0572                	c.slli	x10,0x1c
+    80000d34:	fca50513          	addi	x10,x10,-54
+amominu.w x19, x18, (x10)
+    80000d38:	c12529af          	amominu.w	x19,x18,(x10)
+fence.i
+    80000d3c:	0000100f          	fence.i
+fdiv.h f20, f13, f17, rmm
+    80000d40:	1d16ca53          	fdiv.h	f20,f13,f17,rmm
+csrrs x15, fflags, x0
+    80000d44:	001027f3          	csrrs	x15,fflags,x0
+slli.uw x18, x13, 17
+    80000d48:	0916991b          	slli.uw	x18,x13,0x11
+c.slli x19, 46
+    80000d4c:	19ba                	c.slli	x19,0x2e
+sh2add.uw x18, x17, x20
+    80000d4e:	2148c93b          	sh2add.uw	x18,x17,x20
+c.srli x13, 36
+    80000d52:	9291                	c.srli	x13,0x24
+sll x13, x18, x15
+    80000d54:	00f916b3          	sll	x13,x18,x15
+czero.nez x14, x20, x18
+    80000d58:	0f2a7733          	czero.nez	x14,x20,x18
+fnmsub.d f19, f17, f20, f19, dyn
+    80000d5c:	9b48f9cb          	fnmsub.d	f19,f17,f20,f19
+csrrs x19, fflags, x0
+    80000d60:	001029f3          	csrrs	x19,fflags,x0
+csrrs x17, fflags, x0
+    80000d64:	001028f3          	csrrs	x17,fflags,x0
+c.ebreak
+    80000d68:	9002                	c.ebreak
+csrrs x19, fflags, x0
+    80000d6a:	001029f3          	csrrs	x19,fflags,x0
+c.mv x17, x14
+    80000d6e:	88ba                	c.mv	x17,x14
+li x8, 2415919053
+    80000d70:	0090041b          	addiw	x8,x0,9
+    80000d74:	0472                	c.slli	x8,0x1c
+    80000d76:	fcd40413          	addi	x8,x8,-51
+sd x17, 4(x8)
+    80000d7a:	01143223          	sd	x17,4(x8)
+fcvt.wu.h x13, f15, rmm
+    80000d7e:	c417c6d3          	fcvt.wu.h	x13,f15,rmm
+csrrs x14, fflags, x0
+    80000d82:	00102773          	csrrs	x14,fflags,x0
+li x9, 2415919070
+    80000d86:	0090049b          	addiw	x9,x0,9
+    80000d8a:	04f2                	c.slli	x9,0x1c
+    80000d8c:	fde48493          	addi	x9,x9,-34
+amoand.d.aq x18, x18, (x9)
+    80000d90:	6524b92f          	amoand.d.aq	x18,x18,(x9)
+fmsub.s f20, f13, f13, f13, dyn
+    80000d94:	68d6fa47          	fmsub.s	f20,f13,f13,f13
+csrrs x17, fflags, x0
+    80000d98:	001028f3          	csrrs	x17,fflags,x0
+orc.b x17, x14
+    80000d9c:	28775893          	orc.b	x17,x14
+czero.nez x16, x14, x14
+    80000da0:	0ee77833          	czero.nez	x16,x14,x14
+fsgnjn.h f14, f16, f19
+    80000da4:	25381753          	fsgnjn.h	f14,f16,f19
+csrrs x15, fflags, x0
+    80000da8:	001027f3          	csrrs	x15,fflags,x0
+slli.uw x18, x14, 56
+    80000dac:	0b87191b          	slli.uw	x18,x14,0x38
+czero.eqz x13, x14, x13
+    80000db0:	0ed756b3          	czero.eqz	x13,x14,x13
+li x9, 2415919038
+    80000db4:	0090049b          	addiw	x9,x0,9
+    80000db8:	04f2                	c.slli	x9,0x1c
+    80000dba:	fbe48493          	addi	x9,x9,-66
+lh x18, 0(x9)
+    80000dbe:	00049903          	lh	x18,0(x9)
+li x10, 2415919067
+    80000dc2:	0090051b          	addiw	x10,x0,9
+    80000dc6:	0572                	c.slli	x10,0x1c
+    80000dc8:	fdb50513          	addi	x10,x10,-37
+amoxor.w.aq x14, x17, (x10)
+    80000dcc:	2515272f          	amoxor.w.aq	x14,x17,(x10)
+li x10, 2415919047
+    80000dd0:	0090051b          	addiw	x10,x0,9
+    80000dd4:	0572                	c.slli	x10,0x1c
+    80000dd6:	fc750513          	addi	x10,x10,-57
+lh x16, 1(x10)
+    80000dda:	00151803          	lh	x16,1(x10)
+fcvt.h.w f19, x19, rdn
+    80000dde:	d409a9d3          	fcvt.h.w	f19,x19,rdn
+csrrs x14, fflags, x0
+    80000de2:	00102773          	csrrs	x14,fflags,x0
+li x11, 2415919054
+    80000de6:	0090059b          	addiw	x11,x0,9
+    80000dea:	05f2                	c.slli	x11,0x1c
+    80000dec:	fce58593          	addi	x11,x11,-50
+amominu.d.aq x14, x16, (x11)
+    80000df0:	c505b72f          	amominu.d.aq	x14,x16,(x11)
+flt.s x13, f18, f14
+    80000df4:	a0e916d3          	flt.s	x13,f18,f14
+csrrs x13, fflags, x0
+    80000df8:	001026f3          	csrrs	x13,fflags,x0
+fence.i
+    80000dfc:	0000100f          	fence.i
+li x9, 2415919068
+    80000e00:	0090049b          	addiw	x9,x0,9
+    80000e04:	04f2                	c.slli	x9,0x1c
+    80000e06:	fdc48493          	addi	x9,x9,-36
+amominu.d.aq x20, x14, (x9)
+    80000e0a:	c4e4ba2f          	amominu.d.aq	x20,x14,(x9)
+li x11, 2415919044
+    80000e0e:	0090059b          	addiw	x11,x0,9
+    80000e12:	05f2                	c.slli	x11,0x1c
+    80000e14:	fc458593          	addi	x11,x11,-60
+amoswap.w.aqrl x18, x13, (x11)
+    80000e18:	0ed5a92f          	amoswap.w.aqrl	x18,x13,(x11)
+fcvt.lu.s x13, f19, rup
+    80000e1c:	c039b6d3          	fcvt.lu.s	x13,f19,rup
+csrrs x16, fflags, x0
+    80000e20:	00102873          	csrrs	x16,fflags,x0
+li x11, 2415919070
+    80000e24:	0090059b          	addiw	x11,x0,9
+    80000e28:	05f2                	c.slli	x11,0x1c
+    80000e2a:	fde58593          	addi	x11,x11,-34
+flh f13, 7(x11)
+    80000e2e:	00759687          	flh	f13,7(x11)
+csrrs x19, fflags, x0
+    80000e32:	001029f3          	csrrs	x19,fflags,x0
+fcvt.d.w f20, x15
+    80000e36:	d2078a53          	fcvt.d.w	f20,x15
+csrrs x13, fflags, x0
+    80000e3a:	001026f3          	csrrs	x13,fflags,x0
+fdiv.s f13, f20, f17, rmm
+    80000e3e:	191a46d3          	fdiv.s	f13,f20,f17,rmm
+csrrs x15, fflags, x0
+    80000e42:	001027f3          	csrrs	x15,fflags,x0
+li x10, 2415919037
+    80000e46:	0090051b          	addiw	x10,x0,9
+    80000e4a:	0572                	c.slli	x10,0x1c
+    80000e4c:	fbd50513          	addi	x10,x10,-67
+amoswap.d.rl x15, x17, (x10)
+    80000e50:	0b1537af          	amoswap.d.rl	x15,x17,(x10)
+remu x17, x20, x13
+    80000e54:	02da78b3          	remu	x17,x20,x13
+fcvt.s.l f13, x15, rdn
+    80000e58:	d027a6d3          	fcvt.s.l	f13,x15,rdn
+csrrs x13, fflags, x0
+    80000e5c:	001026f3          	csrrs	x13,fflags,x0
+fcvt.w.d x20, f16, dyn
+    80000e60:	c2087a53          	fcvt.w.d	x20,f16
+csrrs x15, fflags, x0
+    80000e64:	001027f3          	csrrs	x15,fflags,x0
+add x15, x14, x20
+    80000e68:	014707b3          	add	x15,x14,x20
+c.ebreak
+    80000e6c:	9002                	c.ebreak
+fmadd.s f19, f15, f17, f17, rdn
+    80000e6e:	8917a9c3          	fmadd.s	f19,f15,f17,f17,rdn
+csrrs x17, fflags, x0
+    80000e72:	001028f3          	csrrs	x17,fflags,x0
+csrrs x16, fflags, x0
+    80000e76:	00102873          	csrrs	x16,fflags,x0
+li x9, 2415919054
+    80000e7a:	0090049b          	addiw	x9,x0,9
+    80000e7e:	04f2                	c.slli	x9,0x1c
+    80000e80:	fce48493          	addi	x9,x9,-50
+flw f18, 3(x9)
+    80000e84:	0034a907          	flw	f18,3(x9)
+csrrs x20, fflags, x0
+    80000e88:	00102a73          	csrrs	x20,fflags,x0
+csrrs x18, fflags, x0
+    80000e8c:	00102973          	csrrs	x18,fflags,x0
+lui x15, 1019904
+    80000e90:	f90007b7          	lui	x15,0xf9000
+fcvt.s.lu f20, x14, rtz
+    80000e94:	d0371a53          	fcvt.s.lu	f20,x14,rtz
+csrrs x13, fflags, x0
+    80000e98:	001026f3          	csrrs	x13,fflags,x0
+csrrs x20, fflags, x0
+    80000e9c:	00102a73          	csrrs	x20,fflags,x0
+fcvt.l.d x14, f18, rtz
+    80000ea0:	c2291753          	fcvt.l.d	x14,f18,rtz
+csrrs x13, fflags, x0
+    80000ea4:	001026f3          	csrrs	x13,fflags,x0
+csrrs x20, fflags, x0
+    80000ea8:	00102a73          	csrrs	x20,fflags,x0
+add x17, x20, x18
+    80000eac:	012a08b3          	add	x17,x20,x18
+mulhsu x16, x13, x13
+    80000eb0:	02d6a833          	mulhsu	x16,x13,x13
+srl x19, x16, x15
+    80000eb4:	00f859b3          	srl	x19,x16,x15
+sext.b x16, x16
+    80000eb8:	60481813          	sext.b	x16,x16
+li x10, 2415919065
+    80000ebc:	0090051b          	addiw	x10,x0,9
+    80000ec0:	0572                	c.slli	x10,0x1c
+    80000ec2:	fd950513          	addi	x10,x10,-39
+amoor.d x20, x19, (x10)
+    80000ec6:	41353a2f          	amoor.d	x20,x19,(x10)
+feq.h x15, f18, f16
+    80000eca:	a50927d3          	feq.h	x15,f18,f16
+csrrs x14, fflags, x0
+    80000ece:	00102773          	csrrs	x14,fflags,x0
+rem x16, x20, x19
+    80000ed2:	033a6833          	rem	x16,x20,x19
+max x18, x15, x18
+    80000ed6:	0b27e933          	max	x18,x15,x18
+add x14, x19, x18
+    80000eda:	01298733          	add	x14,x19,x18
+fsqrt.s f16, f19, dyn
+    80000ede:	5809f853          	fsqrt.s	f16,f19
+csrrs x19, fflags, x0
+    80000ee2:	001029f3          	csrrs	x19,fflags,x0
+fcvt.l.d x15, f13, dyn
+    80000ee6:	c226f7d3          	fcvt.l.d	x15,f13
+csrrs x13, fflags, x0
+    80000eea:	001026f3          	csrrs	x13,fflags,x0
+fadd.s f17, f18, f20, rup
+    80000eee:	014938d3          	fadd.s	f17,f18,f20,rup
+csrrs x19, fflags, x0
+    80000ef2:	001029f3          	csrrs	x19,fflags,x0
+fmsub.h f19, f18, f15, f19, rup
+    80000ef6:	9cf939c7          	fmsub.h	f19,f18,f15,f19,rup
+csrrs x13, fflags, x0
+    80000efa:	001026f3          	csrrs	x13,fflags,x0
+ctzw x16, x18
+    80000efe:	6019181b          	ctzw	x16,x18
+fle.h x14, f15, f18
+    80000f02:	a5278753          	fle.h	x14,f15,f18
+csrrs x13, fflags, x0
+    80000f06:	001026f3          	csrrs	x13,fflags,x0
+flt.s x14, f20, f17
+    80000f0a:	a11a1753          	flt.s	x14,f20,f17
+csrrs x20, fflags, x0
+    80000f0e:	00102a73          	csrrs	x20,fflags,x0
+li x8, 2415919066
+    80000f12:	0090041b          	addiw	x8,x0,9
+    80000f16:	0472                	c.slli	x8,0x1c
+    80000f18:	fda40413          	addi	x8,x8,-38
+c.lw x13, 12(x8)
+    80000f1c:	4454                	c.lw	x13,12(x8)
+c.andi x14, -1
+    80000f1e:	9b7d                	c.andi	x14,-1
+li x8, 2415919069
+    80000f20:	0090041b          	addiw	x8,x0,9
+    80000f24:	0472                	c.slli	x8,0x1c
+    80000f26:	fdd40413          	addi	x8,x8,-35
+amoxor.w.aqrl x14, x17, (x8)
+    80000f2a:	2714272f          	amoxor.w.aqrl	x14,x17,(x8)
+li x8, 2415919056
+    80000f2e:	0090041b          	addiw	x8,x0,9
+    80000f32:	0472                	c.slli	x8,0x1c
+    80000f34:	fd040413          	addi	x8,x8,-48
+sw x18, 13(x8)
+    80000f38:	012426a3          	sw	x18,13(x8)
+flt.d x17, f19, f14
+    80000f3c:	a2e998d3          	flt.d	x17,f19,f14
+csrrs x16, fflags, x0
+    80000f40:	00102873          	csrrs	x16,fflags,x0
+li x9, 2415919057
+    80000f44:	0090049b          	addiw	x9,x0,9
+    80000f48:	04f2                	c.slli	x9,0x1c
+    80000f4a:	fd148493          	addi	x9,x9,-47
+amominu.w.aq x19, x20, (x9)
+    80000f4e:	c544a9af          	amominu.w.aq	x19,x20,(x9)
+fcvt.lu.s x19, f14, dyn
+    80000f52:	c03779d3          	fcvt.lu.s	x19,f14
+csrrs x15, fflags, x0
+    80000f56:	001027f3          	csrrs	x15,fflags,x0
+sh1add x15, x19, x16
+    80000f5a:	2109a7b3          	sh1add	x15,x19,x16
+fmsub.h f17, f15, f20, f15, rmm
+    80000f5e:	7d47c8c7          	fmsub.h	f17,f15,f20,f15,rmm
+csrrs x19, fflags, x0
+    80000f62:	001029f3          	csrrs	x19,fflags,x0
+fmsub.s f19, f18, f16, f16, dyn
+    80000f66:	810979c7          	fmsub.s	f19,f18,f16,f16
+csrrs x16, fflags, x0
+    80000f6a:	00102873          	csrrs	x16,fflags,x0
+fdiv.d f14, f14, f15, rne
+    80000f6e:	1af70753          	fdiv.d	f14,f14,f15,rne
+csrrs x20, fflags, x0
+    80000f72:	00102a73          	csrrs	x20,fflags,x0
+mulhsu x18, x13, x18
+    80000f76:	0326a933          	mulhsu	x18,x13,x18
+fcvt.h.w f18, x16, rdn
+    80000f7a:	d4082953          	fcvt.h.w	f18,x16,rdn
+csrrs x17, fflags, x0
+    80000f7e:	001028f3          	csrrs	x17,fflags,x0
+c.addi x13, 1
+    80000f82:	0685                	c.addi	x13,1 # ffffffff94000001 <fromhost+0xffffffff13ffdff9>
+addiw x16, x17, 1741
+    80000f84:	6cd8881b          	addiw	x16,x17,1741 # fffffffffffec6cd <fromhost+0xffffffff7ffea6c5>
+csrrs x14, fflags, x0
+    80000f88:	00102773          	csrrs	x14,fflags,x0
+li x10, 2415919068
+    80000f8c:	0090051b          	addiw	x10,x0,9
+    80000f90:	0572                	c.slli	x10,0x1c
+    80000f92:	fdc50513          	addi	x10,x10,-36
+amoand.d x16, x20, (x10)
+    80000f96:	6145382f          	amoand.d	x16,x20,(x10)
+srl x16, x20, x15
+    80000f9a:	00fa5833          	srl	x16,x20,x15
+fcvt.h.l f18, x16, rup
+    80000f9e:	d4283953          	fcvt.h.l	f18,x16,rup
+csrrs x14, fflags, x0
+    80000fa2:	00102773          	csrrs	x14,fflags,x0
+fmadd.d f14, f17, f17, f17, rdn
+    80000fa6:	8b18a743          	fmadd.d	f14,f17,f17,f17,rdn
+csrrs x20, fflags, x0
+    80000faa:	00102a73          	csrrs	x20,fflags,x0
+c.lui x15, 0xffff9
+    80000fae:	77e5                	c.lui	x15,0xffff9
+flt.d x19, f19, f18
+    80000fb0:	a32999d3          	flt.d	x19,f19,f18
+csrrs x19, fflags, x0
+    80000fb4:	001029f3          	csrrs	x19,fflags,x0
+fsqrt.h f17, f16, rne
+    80000fb8:	5c0808d3          	fsqrt.h	f17,f16,rne
+csrrs x20, fflags, x0
+    80000fbc:	00102a73          	csrrs	x20,fflags,x0
+fcvt.s.wu f16, x17, rmm
+    80000fc0:	d018c853          	fcvt.s.wu	f16,x17,rmm
+csrrs x13, fflags, x0
+    80000fc4:	001026f3          	csrrs	x13,fflags,x0
+fmadd.h f17, f14, f13, f13, rmm
+    80000fc8:	6cd748c3          	fmadd.h	f17,f14,f13,f13,rmm
+csrrs x20, fflags, x0
+    80000fcc:	00102a73          	csrrs	x20,fflags,x0
+c.or x14, x14
+    80000fd0:	8f59                	c.or	x14,x14
+fsgnj.s f14, f16, f14
+    80000fd2:	20e80753          	fsgnj.s	f14,f16,f14
+csrrs x15, fflags, x0
+    80000fd6:	001027f3          	csrrs	x15,fflags,x0
+fnmsub.h f15, f18, f20, f18, rtz
+    80000fda:	954917cb          	fnmsub.h	f15,f18,f20,f18,rtz
+csrrs x14, fflags, x0
+    80000fde:	00102773          	csrrs	x14,fflags,x0
+sh1add.uw x20, x13, x20
+    80000fe2:	2146aa3b          	sh1add.uw	x20,x13,x20
+fcvt.h.d f14, f14, dyn
+    80000fe6:	44177753          	fcvt.h.d	f14,f14
+csrrs x20, fflags, x0
+    80000fea:	00102a73          	csrrs	x20,fflags,x0
+csrrs x13, fflags, x0
+    80000fee:	001026f3          	csrrs	x13,fflags,x0
+li x10, 2415919040
+    80000ff2:	0090051b          	addiw	x10,x0,9
+    80000ff6:	0572                	c.slli	x10,0x1c
+    80000ff8:	fc050513          	addi	x10,x10,-64
+sb x18, 14(x10)
+    80000ffc:	01250723          	sb	x18,14(x10)
+ori x14, x18, 72
+    80001000:	04896713          	ori	x14,x18,72
+fcvt.s.lu f13, x18, rup
+    80001004:	d03936d3          	fcvt.s.lu	f13,x18,rup
+csrrs x20, fflags, x0
+    80001008:	00102a73          	csrrs	x20,fflags,x0
+c.or x13, x14
+    8000100c:	8ed9                	c.or	x13,x14
+bclri x20, x14, 55
+    8000100e:	4b771a13          	bclri	x20,x14,0x37
+mulhsu x13, x20, x14
+    80001012:	02ea26b3          	mulhsu	x13,x20,x14
+mulhu x14, x19, x13
+    80001016:	02d9b733          	mulhu	x14,x19,x13
+orc.b x17, x13
+    8000101a:	2876d893          	orc.b	x17,x13
+fcvt.s.d f18, f19, rmm
+    8000101e:	4019c953          	fcvt.s.d	f18,f19,rmm
+csrrs x15, fflags, x0
+    80001022:	001027f3          	csrrs	x15,fflags,x0
+c.or x13, x14
+    80001026:	8ed9                	c.or	x13,x14
+li x12, 2415919072
+    80001028:	0090061b          	addiw	x12,x0,9
+    8000102c:	0672                	c.slli	x12,0x1c
+    8000102e:	1601                	c.addi	x12,-32
+amoor.d.aq x19, x17, (x12)
+    80001030:	451639af          	amoor.d.aq	x19,x17,(x12)
+fcvt.s.d f18, f17, dyn
+    80001034:	4018f953          	fcvt.s.d	f18,f17
+csrrs x16, fflags, x0
+    80001038:	00102873          	csrrs	x16,fflags,x0
+li x11, 2415919035
+    8000103c:	0090059b          	addiw	x11,x0,9
+    80001040:	05f2                	c.slli	x11,0x1c
+    80001042:	fbb58593          	addi	x11,x11,-69
+lb x17, 5(x11)
+    80001046:	00558883          	lb	x17,5(x11)
+li x12, 2415919049
+    8000104a:	0090061b          	addiw	x12,x0,9
+    8000104e:	0672                	c.slli	x12,0x1c
+    80001050:	fc960613          	addi	x12,x12,-55
+lb x14, 5(x12)
+    80001054:	00560703          	lb	x14,5(x12)
+fcvt.lu.h x18, f14, rdn
+    80001058:	c4372953          	fcvt.lu.h	x18,f14,rdn
+csrrs x16, fflags, x0
+    8000105c:	00102873          	csrrs	x16,fflags,x0
+li x10, 2415919066
+    80001060:	0090051b          	addiw	x10,x0,9
+    80001064:	0572                	c.slli	x10,0x1c
+    80001066:	fda50513          	addi	x10,x10,-38
+sw x15, 9(x10)
+    8000106a:	00f524a3          	sw	x15,9(x10)
+czero.nez x18, x16, x17
+    8000106e:	0f187933          	czero.nez	x18,x16,x17
+sllw x17, x13, x15
+    80001072:	00f698bb          	sllw	x17,x13,x15
+li x12, 2415919064
+    80001076:	0090061b          	addiw	x12,x0,9
+    8000107a:	0672                	c.slli	x12,0x1c
+    8000107c:	fd860613          	addi	x12,x12,-40
+c.sd x13, 16(x12)
+    80001080:	ea14                	c.sd	x13,16(x12)
+csrrs x16, fflags, x0
+    80001082:	00102873          	csrrs	x16,fflags,x0
+li x11, 2415919049
+    80001086:	0090059b          	addiw	x11,x0,9
+    8000108a:	05f2                	c.slli	x11,0x1c
+    8000108c:	fc958593          	addi	x11,x11,-55
+amomax.d.aqrl x18, x18, (x11)
+    80001090:	a725b92f          	amomax.d.aqrl	x18,x18,(x11)
+divw x15, x19, x14
+    80001094:	02e9c7bb          	divw	x15,x19,x14
+subw x17, x18, x18
+    80001098:	412908bb          	subw	x17,x18,x18
+slt x20, x19, x18
+    8000109c:	0129aa33          	slt	x20,x19,x18
+cpop x14, x18
+    800010a0:	60291713          	cpop	x14,x18
+fclass.s x17, f13
+    800010a4:	e00698d3          	fclass.s	x17,f13
+csrrs x16, fflags, x0
+    800010a8:	00102873          	csrrs	x16,fflags,x0
+li x10, 2415919061
+    800010ac:	0090051b          	addiw	x10,x0,9
+    800010b0:	0572                	c.slli	x10,0x1c
+    800010b2:	fd550513          	addi	x10,x10,-43
+amoswap.w.rl x20, x20, (x10)
+    800010b6:	0b452a2f          	amoswap.w.rl	x20,x20,(x10)
+sh3add x20, x18, x19
+    800010ba:	21396a33          	sh3add	x20,x18,x19
+fence.i
+    800010be:	0000100f          	fence.i
+fmin.s f18, f13, f20
+    800010c2:	29468953          	fmin.s	f18,f13,f20
+csrrs x19, fflags, x0
+    800010c6:	001029f3          	csrrs	x19,fflags,x0
+fnmsub.s f18, f15, f16, f17, rup
+    800010ca:	8907b94b          	fnmsub.s	f18,f15,f16,f17,rup
+csrrs x20, fflags, x0
+    800010ce:	00102a73          	csrrs	x20,fflags,x0
+fcvt.s.lu f13, x17, rdn
+    800010d2:	d038a6d3          	fcvt.s.lu	f13,x17,rdn
+csrrs x15, fflags, x0
+    800010d6:	001027f3          	csrrs	x15,fflags,x0
+li x10, 2415919054
+    800010da:	0090051b          	addiw	x10,x0,9
+    800010de:	0572                	c.slli	x10,0x1c
+    800010e0:	fce50513          	addi	x10,x10,-50
+lwu x19, 7(x10)
+    800010e4:	00756983          	lwu	x19,7(x10)
+mulw x14, x20, x18
+    800010e8:	032a073b          	mulw	x14,x20,x18
+sll x19, x18, x17
+    800010ec:	011919b3          	sll	x19,x18,x17
+li x9, 2415919070
+    800010f0:	0090049b          	addiw	x9,x0,9
+    800010f4:	04f2                	c.slli	x9,0x1c
+    800010f6:	fde48493          	addi	x9,x9,-34
+amomaxu.d x19, x18, (x9)
+    800010fa:	e124b9af          	amomaxu.d	x19,x18,(x9)
+fcvt.lu.d x16, f14, dyn
+    800010fe:	c2377853          	fcvt.lu.d	x16,f14
+csrrs x18, fflags, x0
+    80001102:	00102973          	csrrs	x18,fflags,x0
+fsgnjn.s f14, f17, f14
+    80001106:	20e89753          	fsgnjn.s	f14,f17,f14
+csrrs x13, fflags, x0
+    8000110a:	001026f3          	csrrs	x13,fflags,x0
+sext.h x13, x13
+    8000110e:	60569693          	sext.h	x13,x13
+fmul.s f14, f13, f15, dyn
+    80001112:	10f6f753          	fmul.s	f14,f13,f15
+csrrs x18, fflags, x0
+    80001116:	00102973          	csrrs	x18,fflags,x0
+mulh x19, x17, x13
+    8000111a:	02d899b3          	mulh	x19,x17,x13
+c.addi16sp sp, 16
+    8000111e:	6141                	c.addi16sp	x2,16
+srl x14, x14, x13
+    80001120:	00d75733          	srl	x14,x14,x13
+fmadd.s f19, f13, f19, f19, rtz
+    80001124:	993699c3          	fmadd.s	f19,f13,f19,f19,rtz
+csrrs x14, fflags, x0
+    80001128:	00102773          	csrrs	x14,fflags,x0
+subw x15, x14, x14
+    8000112c:	40e707bb          	subw	x15,x14,x14
+csrrs x16, fflags, x0
+    80001130:	00102873          	csrrs	x16,fflags,x0
+fcvt.d.lu f17, x15, rmm
+    80001134:	d237c8d3          	fcvt.d.lu	f17,x15,rmm
+csrrs x16, fflags, x0
+    80001138:	00102873          	csrrs	x16,fflags,x0
+ctzw x13, x13
+    8000113c:	6016969b          	ctzw	x13,x13
+csrrs x18, fflags, x0
+    80001140:	00102973          	csrrs	x18,fflags,x0
+c.mv x13, x17
+    80001144:	86c6                	c.mv	x13,x17
+fnmadd.d f14, f14, f19, f19, dyn
+    80001146:	9b37774f          	fnmadd.d	f14,f14,f19,f19
+csrrs x14, fflags, x0
+    8000114a:	00102773          	csrrs	x14,fflags,x0
+feq.h x13, f18, f15
+    8000114e:	a4f926d3          	feq.h	x13,f18,f15
+csrrs x16, fflags, x0
+    80001152:	00102873          	csrrs	x16,fflags,x0
+slti x13, x18, -170
+    80001156:	f5692693          	slti	x13,x18,-170
+and x20, x17, x17
+    8000115a:	0118fa33          	and	x20,x17,x17
+sh2add.uw x18, x14, x18
+    8000115e:	2127493b          	sh2add.uw	x18,x14,x18
+fcvt.d.lu f17, x14, rtz
+    80001162:	d23718d3          	fcvt.d.lu	f17,x14,rtz
+csrrs x14, fflags, x0
+    80001166:	00102773          	csrrs	x14,fflags,x0
+divw x13, x13, x15
+    8000116a:	02f6c6bb          	divw	x13,x13,x15
+mulw x19, x14, x19
+    8000116e:	033709bb          	mulw	x19,x14,x19
+csrrci x16, time, 29
+    80001172:	c01ef873          	csrrci	x16,time,29
+c.addi x13, -12
+    80001176:	16d1                	c.addi	x13,-12
+czero.nez x16, x18, x15
+    80001178:	0ef97833          	czero.nez	x16,x18,x15
+feq.d x17, f13, f20
+    8000117c:	a346a8d3          	feq.d	x17,f13,f20
+csrrs x17, fflags, x0
+    80001180:	001028f3          	csrrs	x17,fflags,x0
+li x11, 2415919041
+    80001184:	0090059b          	addiw	x11,x0,9
+    80001188:	05f2                	c.slli	x11,0x1c
+    8000118a:	fc158593          	addi	x11,x11,-63
+amoor.w.aq x16, x14, (x11)
+    8000118e:	44e5a82f          	amoor.w.aq	x16,x14,(x11)
+csrrs x14, fflags, x0
+    80001192:	00102773          	csrrs	x14,fflags,x0
+li x11, 2415919062
+    80001196:	0090059b          	addiw	x11,x0,9
+    8000119a:	05f2                	c.slli	x11,0x1c
+    8000119c:	fd658593          	addi	x11,x11,-42
+lh x17, 15(x11)
+    800011a0:	00f59883          	lh	x17,15(x11)
+li x10, 2415919047
+    800011a4:	0090051b          	addiw	x10,x0,9
+    800011a8:	0572                	c.slli	x10,0x1c
+    800011aa:	fc750513          	addi	x10,x10,-57
+sw x18, 2(x10)
+    800011ae:	01252123          	sw	x18,2(x10)
+czero.nez x16, x16, x14
+    800011b2:	0ee87833          	czero.nez	x16,x16,x14
+csrrs x17, fflags, x0
+    800011b6:	001028f3          	csrrs	x17,fflags,x0
+clzw x20, x14
+    800011ba:	60071a1b          	clzw	x20,x14
+csrrs x16, fflags, x0
+    800011be:	00102873          	csrrs	x16,fflags,x0
+li x9, 2415919054
+    800011c2:	0090049b          	addiw	x9,x0,9
+    800011c6:	04f2                	c.slli	x9,0x1c
+    800011c8:	fce48493          	addi	x9,x9,-50
+lw x18, 4(x9)
+    800011cc:	0044a903          	lw	x18,4(x9)
+fcvt.lu.s x19, f17, rdn
+    800011d0:	c038a9d3          	fcvt.lu.s	x19,f17,rdn
+csrrs x17, fflags, x0
+    800011d4:	001028f3          	csrrs	x17,fflags,x0
+fmv.d.x f17, x20
+    800011d8:	f20a08d3          	fmv.d.x	f17,x20
+csrrs x19, fflags, x0
+    800011dc:	001029f3          	csrrs	x19,fflags,x0
+fence.i
+    800011e0:	0000100f          	fence.i
+fcvt.wu.d x18, f18, rmm
+    800011e4:	c2194953          	fcvt.wu.d	x18,f18,rmm
+csrrs x16, fflags, x0
+    800011e8:	00102873          	csrrs	x16,fflags,x0
+c.addiw x14, -32
+    800011ec:	3701                	c.addiw	x14,-32 # ffffffffd8ffffe0 <fromhost+0xffffffff58ffdfd8>
+csrrs x15, fflags, x0
+    800011ee:	001027f3          	csrrs	x15,fflags,x0
+bseti x15, x19, 52
+    800011f2:	2b499793          	bseti	x15,x19,0x34
+c.srli x13, 17
+    800011f6:	82c5                	c.srli	x13,0x11
+c.subw x14, x15
+    800011f8:	9f1d                	c.subw	x14,x15
+add x13, x17, x18
+    800011fa:	012886b3          	add	x13,x17,x18
+flt.h x20, f20, f20
+    800011fe:	a54a1a53          	flt.h	x20,f20,f20
+csrrs x13, fflags, x0
+    80001202:	001026f3          	csrrs	x13,fflags,x0
+fcvt.wu.h x15, f16, rne
+    80001206:	c41807d3          	fcvt.wu.h	x15,f16,rne
+csrrs x17, fflags, x0
+    8000120a:	001028f3          	csrrs	x17,fflags,x0
+fcvt.wu.h x19, f15, dyn
+    8000120e:	c417f9d3          	fcvt.wu.h	x19,f15
+csrrs x17, fflags, x0
+    80001212:	001028f3          	csrrs	x17,fflags,x0
+c.addw x15, x15
+    80001216:	9fbd                	c.addw	x15,x15
+fsgnjx.s f17, f14, f13
+    80001218:	20d728d3          	fsgnjx.s	f17,f14,f13
+csrrs x16, fflags, x0
+    8000121c:	00102873          	csrrs	x16,fflags,x0
+rem x13, x17, x18
+    80001220:	0328e6b3          	rem	x13,x17,x18
+sh3add.uw x20, x16, x19
+    80001224:	21386a3b          	sh3add.uw	x20,x16,x19
+sra x19, x16, x14
+    80001228:	40e859b3          	sra	x19,x16,x14
+fmadd.d f17, f19, f19, f17, dyn
+    8000122c:	8b39f8c3          	fmadd.d	f17,f19,f19,f17
+csrrs x13, fflags, x0
+    80001230:	001026f3          	csrrs	x13,fflags,x0
+fcvt.s.w f14, x13, rup
+    80001234:	d006b753          	fcvt.s.w	f14,x13,rup
+csrrs x17, fflags, x0
+    80001238:	001028f3          	csrrs	x17,fflags,x0
+bclr x16, x20, x18
+    8000123c:	492a1833          	bclr	x16,x20,x18
+or x16, x19, x17
+    80001240:	0119e833          	or	x16,x19,x17
+li x11, 2415919067
+    80001244:	0090059b          	addiw	x11,x0,9
+    80001248:	05f2                	c.slli	x11,0x1c
+    8000124a:	fdb58593          	addi	x11,x11,-37
+amoxor.d x13, x14, (x11)
+    8000124e:	20e5b6af          	amoxor.d	x13,x14,(x11)
+fcvt.s.d f19, f17, dyn
+    80001252:	4018f9d3          	fcvt.s.d	f19,f17
+csrrs x16, fflags, x0
+    80001256:	00102873          	csrrs	x16,fflags,x0
+c.addw x14, x15
+    8000125a:	9f3d                	c.addw	x14,x15
+fcvt.d.w f15, x18
+    8000125c:	d20907d3          	fcvt.d.w	f15,x18
+csrrs x13, fflags, x0
+    80001260:	001026f3          	csrrs	x13,fflags,x0
+fence.i
+    80001264:	0000100f          	fence.i
+li x2, 2415919067
+    80001268:	0090011b          	addiw	x2,x0,9
+    8000126c:	0172                	c.slli	x2,0x1c
+    8000126e:	fdb10113          	addi	x2,x2,-37
+c.ldsp x14, 16(sp)
+    80001272:	6742                	c.ldsp	x14,16(x2)
+fmax.d f15, f18, f17
+    80001274:	2b1917d3          	fmax.d	f15,f18,f17
+csrrs x13, fflags, x0
+    80001278:	001026f3          	csrrs	x13,fflags,x0
+czero.nez x14, x18, x18
+    8000127c:	0f297733          	czero.nez	x14,x18,x18
+csrrs x17, fflags, x0
+    80001280:	001028f3          	csrrs	x17,fflags,x0
+li x12, 2415919037
+    80001284:	0090061b          	addiw	x12,x0,9
+    80001288:	0672                	c.slli	x12,0x1c
+    8000128a:	fbd60613          	addi	x12,x12,-67
+c.lw x13, 12(x12)
+    8000128e:	4654                	c.lw	x13,12(x12)
+csrrs x19, fflags, x0
+    80001290:	001029f3          	csrrs	x19,fflags,x0
+sh1add x20, x14, x13
+    80001294:	20d72a33          	sh1add	x20,x14,x13
+c.andi x15, 8
+    80001298:	8ba1                	c.andi	x15,8
+fadd.s f20, f20, f15, rtz
+    8000129a:	00fa1a53          	fadd.s	f20,f20,f15,rtz
+csrrs x20, fflags, x0
+    8000129e:	00102a73          	csrrs	x20,fflags,x0
+fdiv.s f14, f16, f19, rdn
+    800012a2:	19382753          	fdiv.s	f14,f16,f19,rdn
+csrrs x18, fflags, x0
+    800012a6:	00102973          	csrrs	x18,fflags,x0
+li x10, 2415919070
+    800012aa:	0090051b          	addiw	x10,x0,9
+    800012ae:	0572                	c.slli	x10,0x1c
+    800012b0:	fde50513          	addi	x10,x10,-34
+amomin.d.aq x18, x15, (x10)
+    800012b4:	84f5392f          	amomin.d.aq	x18,x15,(x10)
+sh1add x14, x13, x18
+    800012b8:	2126a733          	sh1add	x14,x13,x18
+divuw x19, x13, x14
+    800012bc:	02e6d9bb          	divuw	x19,x13,x14
+fle.s x16, f19, f13
+    800012c0:	a0d98853          	fle.s	x16,f19,f13
+csrrs x17, fflags, x0
+    800012c4:	001028f3          	csrrs	x17,fflags,x0
+fence.i
+    800012c8:	0000100f          	fence.i
+czero.eqz x20, x14, x18
+    800012cc:	0f275a33          	czero.eqz	x20,x14,x18
+fsgnj.h f19, f13, f16
+    800012d0:	250689d3          	fsgnj.h	f19,f13,f16
+csrrs x15, fflags, x0
+    800012d4:	001027f3          	csrrs	x15,fflags,x0
+fcvt.l.d x18, f13, dyn
+    800012d8:	c226f953          	fcvt.l.d	x18,f13
+csrrs x20, fflags, x0
+    800012dc:	00102a73          	csrrs	x20,fflags,x0
+slli.uw x19, x15, 5
+    800012e0:	0857999b          	slli.uw	x19,x15,0x5
+li x2, 2415919050
+    800012e4:	0090011b          	addiw	x2,x0,9
+    800012e8:	0172                	c.slli	x2,0x1c
+    800012ea:	fca10113          	addi	x2,x2,-54
+c.lwsp x13, 16(sp)
+    800012ee:	46c2                	c.lwsp	x13,16(x2)
+feq.s x13, f14, f16
+    800012f0:	a10726d3          	feq.s	x13,f14,f16
+csrrs x13, fflags, x0
+    800012f4:	001026f3          	csrrs	x13,fflags,x0
+fcvt.h.s f15, f19, dyn
+    800012f8:	4409f7d3          	fcvt.h.s	f15,f19
+csrrs x15, fflags, x0
+    800012fc:	001027f3          	csrrs	x15,fflags,x0
+csrrs x14, fflags, x0
+    80001300:	00102773          	csrrs	x14,fflags,x0
+flt.d x13, f19, f18
+    80001304:	a32996d3          	flt.d	x13,f19,f18
+csrrs x15, fflags, x0
+    80001308:	001027f3          	csrrs	x15,fflags,x0
+mul x20, x16, x20
+    8000130c:	03480a33          	mul	x20,x16,x20
+c.srli x15, 53
+    80001310:	93d5                	c.srli	x15,0x35
+csrrs x15, fflags, x0
+    80001312:	001027f3          	csrrs	x15,fflags,x0
+divw x14, x17, x18
+    80001316:	0328c73b          	divw	x14,x17,x18
+li x12, 2415919049
+    8000131a:	0090061b          	addiw	x12,x0,9
+    8000131e:	0672                	c.slli	x12,0x1c
+    80001320:	fc960613          	addi	x12,x12,-55
+lbu x16, 11(x12)
+    80001324:	00b64803          	lbu	x16,11(x12)
+fdiv.s f20, f19, f17, rup
+    80001328:	1919ba53          	fdiv.s	f20,f19,f17,rup
+csrrs x14, fflags, x0
+    8000132c:	00102773          	csrrs	x14,fflags,x0
+fcvt.lu.s x18, f18, dyn
+    80001330:	c0397953          	fcvt.lu.s	x18,f18
+csrrs x16, fflags, x0
+    80001334:	00102873          	csrrs	x16,fflags,x0
+c.addi x15, 9
+    80001338:	07a5                	c.addi	x15,9 # ffffffffffff9009 <fromhost+0xffffffff7fff7001>
+or x18, x15, x20
+    8000133a:	0147e933          	or	x18,x15,x20
+fcvt.d.l f18, x19, dyn
+    8000133e:	d229f953          	fcvt.d.l	f18,x19
+csrrs x19, fflags, x0
+    80001342:	001029f3          	csrrs	x19,fflags,x0
+mul x20, x18, x20
+    80001346:	03490a33          	mul	x20,x18,x20
+fmv.w.x f15, x17
+    8000134a:	f00887d3          	fmv.w.x	f15,x17
+csrrs x14, fflags, x0
+    8000134e:	00102773          	csrrs	x14,fflags,x0
+fcvt.h.lu f19, x13, rtz
+    80001352:	d43699d3          	fcvt.h.lu	f19,x13,rtz
+csrrs x15, fflags, x0
+    80001356:	001027f3          	csrrs	x15,fflags,x0
+cpopw x20, x13
+    8000135a:	60269a1b          	cpopw	x20,x13
+fsgnj.d f15, f15, f19
+    8000135e:	233787d3          	fsgnj.d	f15,f15,f19
+csrrs x13, fflags, x0
+    80001362:	001026f3          	csrrs	x13,fflags,x0
+fdiv.d f17, f17, f19, rne
+    80001366:	1b3888d3          	fdiv.d	f17,f17,f19,rne
+csrrs x20, fflags, x0
+    8000136a:	00102a73          	csrrs	x20,fflags,x0
+add x18, x13, x16
+    8000136e:	01068933          	add	x18,x13,x16
+srlw x17, x14, x19
+    80001372:	013758bb          	srlw	x17,x14,x19
+c.ebreak
+    80001376:	9002                	c.ebreak
+sra x18, x16, x20
+    80001378:	41485933          	sra	x18,x16,x20
+mul x18, x18, x20
+    8000137c:	03490933          	mul	x18,x18,x20
+mulh x13, x19, x15
+    80001380:	02f996b3          	mulh	x13,x19,x15
+rem x17, x14, x20
+    80001384:	034768b3          	rem	x17,x14,x20
+cpopw x15, x18
+    80001388:	6029179b          	cpopw	x15,x18
+csrrs x17, fflags, x0
+    8000138c:	001028f3          	csrrs	x17,fflags,x0
+fsgnj.d f19, f17, f13
+    80001390:	22d889d3          	fsgnj.d	f19,f17,f13
+csrrs x20, fflags, x0
+    80001394:	00102a73          	csrrs	x20,fflags,x0
+c.or x13, x15
+    80001398:	8edd                	c.or	x13,x15
+fcvt.s.w f15, x18, rne
+    8000139a:	d00907d3          	fcvt.s.w	f15,x18,rne
+csrrs x13, fflags, x0
+    8000139e:	001026f3          	csrrs	x13,fflags,x0
+csrrs x20, fflags, x0
+    800013a2:	00102a73          	csrrs	x20,fflags,x0
+ctz x16, x16
+    800013a6:	60181813          	ctz	x16,x16
+c.addw x13, x15
+    800013aa:	9ebd                	c.addw	x13,x15
+li x2, 2415919042
+    800013ac:	0090011b          	addiw	x2,x0,9
+    800013b0:	0172                	c.slli	x2,0x1c
+    800013b2:	fc210113          	addi	x2,x2,-62
+c.sdsp x16, 8(sp)
+    800013b6:	e442                	c.sdsp	x16,8(x2)
+fadd.h f15, f20, f18, dyn
+    800013b8:	052a77d3          	fadd.h	f15,f20,f18
+csrrs x20, fflags, x0
+    800013bc:	00102a73          	csrrs	x20,fflags,x0
+clz x14, x15
+    800013c0:	60079713          	clz	x14,x15
+addiw x15, x20, -595
+    800013c4:	dada079b          	addiw	x15,x20,-595
+fcvt.d.l f19, x18, dyn
+    800013c8:	d22979d3          	fcvt.d.l	f19,x18
+csrrs x15, fflags, x0
+    800013cc:	001027f3          	csrrs	x15,fflags,x0
+fmsub.d f14, f18, f18, f16, dyn
+    800013d0:	83297747          	fmsub.d	f14,f18,f18,f16
+csrrs x13, fflags, x0
+    800013d4:	001026f3          	csrrs	x13,fflags,x0
+li x8, 2415919065
+    800013d8:	0090041b          	addiw	x8,x0,9
+    800013dc:	0472                	c.slli	x8,0x1c
+    800013de:	fd940413          	addi	x8,x8,-39
+amoand.w x15, x20, (x8)
+    800013e2:	614427af          	amoand.w	x15,x20,(x8)
+li x8, 2415919040
+    800013e6:	0090041b          	addiw	x8,x0,9
+    800013ea:	0472                	c.slli	x8,0x1c
+    800013ec:	fc040413          	addi	x8,x8,-64
+fsw f20, 8(x8)
+    800013f0:	01442427          	fsw	f20,8(x8)
+csrrs x16, fflags, x0
+    800013f4:	00102873          	csrrs	x16,fflags,x0
+fsqrt.h f20, f18, dyn
+    800013f8:	5c097a53          	fsqrt.h	f20,f18
+csrrs x20, fflags, x0
+    800013fc:	00102a73          	csrrs	x20,fflags,x0
+li x9, 2415919070
+    80001400:	0090049b          	addiw	x9,x0,9
+    80001404:	04f2                	c.slli	x9,0x1c
+    80001406:	fde48493          	addi	x9,x9,-34
+amominu.w.aqrl x20, x19, (x9)
+    8000140a:	c734aa2f          	amominu.w.aqrl	x20,x19,(x9)
+fle.d x18, f18, f13
+    8000140e:	a2d90953          	fle.d	x18,f18,f13
+csrrs x20, fflags, x0
+    80001412:	00102a73          	csrrs	x20,fflags,x0
+srli x13, x15, 57
+    80001416:	0397d693          	srli	x13,x15,0x39
+csrrci x15, dscratch0, 9
+    8000141a:	7b24f7f3          	csrrci	x15,dscratch0,9
+c.mv x20, x18
+    8000141e:	8a4a                	c.mv	x20,x18
+mul x13, x19, x14
+    80001420:	02e986b3          	mul	x13,x19,x14
+or x15, x14, x17
+    80001424:	011767b3          	or	x15,x14,x17
+li x9, 2415919067
+    80001428:	0090049b          	addiw	x9,x0,9
+    8000142c:	04f2                	c.slli	x9,0x1c
+    8000142e:	fdb48493          	addi	x9,x9,-37
+c.ld x13, 8(x9)
+    80001432:	6494                	c.ld	x13,8(x9)
+max x13, x13, x16
+    80001434:	0b06e6b3          	max	x13,x13,x16
+div x14, x20, x15
+    80001438:	02fa4733          	div	x14,x20,x15
+fsgnjx.d f20, f17, f15
+    8000143c:	22f8aa53          	fsgnjx.d	f20,f17,f15
+csrrs x17, fflags, x0
+    80001440:	001028f3          	csrrs	x17,fflags,x0
+li x9, 2415919044
+    80001444:	0090049b          	addiw	x9,x0,9
+    80001448:	04f2                	c.slli	x9,0x1c
+    8000144a:	fc448493          	addi	x9,x9,-60
+c.sd x15, 16(x9)
+    8000144e:	e89c                	c.sd	x15,16(x9)
+slli.uw x14, x17, 53
+    80001450:	0b58971b          	slli.uw	x14,x17,0x35
+slli.uw x18, x17, 62
+    80001454:	0be8991b          	slli.uw	x18,x17,0x3e
+fence.i
+    80001458:	0000100f          	fence.i
+c.or x13, x13
+    8000145c:	8ed5                	c.or	x13,x13
+fcvt.l.s x20, f15, rtz
+    8000145e:	c0279a53          	fcvt.l.s	x20,f15,rtz
+csrrs x18, fflags, x0
+    80001462:	00102973          	csrrs	x18,fflags,x0
+or x13, x20, x14
+    80001466:	00ea66b3          	or	x13,x20,x14
+clz x15, x19
+    8000146a:	60099793          	clz	x15,x19
+li x11, 2415919070
+    8000146e:	0090059b          	addiw	x11,x0,9
+    80001472:	05f2                	c.slli	x11,0x1c
+    80001474:	fde58593          	addi	x11,x11,-34
+ld x13, 2(x11)
+    80001478:	0025b683          	ld	x13,2(x11)
+csrrs x14, fflags, x0
+    8000147c:	00102773          	csrrs	x14,fflags,x0
+csrrs x16, fflags, x0
+    80001480:	00102873          	csrrs	x16,fflags,x0
+fnmadd.s f18, f17, f17, f20, rup
+    80001484:	a118b94f          	fnmadd.s	f18,f17,f17,f20,rup
+csrrs x16, fflags, x0
+    80001488:	00102873          	csrrs	x16,fflags,x0
+fcvt.s.w f19, x20, rtz
+    8000148c:	d00a19d3          	fcvt.s.w	f19,x20,rtz
+csrrs x14, fflags, x0
+    80001490:	00102773          	csrrs	x14,fflags,x0
+fmadd.d f13, f19, f13, f19, rtz
+    80001494:	9ad996c3          	fmadd.d	f13,f19,f13,f19,rtz
+csrrs x15, fflags, x0
+    80001498:	001027f3          	csrrs	x15,fflags,x0
+fnmsub.h f18, f17, f18, f17, rup
+    8000149c:	8d28b94b          	fnmsub.h	f18,f17,f18,f17,rup
+csrrs x18, fflags, x0
+    800014a0:	00102973          	csrrs	x18,fflags,x0
+fcvt.wu.s x19, f19, dyn
+    800014a4:	c019f9d3          	fcvt.wu.s	x19,f19
+csrrs x16, fflags, x0
+    800014a8:	00102873          	csrrs	x16,fflags,x0
+czero.eqz x17, x20, x18
+    800014ac:	0f2a58b3          	czero.eqz	x17,x20,x18
+czero.eqz x20, x20, x19
+    800014b0:	0f3a5a33          	czero.eqz	x20,x20,x19
+flt.h x16, f13, f13
+    800014b4:	a4d69853          	flt.h	x16,f13,f13
+csrrs x15, fflags, x0
+    800014b8:	001027f3          	csrrs	x15,fflags,x0
+c.addi16sp sp, 16
+    800014bc:	6141                	c.addi16sp	x2,16
+fence.i
+    800014be:	0000100f          	fence.i
+fsgnjx.h f18, f15, f13
+    800014c2:	24d7a953          	fsgnjx.h	f18,f15,f13
+csrrs x14, fflags, x0
+    800014c6:	00102773          	csrrs	x14,fflags,x0
+fmadd.s f14, f13, f19, f19, dyn
+    800014ca:	9936f743          	fmadd.s	f14,f13,f19,f19
+csrrs x19, fflags, x0
+    800014ce:	001029f3          	csrrs	x19,fflags,x0
+sll x17, x18, x18
+    800014d2:	012918b3          	sll	x17,x18,x18
+fmadd.h f17, f13, f20, f19, rup
+    800014d6:	9d46b8c3          	fmadd.h	f17,f13,f20,f19,rup
+csrrs x16, fflags, x0
+    800014da:	00102873          	csrrs	x16,fflags,x0
+fnmadd.d f17, f13, f14, f18, rmm
+    800014de:	92e6c8cf          	fnmadd.d	f17,f13,f14,f18,rmm
+csrrs x15, fflags, x0
+    800014e2:	001027f3          	csrrs	x15,fflags,x0
+fcvt.wu.s x13, f20, rmm
+    800014e6:	c01a46d3          	fcvt.wu.s	x13,f20,rmm
+csrrs x17, fflags, x0
+    800014ea:	001028f3          	csrrs	x17,fflags,x0
+slliw x16, x15, 9
+    800014ee:	0097981b          	slliw	x16,x15,0x9
+li x11, 2415919057
+    800014f2:	0090059b          	addiw	x11,x0,9
+    800014f6:	05f2                	c.slli	x11,0x1c
+    800014f8:	fd158593          	addi	x11,x11,-47
+sh x19, 15(x11)
+    800014fc:	013597a3          	sh	x19,15(x11)
+li x10, 2415919066
+    80001500:	0090051b          	addiw	x10,x0,9
+    80001504:	0572                	c.slli	x10,0x1c
+    80001506:	fda50513          	addi	x10,x10,-38
+c.sd x13, 16(x10)
+    8000150a:	e914                	c.sd	x13,16(x10)
+c.lui x18, 0xfffe8
+    8000150c:	7921                	c.lui	x18,0xfffe8
+fcvt.s.h f13, f13
+    8000150e:	402686d3          	fcvt.s.h	f13,f13
+csrrs x17, fflags, x0
+    80001512:	001028f3          	csrrs	x17,fflags,x0
+li x10, 2415919046
+    80001516:	0090051b          	addiw	x10,x0,9
+    8000151a:	0572                	c.slli	x10,0x1c
+    8000151c:	fc650513          	addi	x10,x10,-58
+sb x14, 0(x10)
+    80001520:	00e50023          	sb	x14,0(x10)
+zext.h x14, x15
+    80001524:	0807c73b          	zext.h	x14,x15
+clzw x20, x13
+    80001528:	60069a1b          	clzw	x20,x13
+li x8, 2415919055
+    8000152c:	0090041b          	addiw	x8,x0,9
+    80001530:	0472                	c.slli	x8,0x1c
+    80001532:	fcf40413          	addi	x8,x8,-49
+ld x19, 12(x8)
+    80001536:	00c43983          	ld	x19,12(x8)
+li x12, 2415919034
+    8000153a:	0090061b          	addiw	x12,x0,9
+    8000153e:	0672                	c.slli	x12,0x1c
+    80001540:	fba60613          	addi	x12,x12,-70
+flw f18, 2(x12)
+    80001544:	00262907          	flw	f18,2(x12)
+csrrs x14, fflags, x0
+    80001548:	00102773          	csrrs	x14,fflags,x0
+csrrs x18, fflags, x0
+    8000154c:	00102973          	csrrs	x18,fflags,x0
+fmadd.s f20, f14, f16, f20, rdn
+    80001550:	a1072a43          	fmadd.s	f20,f14,f16,f20,rdn
+csrrs x17, fflags, x0
+    80001554:	001028f3          	csrrs	x17,fflags,x0
+fmsub.h f16, f20, f13, f19, rup
+    80001558:	9cda3847          	fmsub.h	f16,f20,f13,f19,rup
+csrrs x20, fflags, x0
+    8000155c:	00102a73          	csrrs	x20,fflags,x0
+fmadd.d f17, f16, f20, f14, dyn
+    80001560:	734878c3          	fmadd.d	f17,f16,f20,f14
+csrrs x13, fflags, x0
+    80001564:	001026f3          	csrrs	x13,fflags,x0
+fmsub.s f20, f15, f17, f18, rup
+    80001568:	9117ba47          	fmsub.s	f20,f15,f17,f18,rup
+csrrs x14, fflags, x0
+    8000156c:	00102773          	csrrs	x14,fflags,x0
+slli x13, x13, 13
+    80001570:	06b6                	c.slli	x13,0xd
+fdiv.d f20, f16, f17, rne
+    80001572:	1b180a53          	fdiv.d	f20,f16,f17,rne
+csrrs x19, fflags, x0
+    80001576:	001029f3          	csrrs	x19,fflags,x0
+li x11, 2415919041
+    8000157a:	0090059b          	addiw	x11,x0,9
+    8000157e:	05f2                	c.slli	x11,0x1c
+    80001580:	fc158593          	addi	x11,x11,-63
+sw x13, 15(x11)
+    80001584:	00d5a7a3          	sw	x13,15(x11)
+li x11, 2415919045
+    80001588:	0090059b          	addiw	x11,x0,9
+    8000158c:	05f2                	c.slli	x11,0x1c
+    8000158e:	fc558593          	addi	x11,x11,-59
+amomaxu.w x17, x19, (x11)
+    80001592:	e135a8af          	amomaxu.w	x17,x19,(x11)
+li x11, 2415919051
+    80001596:	0090059b          	addiw	x11,x0,9
+    8000159a:	05f2                	c.slli	x11,0x1c
+    8000159c:	fcb58593          	addi	x11,x11,-53
+c.lw x14, 16(x11)
+    800015a0:	4998                	c.lw	x14,16(x11)
+fsqrt.s f20, f16, rmm
+    800015a2:	58084a53          	fsqrt.s	f20,f16,rmm
+csrrs x20, fflags, x0
+    800015a6:	00102a73          	csrrs	x20,fflags,x0
+c.add x20, x16
+    800015aa:	9a42                	c.add	x20,x16
+fsgnj.h f14, f19, f18
+    800015ac:	25298753          	fsgnj.h	f14,f19,f18
+csrrs x13, fflags, x0
+    800015b0:	001026f3          	csrrs	x13,fflags,x0
+czero.eqz x17, x19, x16
+    800015b4:	0f09d8b3          	czero.eqz	x17,x19,x16
+fsub.h f14, f14, f13, rtz
+    800015b8:	0cd71753          	fsub.h	f14,f14,f13,rtz
+csrrs x17, fflags, x0
+    800015bc:	001028f3          	csrrs	x17,fflags,x0
+maxu x18, x16, x16
+    800015c0:	0b087933          	maxu	x18,x16,x16
+c.srai x15, 20
+    800015c4:	87d1                	c.srai	x15,0x14
+flt.d x17, f20, f14
+    800015c6:	a2ea18d3          	flt.d	x17,f20,f14
+csrrs x15, fflags, x0
+    800015ca:	001027f3          	csrrs	x15,fflags,x0
+fmul.h f19, f19, f19, rdn
+    800015ce:	1539a9d3          	fmul.h	f19,f19,f19,rdn
+csrrs x20, fflags, x0
+    800015d2:	00102a73          	csrrs	x20,fflags,x0
+sext.h x13, x18
+    800015d6:	60591693          	sext.h	x13,x18
+ctz x18, x19
+    800015da:	60199913          	ctz	x18,x19
+fcvt.h.w f17, x18, dyn
+    800015de:	d40978d3          	fcvt.h.w	f17,x18
+csrrs x20, fflags, x0
+    800015e2:	00102a73          	csrrs	x20,fflags,x0
+c.xor x14, x13
+    800015e6:	8f35                	c.xor	x14,x13
+fcvt.d.s f20, f17
+    800015e8:	42088a53          	fcvt.d.s	f20,f17
+csrrs x17, fflags, x0
+    800015ec:	001028f3          	csrrs	x17,fflags,x0
+bclr x19, x16, x18
+    800015f0:	492819b3          	bclr	x19,x16,x18
+sh2add x15, x16, x19
+    800015f4:	213847b3          	sh2add	x15,x16,x19
+fence.i
+    800015f8:	0000100f          	fence.i
+fence.i
+    800015fc:	0000100f          	fence.i
+csrrs x14, fflags, x0
+    80001600:	00102773          	csrrs	x14,fflags,x0
+fmin.d f18, f13, f18
+    80001604:	2b268953          	fmin.d	f18,f13,f18
+csrrs x17, fflags, x0
+    80001608:	001028f3          	csrrs	x17,fflags,x0
+c.mv x14, x17
+    8000160c:	8746                	c.mv	x14,x17
+fmv.x.h x18, f18
+    8000160e:	e4090953          	fmv.x.h	x18,f18
+csrrs x19, fflags, x0
+    80001612:	001029f3          	csrrs	x19,fflags,x0
+fence.i
+    80001616:	0000100f          	fence.i
+subw x14, x15, x16
+    8000161a:	4107873b          	subw	x14,x15,x16
+fcvt.d.h f15, f20
+    8000161e:	422a07d3          	fcvt.d.h	f15,f20
+csrrs x14, fflags, x0
+    80001622:	00102773          	csrrs	x14,fflags,x0
+fclass.d x15, f16
+    80001626:	e20817d3          	fclass.d	x15,f16
+csrrs x19, fflags, x0
+    8000162a:	001029f3          	csrrs	x19,fflags,x0
+li x9, 2415919069
+    8000162e:	0090049b          	addiw	x9,x0,9
+    80001632:	04f2                	c.slli	x9,0x1c
+    80001634:	fdd48493          	addi	x9,x9,-35
+amomax.d.rl x15, x20, (x9)
+    80001638:	a344b7af          	amomax.d.rl	x15,x20,(x9)
+fsgnjn.d f14, f20, f13
+    8000163c:	22da1753          	fsgnjn.d	f14,f20,f13
+csrrs x18, fflags, x0
+    80001640:	00102973          	csrrs	x18,fflags,x0
+sub x16, x15, x19
+    80001644:	41378833          	sub	x16,x15,x19
+csrrs x19, fflags, x0
+    80001648:	001029f3          	csrrs	x19,fflags,x0
+bexti x16, x14, 63
+    8000164c:	4bf75813          	bexti	x16,x14,0x3f
+sraw x14, x15, x16
+    80001650:	4107d73b          	sraw	x14,x15,x16
+c.and x14, x14
+    80001654:	8f79                	c.and	x14,x14
+czero.eqz x17, x16, x18
+    80001656:	0f2858b3          	czero.eqz	x17,x16,x18
+fcvt.h.lu f18, x14, rdn
+    8000165a:	d4372953          	fcvt.h.lu	f18,x14,rdn
+csrrs x17, fflags, x0
+    8000165e:	001028f3          	csrrs	x17,fflags,x0
+fcvt.d.h f20, f20
+    80001662:	422a0a53          	fcvt.d.h	f20,f20
+csrrs x14, fflags, x0
+    80001666:	00102773          	csrrs	x14,fflags,x0
+csrrsi x15, dscratch0, 12
+    8000166a:	7b2667f3          	csrrsi	x15,dscratch0,12
+add x18, x19, x17
+    8000166e:	01198933          	add	x18,x19,x17
+fle.d x16, f18, f18
+    80001672:	a3290853          	fle.d	x16,f18,f18
+csrrs x17, fflags, x0
+    80001676:	001028f3          	csrrs	x17,fflags,x0
+bext x16, x15, x13
+    8000167a:	48d7d833          	bext	x16,x15,x13
+fmadd.h f14, f18, f17, f14, rne
+    8000167e:	75190743          	fmadd.h	f14,f18,f17,f14,rne
+csrrs x13, fflags, x0
+    80001682:	001026f3          	csrrs	x13,fflags,x0
+czero.eqz x14, x16, x19
+    80001686:	0f385733          	czero.eqz	x14,x16,x19
+li x12, 2415919068
+    8000168a:	0090061b          	addiw	x12,x0,9
+    8000168e:	0672                	c.slli	x12,0x1c
+    80001690:	fdc60613          	addi	x12,x12,-36
+sw x17, 11(x12)
+    80001694:	011625a3          	sw	x17,11(x12)
+fmax.d f15, f16, f17
+    80001698:	2b1817d3          	fmax.d	f15,f16,f17
+csrrs x18, fflags, x0
+    8000169c:	00102973          	csrrs	x18,fflags,x0
+fmv.w.x f18, x20
+    800016a0:	f00a0953          	fmv.w.x	f18,x20
+csrrs x17, fflags, x0
+    800016a4:	001028f3          	csrrs	x17,fflags,x0
+fmsub.h f19, f13, f15, f13, rmm
+    800016a8:	6cf6c9c7          	fmsub.h	f19,f13,f15,f13,rmm
+csrrs x17, fflags, x0
+    800016ac:	001028f3          	csrrs	x17,fflags,x0
+csrrs x19, fflags, x0
+    800016b0:	001029f3          	csrrs	x19,fflags,x0
+li x11, 2415919040
+    800016b4:	0090059b          	addiw	x11,x0,9
+    800016b8:	05f2                	c.slli	x11,0x1c
+    800016ba:	fc058593          	addi	x11,x11,-64
+fsw f13, 6(x11)
+    800016be:	00d5a327          	fsw	f13,6(x11)
+csrrs x18, fflags, x0
+    800016c2:	00102973          	csrrs	x18,fflags,x0
+fence.i
+    800016c6:	0000100f          	fence.i
+clzw x18, x18
+    800016ca:	6009191b          	clzw	x18,x18
+remw x14, x19, x16
+    800016ce:	0309e73b          	remw	x14,x19,x16
+xor x16, x15, x15
+    800016d2:	00f7c833          	xor	x16,x15,x15
+divuw x18, x17, x13
+    800016d6:	02d8d93b          	divuw	x18,x17,x13
+fsub.d f16, f16, f15, dyn
+    800016da:	0af87853          	fsub.d	f16,f16,f15
+csrrs x19, fflags, x0
+    800016de:	001029f3          	csrrs	x19,fflags,x0
+fcvt.wu.d x20, f18, dyn
+    800016e2:	c2197a53          	fcvt.wu.d	x20,f18
+csrrs x13, fflags, x0
+    800016e6:	001026f3          	csrrs	x13,fflags,x0
+maxu x17, x20, x16
+    800016ea:	0b0a78b3          	maxu	x17,x20,x16
+max x13, x18, x19
+    800016ee:	0b3966b3          	max	x13,x18,x19
+fcvt.l.h x19, f16, rdn
+    800016f2:	c42829d3          	fcvt.l.h	x19,f16,rdn
+csrrs x17, fflags, x0
+    800016f6:	001028f3          	csrrs	x17,fflags,x0
+fsgnjn.d f14, f15, f20
+    800016fa:	23479753          	fsgnjn.d	f14,f15,f20
+csrrs x18, fflags, x0
+    800016fe:	00102973          	csrrs	x18,fflags,x0
+sltu x18, x17, x13
+    80001702:	00d8b933          	sltu	x18,x17,x13
+li x9, 2415919045
+    80001706:	0090049b          	addiw	x9,x0,9
+    8000170a:	04f2                	c.slli	x9,0x1c
+    8000170c:	fc548493          	addi	x9,x9,-59
+sh x18, 7(x9)
+    80001710:	012493a3          	sh	x18,7(x9)
+fsqrt.s f16, f16, dyn
+    80001714:	58087853          	fsqrt.s	f16,f16
+csrrs x14, fflags, x0
+    80001718:	00102773          	csrrs	x14,fflags,x0
+xori x19, x20, 277
+    8000171c:	115a4993          	xori	x19,x20,277
+sext.b x19, x13
+    80001720:	60469993          	sext.b	x19,x13
+csrrs x19, fflags, x0
+    80001724:	001029f3          	csrrs	x19,fflags,x0
+fmv.x.d x18, f17
+    80001728:	e2088953          	fmv.x.d	x18,f17
+csrrs x19, fflags, x0
+    8000172c:	001029f3          	csrrs	x19,fflags,x0
+li x9, 2415919047
+    80001730:	0090049b          	addiw	x9,x0,9
+    80001734:	04f2                	c.slli	x9,0x1c
+    80001736:	fc748493          	addi	x9,x9,-57
+amomax.d x16, x14, (x9)
+    8000173a:	a0e4b82f          	amomax.d	x16,x14,(x9)
+fcvt.s.h f17, f17
+    8000173e:	402888d3          	fcvt.s.h	f17,f17
+csrrs x19, fflags, x0
+    80001742:	001029f3          	csrrs	x19,fflags,x0
+c.slli x14, 60
+    80001746:	1772                	c.slli	x14,0x3c
+maxu x18, x16, x15
+    80001748:	0af87933          	maxu	x18,x16,x15
+feq.h x15, f14, f19
+    8000174c:	a53727d3          	feq.h	x15,f14,f19
+csrrs x19, fflags, x0
+    80001750:	001029f3          	csrrs	x19,fflags,x0
+sh1add.uw x19, x16, x16
+    80001754:	210829bb          	sh1add.uw	x19,x16,x16
+li x11, 2415919037
+    80001758:	0090059b          	addiw	x11,x0,9
+    8000175c:	05f2                	c.slli	x11,0x1c
+    8000175e:	fbd58593          	addi	x11,x11,-67
+amomaxu.w.rl x17, x15, (x11)
+    80001762:	e2f5a8af          	amomaxu.w.rl	x17,x15,(x11)
+c.nop
+    80001766:	0001                	c.addi	x0,0
+srlw x15, x20, x15
+    80001768:	00fa57bb          	srlw	x15,x20,x15
+mulh x19, x15, x20
+    8000176c:	034799b3          	mulh	x19,x15,x20
+fmin.h f16, f15, f17
+    80001770:	2d178853          	fmin.h	f16,f15,f17
+csrrs x18, fflags, x0
+    80001774:	00102973          	csrrs	x18,fflags,x0
+li x9, 2415919039
+    80001778:	0090049b          	addiw	x9,x0,9
+    8000177c:	04f2                	c.slli	x9,0x1c
+    8000177e:	fbf48493          	addi	x9,x9,-65
+sb x14, 2(x9)
+    80001782:	00e48123          	sb	x14,2(x9)
+li x2, 2415919043
+    80001786:	0090011b          	addiw	x2,x0,9
+    8000178a:	0172                	c.slli	x2,0x1c
+    8000178c:	fc310113          	addi	x2,x2,-61
+c.lwsp x17, 0(sp)
+    80001790:	4882                	c.lwsp	x17,0(x2)
+sh1add.uw x15, x17, x15
+    80001792:	20f8a7bb          	sh1add.uw	x15,x17,x15
+li x8, 2415919041
+    80001796:	0090041b          	addiw	x8,x0,9
+    8000179a:	0472                	c.slli	x8,0x1c
+    8000179c:	fc140413          	addi	x8,x8,-63
+amoor.w x18, x19, (x8)
+    800017a0:	4134292f          	amoor.w	x18,x19,(x8)
+fence.i
+    800017a4:	0000100f          	fence.i
+sext.h x14, x20
+    800017a8:	605a1713          	sext.h	x14,x20
+li x10, 2415919066
+    800017ac:	0090051b          	addiw	x10,x0,9
+    800017b0:	0572                	c.slli	x10,0x1c
+    800017b2:	fda50513          	addi	x10,x10,-38
+amomax.d.aqrl x13, x19, (x10)
+    800017b6:	a73536af          	amomax.d.aqrl	x13,x19,(x10)
+c.add x19, x14
+    800017ba:	99ba                	c.add	x19,x14
+li x10, 2415919039
+    800017bc:	0090051b          	addiw	x10,x0,9
+    800017c0:	0572                	c.slli	x10,0x1c
+    800017c2:	fbf50513          	addi	x10,x10,-65
+lw x20, 9(x10)
+    800017c6:	00952a03          	lw	x20,9(x10)
+ctzw x20, x19
+    800017ca:	60199a1b          	ctzw	x20,x19
+li x12, 2415919061
+    800017ce:	0090061b          	addiw	x12,x0,9
+    800017d2:	0672                	c.slli	x12,0x1c
+    800017d4:	fd560613          	addi	x12,x12,-43
+lb x19, 9(x12)
+    800017d8:	00960983          	lb	x19,9(x12)
+c.li x16, 29
+    800017dc:	4875                	c.li	x16,29
+fcvt.h.lu f18, x17, dyn
+    800017de:	d438f953          	fcvt.h.lu	f18,x17
+csrrs x16, fflags, x0
+    800017e2:	00102873          	csrrs	x16,fflags,x0
+c.and x13, x14
+    800017e6:	8ef9                	c.and	x13,x14
+fcvt.d.lu f17, x20, rtz
+    800017e8:	d23a18d3          	fcvt.d.lu	f17,x20,rtz
+csrrs x14, fflags, x0
+    800017ec:	00102773          	csrrs	x14,fflags,x0
+fsgnj.s f15, f18, f13
+    800017f0:	20d907d3          	fsgnj.s	f15,f18,f13
+csrrs x13, fflags, x0
+    800017f4:	001026f3          	csrrs	x13,fflags,x0
+csrrs x18, fflags, x0
+    800017f8:	00102973          	csrrs	x18,fflags,x0
+fclass.h x20, f15
+    800017fc:	e4079a53          	fclass.h	x20,f15
+csrrs x20, fflags, x0
+    80001800:	00102a73          	csrrs	x20,fflags,x0
+li x9, 2415919064
+    80001804:	0090049b          	addiw	x9,x0,9
+    80001808:	04f2                	c.slli	x9,0x1c
+    8000180a:	fd848493          	addi	x9,x9,-40
+amoswap.d.aq x20, x14, (x9)
+    8000180e:	0ce4ba2f          	amoswap.d.aq	x20,x14,(x9)
+rem x19, x16, x20
+    80001812:	034869b3          	rem	x19,x16,x20
+or x13, x14, x17
+    80001816:	011766b3          	or	x13,x14,x17
+fle.d x14, f20, f19
+    8000181a:	a33a0753          	fle.d	x14,f20,f19
+csrrs x16, fflags, x0
+    8000181e:	00102873          	csrrs	x16,fflags,x0
+clzw x20, x20
+    80001822:	600a1a1b          	clzw	x20,x20
+fcvt.h.s f16, f18, rtz
+    80001826:	44091853          	fcvt.h.s	f16,f18,rtz
+csrrs x17, fflags, x0
+    8000182a:	001028f3          	csrrs	x17,fflags,x0
+fdiv.d f16, f18, f16, rne
+    8000182e:	1b090853          	fdiv.d	f16,f18,f16,rne
+csrrs x14, fflags, x0
+    80001832:	00102773          	csrrs	x14,fflags,x0
+fmv.w.x f18, x20
+    80001836:	f00a0953          	fmv.w.x	f18,x20
+csrrs x13, fflags, x0
+    8000183a:	001026f3          	csrrs	x13,fflags,x0
+c.xor x14, x15
+    8000183e:	8f3d                	c.xor	x14,x15
+xori x18, x20, -425
+    80001840:	e57a4913          	xori	x18,x20,-425
+fclass.h x17, f18
+    80001844:	e40918d3          	fclass.h	x17,f18
+csrrs x19, fflags, x0
+    80001848:	001029f3          	csrrs	x19,fflags,x0
+bclri x13, x19, 22
+    8000184c:	49699693          	bclri	x13,x19,0x16
+flt.s x13, f19, f19
+    80001850:	a13996d3          	flt.s	x13,f19,f19
+csrrs x13, fflags, x0
+    80001854:	001026f3          	csrrs	x13,fflags,x0
+mulw x13, x20, x13
+    80001858:	02da06bb          	mulw	x13,x20,x13
+czero.eqz x18, x17, x14
+    8000185c:	0ee8d933          	czero.eqz	x18,x17,x14
+fmadd.d f18, f14, f13, f19, rup
+    80001860:	9ad73943          	fmadd.d	f18,f14,f13,f19,rup
+csrrs x20, fflags, x0
+    80001864:	00102a73          	csrrs	x20,fflags,x0
+fcvt.d.s f13, f16
+    80001868:	420806d3          	fcvt.d.s	f13,f16
+csrrs x13, fflags, x0
+    8000186c:	001026f3          	csrrs	x13,fflags,x0
+csrrs x17, fflags, x0
+    80001870:	001028f3          	csrrs	x17,fflags,x0
+li x2, 2415919061
+    80001874:	0090011b          	addiw	x2,x0,9
+    80001878:	0172                	c.slli	x2,0x1c
+    8000187a:	fd510113          	addi	x2,x2,-43
+c.swsp x20, 16(sp)
+    8000187e:	c852                	c.swsp	x20,16(x2)
+li x9, 2415919035
+    80001880:	0090049b          	addiw	x9,x0,9
+    80001884:	04f2                	c.slli	x9,0x1c
+    80001886:	fbb48493          	addi	x9,x9,-69
+amoand.d.aq x14, x18, (x9)
+    8000188a:	6524b72f          	amoand.d.aq	x14,x18,(x9)
+rem x14, x17, x19
+    8000188e:	0338e733          	rem	x14,x17,x19
+
+0000000080001892 <exit>:
+
+exit:
+    li      t0, 1                # report success
+    80001892:	4285                	c.li	x5,1
+    la      t1, tohost
+    80001894:	00000317          	auipc	x6,0x0
+    80001898:	76c30313          	addi	x6,x6,1900 # 80002000 <tohost>
+    sd      t0, 0(t1)
+    8000189c:	00533023          	sd	x5,0(x6)
+1:
+    j       1b
+    800018a0:	a001                	c.j	800018a0 <exit+0xe>
+    800018a2:	0001                	c.addi	x0,0
+
+00000000800018a4 <trap_handler>:
+
+    .align  2
+trap_handler:
+    csrr    t0, mepc             # faulting PC
+    800018a4:	341022f3          	csrrs	x5,mepc,x0
+    csrr    t1, mcause           # trap cause
+    800018a8:	34202373          	csrrs	x6,mcause,x0
+    csrr    t4, mtval
+    800018ac:	34302ef3          	csrrs	x29,mtval,x0
+
+    slli    t5, t1, 1            # strip interrupt bit
+    800018b0:	00131f13          	slli	x30,x6,0x1
+    srli    t1, t5, 1
+    800018b4:	001f5313          	srli	x6,x30,0x1
+
+    li      t2, 2                # default length assumes compressed
+    800018b8:	4389                	c.li	x7,2
+    li      t3, 2                # illegal instruction -> mtval holds encoding
+    800018ba:	4e09                	c.li	x28,2
+    beq     t1, t3, use_mtval
+    800018bc:	01c30b63          	beq	x6,x28,800018d2 <use_mtval>
+    li      t3, 1                # instruction access fault
+    800018c0:	4e05                	c.li	x28,1
+    beq     t1, t3, update_mepc
+    800018c2:	03c30163          	beq	x6,x28,800018e4 <update_mepc>
+    li      t3, 12               # instruction page fault
+    800018c6:	4e31                	c.li	x28,12
+    beq     t1, t3, update_mepc
+    800018c8:	01c30e63          	beq	x6,x28,800018e4 <update_mepc>
+
+    lhu     t4, 0(t0)
+    800018cc:	0002de83          	lhu	x29,0(x5)
+    j       decode_length
+    800018d0:	a011                	c.j	800018d4 <decode_length>
+
+00000000800018d2 <use_mtval>:
+
+use_mtval:
+    j       decode_length
+    800018d2:	a009                	c.j	800018d4 <decode_length>
+
+00000000800018d4 <decode_length>:
+
+decode_length:
+    andi    t4, t4, 3
+    800018d4:	003efe93          	andi	x29,x29,3
+    li      t3, 3
+    800018d8:	4e0d                	c.li	x28,3
+    bne     t4, t3, compressed_len
+    800018da:	01ce9463          	bne	x29,x28,800018e2 <compressed_len>
+    li      t2, 4                # standard 32-bit instruction
+    800018de:	4391                	c.li	x7,4
+    j       update_mepc
+    800018e0:	a011                	c.j	800018e4 <update_mepc>
+
+00000000800018e2 <compressed_len>:
+
+compressed_len:
+    li      t2, 2                # compressed instruction
+    800018e2:	4389                	c.li	x7,2
+
+00000000800018e4 <update_mepc>:
+
+update_mepc:
+    add     t0, t0, t2           # skip offending instruction
+    800018e4:	929e                	c.add	x5,x7
+    csrw    mepc, t0
+    800018e6:	34129073          	csrrw	x0,mepc,x5
+    csrw    mcause, x0
+    800018ea:	34201073          	csrrw	x0,mcause,x0
+    csrw    mtval, x0
+    800018ee:	34301073          	csrrw	x0,mtval,x0
+    mret
+    800018f2:	30200073          	mret
+    800018f6:	0001                	c.addi	x0,0

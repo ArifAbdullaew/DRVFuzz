@@ -1,0 +1,63 @@
+{
+  "implementation": "Spike",
+  "states": [
+    {
+      "opcode": "addi",
+      "predicates": [
+        "boundary_value:int-bitmask",
+        "boundary_value:int-one"
+      ]
+    },
+    {
+      "opcode": "addi",
+      "predicates": [
+        "boundary_value:int-bitmask"
+      ]
+    },
+    {
+      "opcode": "add",
+      "predicates": [
+        "boundary_value:int-bitmask",
+        "boundary_value:int-one"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "from": {
+        "opcode": "addi",
+        "predicates": [
+          "boundary_value:int-bitmask",
+          "boundary_value:int-one"
+        ]
+      },
+      "to": {
+        "opcode": "addi",
+        "predicates": [
+          "boundary_value:int-bitmask"
+        ]
+      }
+    },
+    {
+      "from": {
+        "opcode": "addi",
+        "predicates": [
+          "boundary_value:int-bitmask"
+        ]
+      },
+      "to": {
+        "opcode": "add",
+        "predicates": [
+          "boundary_value:int-bitmask",
+          "boundary_value:int-one"
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "implementation": "Spike",
+    "total_states": 3,
+    "total_transitions": 2,
+    "unique_transitions": 2
+  }
+}

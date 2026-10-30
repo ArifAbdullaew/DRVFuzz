@@ -1,0 +1,264 @@
+
+/home/fuzz/runs/readme_example/exec/Spike/program.elf:     file format elf64-littleriscv
+
+
+Disassembly of section .text.init:
+
+0000000080000000 <_start>:
+    .section .text
+    .globl  _start
+
+_start:
+    la      t0, trap_handler
+    80000000:	00000297          	auipc	x5,0x0
+    80000004:	09828293          	addi	x5,x5,152 # 80000098 <trap_handler>
+    csrw    mtvec, t0
+    80000008:	30529073          	csrrw	x0,mtvec,x5
+
+    csrr    t0, mstatus
+    8000000c:	300022f3          	csrrs	x5,mstatus,x0
+    li      t1, 0x00003000       # set FS field to Dirty (0b11) so FP regs usable
+    80000010:	630d                	c.lui	x6,0x3
+    or      t0, t0, t1
+    80000012:	0062e2b3          	or	x5,x5,x6
+    csrw    mstatus, t0
+    80000016:	30029073          	csrrw	x0,mstatus,x5
+    csrw    fcsr, x0             # clear floating-point status
+    8000001a:	00301073          	csrrw	x0,fcsr,x0
+
+    # Relax PMP: one NAPOT entry covers the full address space to allow S-mode fetch/load/store
+    li      t0, -1
+    8000001e:	52fd                	c.li	x5,-1
+    csrw    pmpaddr0, t0
+    80000020:	3b029073          	csrrw	x0,pmpaddr0,x5
+    li      t0, 0x1f             # R|W|X | A=NAPOT
+    80000024:	42fd                	c.li	x5,31
+    csrw    pmpcfg0, t0
+    80000026:	3a029073          	csrrw	x0,pmpcfg0,x5
+
+    j       user_code
+    8000002a:	a009                	c.j	8000002c <user_code>
+
+000000008000002c <user_code>:
+
+user_code:
+addi x1, x0, 1
+    8000002c:	4085                	c.li	x1,1
+addi x2, x0, 2
+    8000002e:	4109                	c.li	x2,2
+add  x3, x1, x2
+    80000030:	002081b3          	add	x3,x1,x2
+
+0000000080000034 <exit>:
+
+exit:
+    li      t0, 1                # report success
+    80000034:	4285                	c.li	x5,1
+    la      t1, tohost
+    80000036:	00001317          	auipc	x6,0x1
+    8000003a:	fca30313          	addi	x6,x6,-54 # 80001000 <tohost>
+    sd      t0, 0(t1)
+    8000003e:	00533023          	sd	x5,0(x6)
+1:
+    j       1b
+    80000042:	a001                	c.j	80000042 <exit+0xe>
+
+0000000080000044 <switch_to_s_mode>:
+
+
+.align 2
+switch_to_s_mode:
+    # Set up the page table: identity-map the 1GB region containing 0x80000000
+    la      t0, pgtbl
+    80000044:	00002297          	auipc	x5,0x2
+    80000048:	fbc28293          	addi	x5,x5,-68 # 80002000 <pgtbl>
+    li      t1, (0x80000 << 10) | 0xCF # PPN=0x80000, full permissions
+    8000004c:	20000337          	lui	x6,0x20000
+    80000050:	0cf3031b          	addiw	x6,x6,207 # 200000cf <_start-0x5fffff31>
+    sd      t1, 16(t0)
+    80000054:	0062b823          	sd	x6,16(x5)
+
+    # Write satp to enable paging (Sv39)
+    li      t2, 8
+    80000058:	43a1                	c.li	x7,8
+    slli    t2, t2, 60
+    8000005a:	13f2                	c.slli	x7,0x3c
+    srli    t1, t0, 12
+    8000005c:	00c2d313          	srli	x6,x5,0xc
+    or      t2, t2, t1
+    80000060:	0063e3b3          	or	x7,x7,x6
+    csrw    satp, t2
+    80000064:	18039073          	csrrw	x0,satp,x7
+    sfence.vma
+    80000068:	12000073          	sfence.vma	x0,x0
+
+    # Set MPP to S-mode (1) and prepare for mret
+    li      t0, ~(3 << 11)
+    8000006c:	72f9                	c.lui	x5,0xffffe
+    8000006e:	7ff2829b          	addiw	x5,x5,2047 # ffffffffffffe7ff <pgtbl+0xffffffff7fffc7ff>
+    csrr    t1, mstatus
+    80000072:	30002373          	csrrs	x6,mstatus,x0
+    and     t1, t1, t0
+    80000076:	00537333          	and	x6,x6,x5
+    li      t2, (1 << 11)
+    8000007a:	6385                	c.lui	x7,0x1
+    8000007c:	8003839b          	addiw	x7,x7,-2048 # 800 <_start-0x7ffff800>
+    or      t1, t1, t2
+    80000080:	00736333          	or	x6,x6,x7
+    csrw    mstatus, t1
+    80000084:	30031073          	csrrw	x0,mstatus,x6
+
+    csrw    mepc, ra
+    80000088:	34109073          	csrrw	x0,mepc,x1
+    mret
+    8000008c:	30200073          	mret
+
+0000000080000090 <exit_s_mode>:
+
+.align 2
+exit_s_mode:
+    ecall                        # Trigger Environment Call (Cause 9)
+    80000090:	00000073          	ecall
+    ret                          # Handler will actually adjust mepc to skip this spot
+    80000094:	8082                	c.jr	x1
+    80000096:	0001                	c.addi	x0,0
+
+0000000080000098 <trap_handler>:
+
+
+    .align  2
+trap_handler:
+    csrr    t0, mepc             # faulting PC
+    80000098:	341022f3          	csrrs	x5,mepc,x0
+    csrr    t1, mcause           # trap cause
+    8000009c:	34202373          	csrrs	x6,mcause,x0
+    csrr    t4, mtval
+    800000a0:	34302ef3          	csrrs	x29,mtval,x0
+
+    # Extract the exception code
+    slli    t5, t1, 1
+    800000a4:	00131f13          	slli	x30,x6,0x1
+    srli    t1, t5, 1
+    800000a8:	001f5313          	srli	x6,x30,0x1
+
+    # --- Added: handle requests to return to M-mode ---
+    li      t3, 9                # Ecall from S-mode
+    800000ac:	4e25                	c.li	x28,9
+    bne     t1, t3, check_page_fault
+    800000ae:	01c31963          	bne	x6,x28,800000c0 <check_page_fault>
+    # If it is an ecall, set MPP so mret returns to M-mode
+    li      t2, 3 << 11
+    800000b2:	6389                	c.lui	x7,0x2
+    800000b4:	8003839b          	addiw	x7,x7,-2048 # 1800 <_start-0x7fffe800>
+    csrs    mstatus, t2          # Set MPP to 3 (Machine)
+    800000b8:	3003a073          	csrrs	x0,mstatus,x7
+    li      t2, 4                # Skip the ecall instruction
+    800000bc:	4391                	c.li	x7,4
+    j       update_mepc
+    800000be:	a0b1                	c.j	8000010a <update_mepc>
+
+00000000800000c0 <check_page_fault>:
+
+check_page_fault:
+    # --- Added: detect page faults (13 or 15) ---
+    li      t3, 13
+    800000c0:	4e35                	c.li	x28,13
+    beq     t1, t3, handle_as_normal_fault
+    800000c2:	01c30663          	beq	x6,x28,800000ce <handle_as_normal_fault>
+    li      t3, 15
+    800000c6:	4e3d                	c.li	x28,15
+    beq     t1, t3, handle_as_normal_fault
+    800000c8:	01c30363          	beq	x6,x28,800000ce <handle_as_normal_fault>
+    
+    # If it's neither a page fault nor an ecall, fall back to the original logic
+    j       original_logic
+    800000cc:	a011                	c.j	800000d0 <original_logic>
+
+00000000800000ce <handle_as_normal_fault>:
+
+handle_as_normal_fault:
+    # Page faults still need instruction-length decoding and skipping; reuse the original logic
+    j       original_logic
+    800000ce:	a009                	c.j	800000d0 <original_logic>
+
+00000000800000d0 <original_logic>:
+
+original_logic:
+    # Original logic: decode instruction length
+    li      t2, 2                
+    800000d0:	4389                	c.li	x7,2
+    li      t3, 2                
+    800000d2:	4e09                	c.li	x28,2
+    beq     t1, t3, illegal_len
+    800000d4:	01c30e63          	beq	x6,x28,800000f0 <illegal_len>
+    li      t3, 1                
+    800000d8:	4e05                	c.li	x28,1
+    beq     t1, t3, instr_fault_len
+    800000da:	01c30e63          	beq	x6,x28,800000f6 <instr_fault_len>
+    li      t3, 12               
+    800000de:	4e31                	c.li	x28,12
+    beq     t1, t3, instr_fault_len
+    800000e0:	01c30b63          	beq	x6,x28,800000f6 <instr_fault_len>
+
+    lhu     t4, 0(t0)
+    800000e4:	0002de83          	lhu	x29,0(x5)
+    j       decode_length
+    800000e8:	a809                	c.j	800000fa <decode_length>
+
+00000000800000ea <other_len>:
+
+other_len:
+    lhu     t4, 0(t0)
+    800000ea:	0002de83          	lhu	x29,0(x5)
+    j       decode_length
+    800000ee:	a031                	c.j	800000fa <decode_length>
+
+00000000800000f0 <illegal_len>:
+
+illegal_len:
+    beqz    t4, other_len
+    800000f0:	fe0e8de3          	beq	x29,x0,800000ea <other_len>
+    j       decode_length
+    800000f4:	a019                	c.j	800000fa <decode_length>
+
+00000000800000f6 <instr_fault_len>:
+    
+instr_fault_len:
+    li      t2, 4
+    800000f6:	4391                	c.li	x7,4
+    j       update_mepc
+    800000f8:	a809                	c.j	8000010a <update_mepc>
+
+00000000800000fa <decode_length>:
+
+decode_length:
+    andi    t4, t4, 3
+    800000fa:	003efe93          	andi	x29,x29,3
+    li      t3, 3
+    800000fe:	4e0d                	c.li	x28,3
+    bne     t4, t3, compressed_len
+    80000100:	01ce9463          	bne	x29,x28,80000108 <compressed_len>
+    li      t2, 4
+    80000104:	4391                	c.li	x7,4
+    j       update_mepc
+    80000106:	a011                	c.j	8000010a <update_mepc>
+
+0000000080000108 <compressed_len>:
+
+compressed_len:
+    li      t2, 2
+    80000108:	4389                	c.li	x7,2
+
+000000008000010a <update_mepc>:
+
+update_mepc:
+    add     t0, t0, t2
+    8000010a:	929e                	c.add	x5,x7
+    csrw    mepc, t0
+    8000010c:	34129073          	csrrw	x0,mepc,x5
+    csrw    mcause, x0
+    80000110:	34201073          	csrrw	x0,mcause,x0
+    csrw    mtval, x0
+    80000114:	34301073          	csrrw	x0,mtval,x0
+    mret
+    80000118:	30200073          	mret

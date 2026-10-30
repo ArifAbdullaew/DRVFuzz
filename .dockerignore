@@ -1,0 +1,8 @@
+.git
+**/.DS_Store
+**/target
+DRVFuzz/temp
+artifacts
+# Wrappers are extracted inside the image from the checksum-verified archive.
+DRVFuzz/riscv_impls_bins/*
+!DRVFuzz/riscv_impls_bins/scripts

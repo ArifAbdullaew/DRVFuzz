@@ -22,6 +22,12 @@ The current tool lives in `DRVFuzz/` and depends on the local
   crates used by DRVFuzz.
 - `release_assets/` - archive and checksum for prebuilt wrapper binaries.
 
+## Docker
+
+A ready-to-use Linux/amd64 environment (toolchain, Rust, wrappers, release
+build) is provided via `Dockerfile` and `docker-compose.yml`. See
+[`docker/README.md`](docker/README.md) for build and run instructions.
+
 ## Requirements
 
 - Linux environment for the bundled implementation wrappers.

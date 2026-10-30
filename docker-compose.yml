@@ -1,0 +1,20 @@
+services:
+  drvfuzz:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    image: drvfuzz:local
+    platform: linux/amd64
+    working_dir: /opt/drvfuzz/DRVFuzz
+    # Only the artifacts directory is shared with the host.
+    volumes:
+      - ./artifacts:/artifacts
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    init: true
+    stdin_open: true
+    tty: true

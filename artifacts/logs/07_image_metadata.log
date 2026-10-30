@@ -1,0 +1,22 @@
+image_id=sha256:224d43b1d552d95b050b7720348bd4c7f8404577c36d8532ebced9426508db60
+arch=amd64 os=linux
+size_bytes=2260862358
+created=2026-10-30T10:13:55.942552843Z
+user=fuzz
+entrypoint=[/usr/local/bin/drvfuzz-entrypoint]
+env=
+  PATH=/opt/drvfuzz/DRVFuzz/target/release:/opt/drvfuzz/DRVFuzz/riscv_impls_bins:/opt/riscv/bin:/opt/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  RUSTUP_HOME=/opt/rustup
+  CARGO_HOME=/opt/cargo
+  RISCV=/opt/riscv
+base: ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852
+docker_server=29.2.1 host_arch=arm64
+Docker Compose version v5.1.0
+ProductName:		macOS ProductVersion:		15.3.1 BuildVersion:		24D70 
+7539a9dce31f55eb68f9e687c957160a64956304bc0595c216c3acfcb8a65c8d  Dockerfile
+b3f35a5f3a309d85c84682e9cfa24e5539845bd012fdb39ee76e155292a867e8  docker-compose.yml
+24650a0d575a8e7410cb82d38df647dd15b6cd6e427a6c009c47aad461decc60  .dockerignore
+9f45ba4840057ff67dd93f3dafc4cdac8d7a60ec39284ab33b2f44d76f671bf2  docker/entrypoint.sh
+ba7631110f9db05c0c080ecc49c644b10d96b582fa2e95dda6bc90d7377680e5  docker/run_tests.sh
+final_clean_image_id=sha256:dc91c932e2f28d9ff11751eef2c52874c1b8900a8c30fe087c3e8b6fb18f1b4b size_bytes=2261122496
+20c15aa8f80cbcfcfab71c44c583255e1af11a7bfc3e64f9b5cae063309d3e88  Dockerfile

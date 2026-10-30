@@ -1,0 +1,5 @@
+smoke_spike exit=0
+diff_spike_rocket exit=0
+all_rc=0
+readme_example exit=1
+

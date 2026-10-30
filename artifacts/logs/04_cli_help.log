@@ -1,0 +1,156 @@
+Run standalone assembly, iterate diff analysis across implementations, replay saved testcases, or emit build artifacts without executing them.
+
+Usage: DRVFuzz <COMMAND>
+
+Commands:
+  exec           Execute one assembly program on a selected implementation
+  diff           Iteratively fuzz multiple implementations and minimize divergences
+  diff-testcase  Replay diff analysis from an existing testcase
+  diff-spike     Compare Spike against other implementations for the configured ISA
+  generate       Generate a random testcase and ELF artifacts without executing
+  help           Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+
+===== exec --help
+Compile and run the provided assembly for the chosen implementation and ISA base. Writes execution_output.json, execution_report.md, and instruction snapshots under the run directory for later inspection.
+
+Usage: DRVFuzz exec [OPTIONS] --asm <ASM> --riscv-impl <RISCV_IMPL> --isa <ISA> --run-dir <RUN_DIR>
+
+Options:
+      --asm <ASM>
+          Assembly file containing the initialization and test instructions to execute
+
+      --riscv-impl <RISCV_IMPL>
+          Implementation wrapper to run against (e.g. spike, rocket, picorv32, cva6)
+          
+          [possible values: spike, rocket, boom-v3, boom-v4, pico-rv32, cva6, xiang-shan, ibex, vex, kronos, srv32]
+
+      --isa <ISA>
+          ISA base to assemble for (rv32 or rv64)
+          
+          [possible values: rv32, rv64]
+
+      --run-dir <RUN_DIR>
+          Directory where artifacts are written; a per-implementation subdirectory is created
+
+      --timeout-secs <TIMEOUT_SECS>
+          Optional execution timeout in seconds; omit to let the run complete naturally
+
+      --allow-unaligned
+          Request unaligned memory accesses if the implementation supports them
+
+      --transition-report
+          Emit transition_report.json/.md using SDModel execution-state transitions
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+===== diff --help
+Continuously generates random programs from the provided testcase_config, executes them across the selected implementations, and minimizes any mismatching behavior. Each worker writes a timestamped subdirectory under --run-dir. Leave --max-runs unset to keep iterating until a worker fails or you stop the process.
+
+Usage: DRVFuzz diff [OPTIONS] --testcase-config <TESTCASE_CONFIG> --run-dir <RUN_DIR>
+
+Options:
+      --testcase-config <TESTCASE_CONFIG>
+          TOML file containing the [testcase_config] used to generate random programs
+
+      --riscv-impl [<RISCV_IMPLS>...]
+          Implementations to include; defaults to every ISA-compatible core, filtered by unaligned_access_required
+          
+          [possible values: spike, rocket, boom-v3, boom-v4, pico-rv32, cva6, xiang-shan, ibex, vex, kronos, srv32]
+
+      --impl-timeout <IMPL_TIMEOUT_FILE>
+          TOML file with an [impl_timeout_secs] table mapping implementations to per-run timeouts (seconds)
+
+      --run-options <RUN_OPTIONS_FILE>
+          TOML file providing diff runner options (iterations, emit, cleanup); supports flat or [run_options] formats
+
+      --run-dir <RUN_DIR>
+          Base directory for diff runs; each iteration gets a timestamped subdirectory
+
+      --concurrency <CONCURRENCY>
+          Number of diff-analysis workers to run in parallel
+          
+          [default: 1]
+
+      --max-runs <MAX_RUNS>
+          Total diff iterations to execute across all workers; omit to keep running until stopped
+
+      --sdmodel
+          Enable the SDModel sensitive-data generator for boundary values and exception triggers
+
+      --sdmodel-probability <SDMODEL_PROBABILITY>
+          Override SDModel injection probability (0.0 to 1.0)
+
+      --transition-guided
+          Enable transition-guided seed feedback using SDModel execution states
+
+      --mode-guided
+          Enable mode-guided ablation feedback using individual SDModel states only
+
+      --transition-seed-pool-limit <TRANSITION_SEED_POOL_LIMIT>
+          Maximum number of transition-interesting seeds retained
+
+      --transition-seed-window <TRANSITION_SEED_WINDOW>
+          Number of seed test instructions spliced into each guided testcase
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+===== diff-spike --help
+For each selected implementation that supports the configured ISA base, run the diff-analysis workflow between Spike and that target. Artifacts are written under --run-dir/spike_<impl>_<isa>. Defaults to testing Spike against every supported implementation.
+
+Usage: DRVFuzz diff-spike [OPTIONS] --testcase-config <TESTCASE_CONFIG> --run-dir <RUN_DIR>
+
+Options:
+      --testcase-config <TESTCASE_CONFIG>
+          TOML file containing the [testcase_config] used to generate random programs
+
+      --run-dir <RUN_DIR>
+          Base directory used to store run artifacts for each Spike pairing (subdirectories are created automatically)
+
+      --concurrency <CONCURRENCY>
+          Number of diff-analysis workers to run in parallel for each pairing
+          
+          [default: 1]
+
+      --max-runs <MAX_RUNS>
+          Total diff-analysis runs to execute per pairing; omit to keep iterating
+
+      --riscv-impl [<RISCV_IMPLS>...]
+          Optional list of non-Spike implementations to pair with Spike; defaults to all ISA-compatible targets
+          
+          [possible values: spike, rocket, boom-v3, boom-v4, pico-rv32, cva6, xiang-shan, ibex, vex, kronos, srv32]
+
+      --impl-timeout <IMPL_TIMEOUT_FILE>
+          TOML file with an [impl_timeout_secs] table mapping implementations to per-run timeouts (seconds)
+
+      --run-options <RUN_OPTIONS_FILE>
+          TOML file providing diff runner options (iterations, emit, cleanup); supports flat or [run_options] formats
+
+      --sdmodel
+          Enable the SDModel sensitive-data generator for boundary values and exception triggers
+
+      --sdmodel-probability <SDMODEL_PROBABILITY>
+          Override SDModel injection probability (0.0 to 1.0)
+
+      --transition-guided
+          Enable transition-guided seed feedback using SDModel execution states
+
+      --mode-guided
+          Enable mode-guided ablation feedback using individual SDModel states only
+
+      --transition-seed-pool-limit <TRANSITION_SEED_POOL_LIMIT>
+          Maximum number of transition-interesting seeds retained
+
+      --transition-seed-window <TRANSITION_SEED_WINDOW>
+          Number of seed test instructions spliced into each guided testcase
+
+  -h, --help
+          Print help (see a summary with '-h')

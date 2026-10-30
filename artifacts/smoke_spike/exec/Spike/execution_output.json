@@ -1,0 +1,86 @@
+{
+  "exceptions": [],
+  "register_changes": [
+    [
+      {
+        "name": "x1",
+        "value": 1
+      }
+    ],
+    [
+      {
+        "name": "x2",
+        "value": 2
+      }
+    ],
+    [
+      {
+        "name": "x3",
+        "value": 3
+      }
+    ]
+  ],
+  "memory_changes": [
+    [],
+    [],
+    []
+  ],
+  "contexts": [
+    {
+      "registers_before": {},
+      "memory_before": {},
+      "register_context": {
+        "entries": []
+      },
+      "memory_context": {
+        "base_register": "",
+        "base_offset": 0,
+        "entries": []
+      }
+    },
+    {
+      "registers_before": {
+        "x1": 1
+      },
+      "memory_before": {},
+      "register_context": {
+        "entries": []
+      },
+      "memory_context": {
+        "base_register": "",
+        "base_offset": 0,
+        "entries": []
+      }
+    },
+    {
+      "registers_before": {
+        "x2": 2,
+        "x1": 1
+      },
+      "memory_before": {},
+      "register_context": {
+        "entries": [
+          {
+            "name": "x1",
+            "value": 1
+          },
+          {
+            "name": "x2",
+            "value": 2
+          }
+        ]
+      },
+      "memory_context": {
+        "base_register": "",
+        "base_offset": 0,
+        "entries": []
+      }
+    }
+  ],
+  "mem_range": [
+    2147491840,
+    2415919103
+  ],
+  "riscv_impl": "Spike",
+  "isa_base": "Rv64"
+}
