@@ -1,0 +1,9 @@
+Python 3.12.3
+smoke_spike exit=0
+diff_spike_rocket exit=0
+run-tests exit=0
+##### check_xiangshan without mount
+== 1. files
+FAIL: RISCV_WRAPPER_XS_EMU is not set: /opt/xiangshan/ is not mounted or lacks the file (see docker-compose.xiangshan.yml)
+
+check exit=1

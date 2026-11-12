@@ -1,0 +1,233 @@
+--progress is a global compose flag, better use `docker compose --progress xx build ...
+ Image drvfuzz:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 586B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 4.97kB done
+#2 WARN: FromPlatformFlagConstDisallowed: FROM --platform flag should not use constant value "linux/amd64" (line 7)
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 232B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 16.26kB done
+#5 DONE 0.0s
+
+#6 [ 1/17] FROM docker.io/library/ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852
+#6 resolve docker.io/library/ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852 done
+#6 DONE 0.0s
+
+#7 [ 2/17] RUN apt-get update && apt-get install -y --no-install-recommends         ca-certificates curl file git pkg-config xz-utils         build-essential         libstdc++6 libgcc-s1 libatomic1 zlib1g libzstd1 libelf1t64 libsqlite3-0         libmpc3 libmpfr6 libgmp10 libexpat1         device-tree-compiler         fish     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [ 6/17] WORKDIR /opt/drvfuzz
+#8 CACHED
+
+#9 [ 4/17] RUN userdel -r ubuntu 2>/dev/null || true;     groupadd -g 1000 fuzz && useradd -m -u 1000 -g 1000 -s /bin/bash fuzz
+#9 CACHED
+
+#10 [ 9/17] COPY --chown=fuzz:fuzz release_assets/ release_assets/
+#10 CACHED
+
+#11 [ 3/17] RUN curl -fsSL -o /tmp/riscv-toolchain.tar.xz         "https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2026.08.27/riscv64-elf-ubuntu-24.04-gcc.tar.xz"     && echo "fe7dadf99dfaee59855b4be5f8d491dc66593bec295090e155a3ec51f0d14f56  /tmp/riscv-toolchain.tar.xz" | sha256sum -c -     && mkdir -p /opt/riscv     && tar -xJf /tmp/riscv-toolchain.tar.xz -C /opt/riscv --strip-components=1     && rm /tmp/riscv-toolchain.tar.xz     && /opt/riscv/bin/riscv64-unknown-elf-gcc --version | head -1     && /opt/riscv/bin/riscv64-unknown-elf-as --version | head -1
+#11 CACHED
+
+#12 [ 7/17] COPY --chown=fuzz:fuzz riscv-instruction-crates/ riscv-instruction-crates/
+#12 CACHED
+
+#13 [ 8/17] COPY --chown=fuzz:fuzz DRVFuzz/ DRVFuzz/
+#13 CACHED
+
+#14 [ 5/17] RUN curl -fsSL -o /tmp/rustup-init         "https://static.rust-lang.org/rustup/archive/1.29.2/x86_64-unknown-linux-gnu/rustup-init"     && echo "5be191e8c70a5007074254cb74d78dbfdd25cd5a61c27de7b8e5410122ec24f4  /tmp/rustup-init" | sha256sum -c -     && chmod +x /tmp/rustup-init     && /tmp/rustup-init -y --no-modify-path --profile minimal --default-toolchain 1.99.1     && rm /tmp/rustup-init     && chown -R fuzz:fuzz /opt/rustup /opt/cargo     && rustc --version && cargo --version
+#14 CACHED
+
+#15 [10/17] RUN cd /opt/drvfuzz     && sha256sum -c release_assets/riscv_impls_bins_binaries.tar.gz.sha256     && tar -xzf release_assets/riscv_impls_bins_binaries.tar.gz -C DRVFuzz     && find DRVFuzz/riscv_impls_bins -maxdepth 1 -type f -exec chmod +x {} +     && rm release_assets/riscv_impls_bins_binaries.tar.gz     && chown -R fuzz:fuzz /opt/drvfuzz
+#15 CACHED
+
+#16 [11/17] RUN cd /opt/drvfuzz/DRVFuzz/riscv_impls_bins     && for f in xiangshan_rv64 xiangshan_rv64_no_unaligned_rw xiangshan_rv64_ref_spike_so; do            ln -s /opt/xiangshan/$f $f;        done
+#16 DONE 0.1s
+
+#17 [12/17] WORKDIR /opt/drvfuzz/DRVFuzz
+#17 DONE 0.0s
+
+#18 [13/17] RUN cargo build --release --locked
+#18 0.488     Updating crates.io index
+#18 1.740  Downloading crates ...
+#18 2.113   Downloaded memchr v2.7.6
+#18 2.159   Downloaded indexmap v2.12.0
+#18 2.175   Downloaded clap v4.5.51
+#18 2.191   Downloaded toml v0.9.8
+#18 2.196   Downloaded anstyle v1.0.13
+#18 2.220   Downloaded clap_builder v4.5.51
+#18 2.228   Downloaded strum v0.27.2
+#18 2.230   Downloaded rand_core v0.9.3
+#18 2.232   Downloaded thiserror-impl v2.0.17
+#18 2.234   Downloaded serde_yaml v0.9.34+deprecated
+#18 2.238   Downloaded anstyle-query v1.1.5
+#18 2.239   Downloaded toml_datetime v0.7.3
+#18 2.250   Downloaded aho-corasick v1.1.4
+#18 2.260   Downloaded clap_derive v4.5.49
+#18 2.265   Downloaded ryu v1.0.20
+#18 2.269   Downloaded colorchoice v1.0.4
+#18 2.275   Downloaded cfg-if v1.0.4
+#18 2.282   Downloaded env_filter v0.1.4
+#18 2.284   Downloaded thiserror v2.0.17
+#18 2.290   Downloaded rand_chacha v0.9.0
+#18 2.291   Downloaded quote v1.0.42
+#18 2.295   Downloaded anstream v0.6.21
+#18 2.298   Downloaded toml_writer v1.0.4
+#18 2.299   Downloaded unicode-ident v1.0.22
+#18 2.304   Downloaded iana-time-zone v0.1.64
+#18 2.306   Downloaded once_cell v1.21.3
+#18 2.309   Downloaded log v0.4.28
+#18 2.313   Downloaded proc-macro2 v1.0.103
+#18 2.316   Downloaded is_terminal_polyfill v1.70.2
+#18 2.317   Downloaded enum-iterator-derive v1.5.0
+#18 2.318   Downloaded clap_lex v0.7.6
+#18 2.320   Downloaded equivalent v1.0.2
+#18 2.321   Downloaded itoa v1.0.15
+#18 2.324   Downloaded serde_spanned v1.0.3
+#18 2.325   Downloaded enum-iterator v2.3.0
+#18 2.326   Downloaded heck v0.5.0
+#18 2.328   Downloaded num-traits v0.2.19
+#18 2.330   Downloaded strsim v0.11.1
+#18 2.332   Downloaded utf8parse v0.2.2
+#18 2.334   Downloaded anstyle-parse v0.2.7
+#18 2.340   Downloaded strum_macros v0.27.2
+#18 2.342   Downloaded ppv-lite86 v0.2.21
+#18 2.343   Downloaded toml_parser v1.0.4
+#18 2.346   Downloaded env_logger v0.11.8
+#18 2.349   Downloaded autocfg v1.5.0
+#18 2.351   Downloaded unsafe-libyaml v0.2.11
+#18 2.355   Downloaded getrandom v0.3.4
+#18 2.359   Downloaded serde v1.0.228
+#18 2.363   Downloaded serde_derive v1.0.228
+#18 2.366   Downloaded serde_core v1.0.228
+#18 2.369   Downloaded rand v0.9.2
+#18 2.372   Downloaded regex v1.12.2
+#18 2.379   Downloaded hashbrown v0.16.0
+#18 2.385   Downloaded serde_json v1.0.145
+#18 2.392   Downloaded winnow v0.7.13
+#18 2.402   Downloaded chrono v0.4.42
+#18 2.410   Downloaded zerocopy v0.8.27
+#18 2.434   Downloaded syn v2.0.110
+#18 2.449   Downloaded regex-syntax v0.8.8
+#18 2.464   Downloaded jiff v0.2.16
+#18 2.481   Downloaded regex-automata v0.4.13
+#18 2.499   Downloaded libc v0.2.177
+#18 2.649    Compiling proc-macro2 v1.0.103
+#18 2.650    Compiling unicode-ident v1.0.22
+#18 2.650    Compiling quote v1.0.42
+#18 2.650    Compiling libc v0.2.177
+#18 2.651    Compiling zerocopy v0.8.27
+#18 2.651    Compiling getrandom v0.3.4
+#18 2.651    Compiling serde v1.0.228
+#18 2.651    Compiling serde_core v1.0.228
+#18 2.652    Compiling autocfg v1.5.0
+#18 2.652    Compiling memchr v2.7.6
+#18 3.575    Compiling serde_json v1.0.145
+#18 4.066    Compiling cfg-if v1.0.4
+#18 4.155    Compiling equivalent v1.0.2
+#18 4.300    Compiling num-traits v0.2.19
+#18 4.479    Compiling aho-corasick v1.1.4
+#18 4.585    Compiling ryu v1.0.20
+#18 4.629    Compiling itoa v1.0.15
+#18 5.444    Compiling regex-syntax v0.8.8
+#18 5.564    Compiling hashbrown v0.16.0
+#18 6.254    Compiling heck v0.5.0
+#18 7.360    Compiling indexmap v2.12.0
+#18 7.471    Compiling ppv-lite86 v0.2.21
+#18 7.543    Compiling rand_core v0.9.3
+#18 7.879    Compiling iana-time-zone v0.1.64
+#18 8.325    Compiling syn v2.0.110
+#18 8.334    Compiling unsafe-libyaml v0.2.11
+#18 8.585    Compiling utf8parse v0.2.2
+#18 8.753    Compiling regex-automata v0.4.13
+#18 9.101    Compiling chrono v0.4.42
+#18 9.116    Compiling rand_chacha v0.9.0
+#18 9.414    Compiling anstyle-parse v0.2.7
+#18 10.06    Compiling anstyle-query v1.1.5
+#18 10.66    Compiling is_terminal_polyfill v1.70.2
+#18 10.86    Compiling colorchoice v1.0.4
+#18 11.04    Compiling anstyle v1.0.13
+#18 11.22    Compiling rand v0.9.2
+#18 11.84    Compiling clap_lex v0.7.6
+#18 11.90    Compiling log v0.4.28
+#18 12.69    Compiling regex v1.12.2
+#18 13.11    Compiling anstream v0.6.21
+#18 13.45    Compiling serde_derive v1.0.228
+#18 13.50    Compiling enum-iterator-derive v1.5.0
+#18 13.84    Compiling thiserror v2.0.17
+#18 13.86    Compiling strsim v0.11.1
+#18 13.89    Compiling once_cell v1.21.3
+#18 14.23    Compiling winnow v0.7.13
+#18 15.58    Compiling enum-iterator v2.3.0
+#18 15.65    Compiling clap_builder v4.5.51
+#18 15.71    Compiling env_filter v0.1.4
+#18 15.73    Compiling thiserror-impl v2.0.17
+#18 15.86    Compiling clap_derive v4.5.49
+#18 16.46    Compiling toml_datetime v0.7.3
+#18 16.52    Compiling serde_spanned v1.0.3
+#18 17.17    Compiling toml_parser v1.0.4
+#18 17.53    Compiling jiff v0.2.16
+#18 18.42    Compiling toml_writer v1.0.4
+#18 18.90    Compiling strum_macros v0.27.2
+#18 19.15    Compiling strum v0.27.2
+#18 19.39    Compiling serde_yaml v0.9.34+deprecated
+#18 19.99    Compiling clap v4.5.51
+#18 20.14    Compiling toml v0.9.8
+#18 21.40    Compiling riscv-instruction-parser v0.1.0 (/opt/drvfuzz/riscv-instruction-crates/riscv-instruction-parser)
+#18 22.72    Compiling env_logger v0.11.8
+#18 23.62    Compiling riscv-instruction-macros v0.1.0 (/opt/drvfuzz/riscv-instruction-crates/riscv-instruction-macros)
+#18 25.74    Compiling riscv-instruction-types v0.1.0 (/opt/drvfuzz/riscv-instruction-crates/riscv-instruction-types)
+#18 27.44    Compiling riscv-instruction v0.1.0 (/opt/drvfuzz/riscv-instruction-crates/riscv-instruction)
+#18 123.0    Compiling DRVFuzz v0.1.0 (/opt/drvfuzz/DRVFuzz)
+#18 147.7 warning: use of deprecated method `std::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+#18 147.7     --> src/main.rs:1299:23
+#18 147.7      |
+#18 147.7 1299 |         match counter.fetch_update(Ordering::SeqCst, Ordering::SeqCst, |current| {
+#18 147.7      |                       ^^^^^^^^^^^^
+#18 147.7      |
+#18 147.7      = note: `#[warn(deprecated)]` on by default
+#18 147.7 help: replace the use of the deprecated method
+#18 147.7      |
+#18 147.7 1299 -         match counter.fetch_update(Ordering::SeqCst, Ordering::SeqCst, |current| {
+#18 147.7 1299 +         match counter.try_update(Ordering::SeqCst, Ordering::SeqCst, |current| {
+#18 147.7      |
+#18 147.7 
+#18 154.1 warning: `DRVFuzz` (bin "DRVFuzz") generated 1 warning (run `cargo fix --bin "DRVFuzz" -p DRVFuzz` to apply 1 suggestion)
+#18 154.1     Finished `release` profile [optimized] target(s) in 2m 33s
+#18 DONE 154.3s
+
+#19 [14/17] RUN echo 'source /opt/drvfuzz/DRVFuzz/scripts/setup_riscv_env.sh >/dev/null' >> /home/fuzz/.bashrc
+#19 DONE 0.1s
+
+#20 [15/17] COPY --chown=fuzz:fuzz docker/entrypoint.sh /usr/local/bin/drvfuzz-entrypoint
+#20 DONE 0.0s
+
+#21 [16/17] COPY --chown=fuzz:fuzz docker/run_tests.sh /usr/local/bin/drvfuzz-run-tests
+#21 DONE 0.0s
+
+#22 [17/17] COPY --chown=fuzz:fuzz docker/check_xiangshan.sh /usr/local/bin/drvfuzz-check-xiangshan
+#22 DONE 0.0s
+
+#23 exporting to image
+#23 exporting layers
+#23 exporting layers 19.3s done
+#23 exporting manifest sha256:a970f1b200d6ea10f19b90a00e7f09843b135e5ddf121de4fc4c6fb6ee8e8a89 done
+#23 exporting config sha256:91c18079541cc2d70c2319c1addc2286c0e16bdf788c552f446d2c6d56bb72b2 done
+#23 exporting attestation manifest sha256:7f44453b6de604fd634d3cf79d9fb98ac85fbc6d6dc98a32bf6149b32a441b35 done
+#23 exporting manifest list sha256:31c2121ecf0df5256c6b873e888175156f00e08e7e98273b79b1d0df600855c2 done
+#23 naming to docker.io/library/drvfuzz:local done
+#23 DONE 19.3s
+
+#24 resolving provenance for metadata file
+#24 DONE 0.0s
+ Image drvfuzz:local Built 

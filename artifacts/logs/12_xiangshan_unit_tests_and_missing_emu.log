@@ -1,0 +1,8 @@
+== exec xiang-shan without emu
+[2026-11-11T19:15:08Z INFO  DRVFuzz::build_elf] Executing disassembling command: "riscv64-unknown-elf-objdump" "-d" "-S" "/home/fuzz/runs/xs_exec/XiangShan/program.elf" "--disassembler-options=no-aliases,numeric"
+Error: CliError { message: "failed to execute instructions on implementation XiangShan (RV64)", source: Some(ImplementationFailed { impl_name: "XiangShan", isa_base: "Rv64", source: XiangShan(EnvVarNotSet { var: "RISCV_WRAPPER_XS_EMU_NO_UNALIGNED_RW" }) }) }
+exit=1
+== cargo test xiangshan (upstream unit tests)
+test impls::xiangshan::execute::tests::parse_commit_with_inline_mem_only ... ok
+test impls::xiangshan::execute::tests::parse_commit_inline_mem_deduplicates_with_mem_line ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 77 filtered out; finished in 0.03s

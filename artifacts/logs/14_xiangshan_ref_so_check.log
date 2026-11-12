@@ -1,0 +1,6 @@
+	libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007ffffed05000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007ffffec1c000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007ffffebee000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007ffffe9db000)
+difftest_close difftest_csrcpy difftest_dirty_fsvs difftest_disambiguation_state difftest_display difftest_exec difftest_guided_exec difftest_init difftest_load_flash difftest_load_flash_v difftest_log difftest_memcpy difftest_non_reg_interrupt_pending difftest_pmp_cfg_cpy difftest_pmpcpy difftest_raise_critical_error difftest_raise_intr difftest_regcpy difftest_set_mhartid difftest_set_ramsize difftest_skip_one difftest_store_commit difftest_uarchstatus_sync 
+GLIBC_2.29

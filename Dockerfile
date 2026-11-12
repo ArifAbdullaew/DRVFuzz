@@ -20,9 +20,10 @@ ARG RISCV_TOOLCHAIN_RELEASE=2026.08.27
 ARG RISCV_TOOLCHAIN_SHA256=fe7dadf99dfaee59855b4be5f8d491dc66593bec295090e155a3ec51f0d14f56
 
 # Build tools and the runtime libraries listed in README.md for the wrappers.
-# Spike additionally needs `dtc` (device-tree-compiler) at runtime.
+# Spike additionally needs `dtc` (device-tree-compiler) at runtime;
+# python3 is used by docker/check_xiangshan.sh to compare results.
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        ca-certificates curl file git pkg-config xz-utils \
+        ca-certificates curl file git pkg-config xz-utils python3 \
         build-essential \
         libstdc++6 libgcc-s1 libatomic1 zlib1g libzstd1 libelf1t64 libsqlite3-0 \
         libmpc3 libmpfr6 libgmp10 libexpat1 \
@@ -68,6 +69,14 @@ RUN cd /opt/drvfuzz \
     && rm release_assets/riscv_impls_bins_binaries.tar.gz \
     && chown -R fuzz:fuzz /opt/drvfuzz
 
+# Optional XiangShan: point the file names setup_riscv_env.sh looks for at
+# /opt/xiangshan, where docker-compose.xiangshan.yml mounts a host directory.
+# Without the mount the links dangle and the script leaves the variables unset.
+RUN cd /opt/drvfuzz/DRVFuzz/riscv_impls_bins \
+    && for f in xiangshan_rv64 xiangshan_rv64_no_unaligned_rw xiangshan_rv64_ref_spike_so; do \
+           ln -s /opt/xiangshan/$f $f; \
+       done
+
 USER fuzz
 WORKDIR /opt/drvfuzz/DRVFuzz
 RUN cargo build --release --locked
@@ -82,5 +91,7 @@ RUN echo 'source /opt/drvfuzz/DRVFuzz/scripts/setup_riscv_env.sh >/dev/null' >> 
 
 COPY --chown=fuzz:fuzz docker/entrypoint.sh /usr/local/bin/drvfuzz-entrypoint
 COPY --chown=fuzz:fuzz docker/run_tests.sh /usr/local/bin/drvfuzz-run-tests
+COPY --chown=fuzz:fuzz docker/check_xiangshan.sh /usr/local/bin/drvfuzz-check-xiangshan
+COPY --chown=fuzz:fuzz docker/xs_report.py /usr/local/bin/drvfuzz-xs-report
 ENTRYPOINT ["/usr/local/bin/drvfuzz-entrypoint"]
 CMD ["bash"]

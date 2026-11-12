@@ -1,0 +1,8 @@
+upstream commit (reg write)    commit_re=no exception_re=no
+    [12] commit pc 0000000080000010 inst 00100093 wen 1 dst 01 data 0000000000000001 idx 00a addi    ra, zero, 1
+upstream commit (store)        commit_re=no exception_re=no
+    [13] commit pc 0000000080000014 inst 00533023 wen 0 dst 00 data 0000000000000000 idx 00b (0c) sd      t0, 0(t1)
+upstream exception             commit_re=no exception_re=MATCH
+    [14] exception pc 0000000080000018 inst ffffffff cause 0000000000000002
+DRVFuzz-format store           commit_re=MATCH exception_re=no
+    [571] commit pc 0000000080000792 inst 01151423 wen 0 dst x08 data 0000000000000000 idx 02b (0c) addr 000000008fffffe0 data 0000000045000000 mask 0x08 sh      a7, 8(a0)

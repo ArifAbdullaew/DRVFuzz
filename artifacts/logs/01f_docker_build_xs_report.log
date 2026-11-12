@@ -1,0 +1,90 @@
+--progress is a global compose flag, better use `docker compose --progress xx build ...
+ Image drvfuzz:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 586B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 5.12kB done
+#2 WARN: FromPlatformFlagConstDisallowed: FROM --platform flag should not use constant value "linux/amd64" (line 7)
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852
+#3 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 232B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 30.48kB done
+#5 DONE 0.0s
+
+#6 [ 1/18] FROM docker.io/library/ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852
+#6 resolve docker.io/library/ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852 done
+#6 DONE 0.0s
+
+#7 [ 7/18] COPY --chown=fuzz:fuzz riscv-instruction-crates/ riscv-instruction-crates/
+#7 CACHED
+
+#8 [ 4/18] RUN userdel -r ubuntu 2>/dev/null || true;     groupadd -g 1000 fuzz && useradd -m -u 1000 -g 1000 -s /bin/bash fuzz
+#8 CACHED
+
+#9 [16/18] COPY --chown=fuzz:fuzz docker/run_tests.sh /usr/local/bin/drvfuzz-run-tests
+#9 CACHED
+
+#10 [ 2/18] RUN apt-get update && apt-get install -y --no-install-recommends         ca-certificates curl file git pkg-config xz-utils python3         build-essential         libstdc++6 libgcc-s1 libatomic1 zlib1g libzstd1 libelf1t64 libsqlite3-0         libmpc3 libmpfr6 libgmp10 libexpat1         device-tree-compiler         fish     && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [ 8/18] COPY --chown=fuzz:fuzz DRVFuzz/ DRVFuzz/
+#11 CACHED
+
+#12 [ 9/18] COPY --chown=fuzz:fuzz release_assets/ release_assets/
+#12 CACHED
+
+#13 [14/18] RUN echo 'source /opt/drvfuzz/DRVFuzz/scripts/setup_riscv_env.sh >/dev/null' >> /home/fuzz/.bashrc
+#13 CACHED
+
+#14 [10/18] RUN cd /opt/drvfuzz     && sha256sum -c release_assets/riscv_impls_bins_binaries.tar.gz.sha256     && tar -xzf release_assets/riscv_impls_bins_binaries.tar.gz -C DRVFuzz     && find DRVFuzz/riscv_impls_bins -maxdepth 1 -type f -exec chmod +x {} +     && rm release_assets/riscv_impls_bins_binaries.tar.gz     && chown -R fuzz:fuzz /opt/drvfuzz
+#14 CACHED
+
+#15 [11/18] RUN cd /opt/drvfuzz/DRVFuzz/riscv_impls_bins     && for f in xiangshan_rv64 xiangshan_rv64_no_unaligned_rw xiangshan_rv64_ref_spike_so; do            ln -s /opt/xiangshan/$f $f;        done
+#15 CACHED
+
+#16 [15/18] COPY --chown=fuzz:fuzz docker/entrypoint.sh /usr/local/bin/drvfuzz-entrypoint
+#16 CACHED
+
+#17 [ 6/18] WORKDIR /opt/drvfuzz
+#17 CACHED
+
+#18 [12/18] WORKDIR /opt/drvfuzz/DRVFuzz
+#18 CACHED
+
+#19 [ 5/18] RUN curl -fsSL -o /tmp/rustup-init         "https://static.rust-lang.org/rustup/archive/1.29.2/x86_64-unknown-linux-gnu/rustup-init"     && echo "5be191e8c70a5007074254cb74d78dbfdd25cd5a61c27de7b8e5410122ec24f4  /tmp/rustup-init" | sha256sum -c -     && chmod +x /tmp/rustup-init     && /tmp/rustup-init -y --no-modify-path --profile minimal --default-toolchain 1.99.1     && rm /tmp/rustup-init     && chown -R fuzz:fuzz /opt/rustup /opt/cargo     && rustc --version && cargo --version
+#19 CACHED
+
+#20 [13/18] RUN cargo build --release --locked
+#20 CACHED
+
+#21 [ 3/18] RUN curl -fsSL -o /tmp/riscv-toolchain.tar.xz         "https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2026.08.27/riscv64-elf-ubuntu-24.04-gcc.tar.xz"     && echo "fe7dadf99dfaee59855b4be5f8d491dc66593bec295090e155a3ec51f0d14f56  /tmp/riscv-toolchain.tar.xz" | sha256sum -c -     && mkdir -p /opt/riscv     && tar -xJf /tmp/riscv-toolchain.tar.xz -C /opt/riscv --strip-components=1     && rm /tmp/riscv-toolchain.tar.xz     && /opt/riscv/bin/riscv64-unknown-elf-gcc --version | head -1     && /opt/riscv/bin/riscv64-unknown-elf-as --version | head -1
+#21 CACHED
+
+#22 [17/18] COPY --chown=fuzz:fuzz docker/check_xiangshan.sh /usr/local/bin/drvfuzz-check-xiangshan
+#22 CACHED
+
+#23 [18/18] COPY --chown=fuzz:fuzz docker/xs_report.py /usr/local/bin/drvfuzz-xs-report
+#23 DONE 0.0s
+
+#24 exporting to image
+#24 exporting layers 0.0s done
+#24 exporting manifest sha256:c1a374b379ad45de96c5fed08d73e9e013c5c89c0952e1a3c890f218bd393e2a done
+#24 exporting config sha256:583d543cdb7f9015103b2e495c1a6204c6af5e2bc6cfc450806559cae47fedf3 done
+#24 exporting attestation manifest sha256:5134d3ef0e0a86e8f10320e5bd9ef77e4466d70c836c5c541d9af865e1600ac6 done
+#24 exporting manifest list sha256:ea75adc53bc19a766942a5ca8ef4601df16661aeb039b5b0b2912d68c30a1447 done
+#24 naming to docker.io/library/drvfuzz:local done
+#24 DONE 0.0s
+
+#25 resolving provenance for metadata file
+#25 DONE 0.0s
+ Image drvfuzz:local Built 
+build exit=0

@@ -1,0 +1,7 @@
+/usr/local/bin/drvfuzz-xs-report
+usage: drvfuzz-xs-report [-h] [--log LOG] [--check-dir CHECK_DIR]
+                         [--xs-dir XS_DIR] [--out OUT] [--traces TRACES]
+                         [--max-file-mb MAX_FILE_MB]
+archive: /data/out/installed/xs_feedback_20261112T122025Z.tar.gz (3.4 MB)
+summary: /data/out/installed/xs_feedback_20261112T122025Z.summary.md
+smoke_spike exit=0

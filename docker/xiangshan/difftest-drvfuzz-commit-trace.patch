@@ -1,0 +1,148 @@
+DRVFuzz-compatible --dump-commit-trace for OpenXiangShan/difftest.
+
+DRVFuzz (DRVFuzz/src/impls/xiangshan/execute.rs) parses the emu commit trace and
+needs two things that upstream difftest does not print:
+  1. the register file of the destination: "dst x08" / "dst f03" / "dst v01"
+     instead of "dst 08";
+  2. the DUT memory writes: one "mem pc <pc> addr <addr> data <data> mask 0x<mask>"
+     line per 8-byte word written, printed when the store event reaches difftest
+     (StoreRecorder), only while the commit trace is enabled.
+Nothing else changes: the checks against the REF model are untouched.
+
+Made against difftest ecdf41e225a93699b9a1141ec4d0fc1ff485b890 (the submodule
+commit of XiangShan kunminghu-v3 182b2277c0e4115e39ae396f7d705bc4e20e0def);
+also applies to difftest 56a632a97abfec5c785c2a9ff70253f84b147625.
+Apply inside XiangShan/difftest:  git apply difftest-drvfuzz-commit-trace.patch
+
+diff --git a/src/test/csrc/difftest/checkers/instructions.cpp b/src/test/csrc/difftest/checkers/instructions.cpp
+index b9c934429..0736671c2 100644
+--- a/src/test/csrc/difftest/checkers/instructions.cpp
++++ b/src/test/csrc/difftest/checkers/instructions.cpp
+@@ -106,9 +106,10 @@ int InstrCommitChecker::check(const DifftestInstrCommit &probe) {
+ #endif
+   uint64_t commit_instr = probe.instr;
+   uint64_t commit_data = get_commit_data(&dut, index);
+-  state->record_inst(commit_pc, commit_instr, (probe.rfwen | probe.fpwen | probe.vecwen), probe.wdest, commit_data,
+-                     probe.skip != 0, probe.special & 0x1, probe.lqIdx, probe.sqIdx, probe.robIdx, probe.isLoad,
+-                     probe.isStore);
++  char dest_type = probe.fpwen ? 'f' : (probe.vecwen ? 'v' : 'x');
++  state->record_inst(commit_pc, commit_instr, (probe.rfwen | probe.fpwen | probe.vecwen), dest_type, probe.wdest,
++                     commit_data, probe.skip != 0, probe.special & 0x1, probe.lqIdx, probe.sqIdx, probe.robIdx,
++                     probe.isLoad, probe.isStore);
+ 
+ #ifdef FUZZING
+   // isExit
+diff --git a/src/test/csrc/difftest/checkers/store.cpp b/src/test/csrc/difftest/checkers/store.cpp
+index d7f38eb2a..35c10aefb 100644
+--- a/src/test/csrc/difftest/checkers/store.cpp
++++ b/src/test/csrc/difftest/checkers/store.cpp
+@@ -108,7 +108,7 @@ int StoreRecorder::check(const DifftestStoreEvent &probe) {
+                                                  probe.stamp
+ #endif // CONFIG_DIFFTEST_SQUASH
+         };
+-        state->store_event_queue.push(storeCommitLow);
++        state->record_store(storeCommitLow);
+       }
+ 
+       uint8_t commitHighMask = (flowMask >> 8) & 0xFF;
+@@ -132,7 +132,7 @@ int StoreRecorder::check(const DifftestStoreEvent &probe) {
+                                                   probe.stamp
+ #endif // CONFIG_DIFFTEST_SQUASH
+         };
+-        state->store_event_queue.push(storeCommitHigh);
++        state->record_store(storeCommitHigh);
+       }
+     }
+   } else if (wLine) {
+@@ -157,7 +157,7 @@ int StoreRecorder::check(const DifftestStoreEvent &probe) {
+                                             probe.stamp
+ #endif // CONFIG_DIFFTEST_SQUASH
+       };
+-      state->store_event_queue.push(storeCommit);
++      state->record_store(storeCommit);
+     }
+   } else {
+     // 1. check whether the store event crosses a 8B boundary.
+@@ -183,7 +183,7 @@ int StoreRecorder::check(const DifftestStoreEvent &probe) {
+                                                probe.stamp
+ #endif // CONFIG_DIFFTEST_SQUASH
+       };
+-      state->store_event_queue.push(storeCommitLow);
++      state->record_store(storeCommitLow);
+     }
+ 
+     uint8_t commitHighMask = (mask >> 8) & 0XFF;
+@@ -206,7 +206,7 @@ int StoreRecorder::check(const DifftestStoreEvent &probe) {
+                                                 probe.stamp
+ #endif // CONFIG_DIFFTEST_SQUASH
+       };
+-      state->store_event_queue.push(storeCommitHigh);
++      state->record_store(storeCommitHigh);
+     }
+   }
+ 
+diff --git a/src/test/csrc/difftest/diffstate.h b/src/test/csrc/difftest/diffstate.h
+index 9935d1d28..ce72cbdd6 100644
+--- a/src/test/csrc/difftest/diffstate.h
++++ b/src/test/csrc/difftest/diffstate.h
+@@ -42,6 +42,7 @@ protected:
+ class InstrTrace : public CommitTrace {
+ public:
+   uint8_t wen;
++  char dest_type; // register file of dest: 'x', 'f' or 'v'
+   uint8_t dest;
+   uint64_t data;
+   char tag;
+@@ -52,17 +53,17 @@ public:
+   uint8_t isStore;
+   uint8_t sqidx;
+ 
+-  InstrTrace(uint64_t pc, uint32_t inst, uint8_t wen, uint8_t dest, uint64_t data, uint8_t lqidx, uint8_t sqidx,
+-             uint16_t robidx, uint8_t isLoad, uint8_t isStore, bool skip = false, bool delayed = false)
++  InstrTrace(uint64_t pc, uint32_t inst, uint8_t wen, char dest_type, uint8_t dest, uint64_t data, uint8_t lqidx,
++             uint8_t sqidx, uint16_t robidx, uint8_t isLoad, uint8_t isStore, bool skip = false, bool delayed = false)
+       : CommitTrace(pc, inst), robidx(robidx), isLoad(isLoad), lqidx(lqidx), isStore(isStore), sqidx(sqidx), wen(wen),
+-        dest(dest), data(data), tag(get_tag(skip, delayed)) {}
++        dest_type(dest_type), dest(dest), data(data), tag(get_tag(skip, delayed)) {}
+   virtual inline const char *get_type() {
+     return "commit";
+   };
+ 
+ protected:
+   void display_custom() {
+-    Info(" wen %d dst %02d data %016lx idx %03x", wen, dest, data, robidx);
++    Info(" wen %d dst %c%02d data %016lx idx %03x", wen, dest_type, dest, data, robidx);
+     if (isLoad) {
+       Info(" (%02x)", lqidx);
+     }
+@@ -160,6 +161,16 @@ public:
+   } StoreCommit;
+ 
+   std::queue<StoreCommit> store_event_queue;
++
++  // Queue a DUT store for StoreChecker. With --dump-commit-trace, also print it as
++  // "mem pc <pc> addr <addr> data <data> mask 0x<mask>" (one 8-byte aligned word,
++  // mask bit i selects byte addr + i), so trace consumers see the DUT memory writes.
++  void record_store(const StoreCommit &store) {
++    store_event_queue.push(store);
++    if (dump_commit_trace) {
++      Info("mem pc %016lx addr %016lx data %016lx mask 0x%02x\n", store.pc, store.addr, store.data, store.mask);
++    }
++  }
+ #endif // CONFIG_DIFFTEST_STOREEVENT
+ 
+ #ifdef CONFIG_DIFFTEST_STOREHASHEVENT
+@@ -229,9 +240,10 @@ public:
+     }
+     retire_group_queue.push(std::make_pair(pc, count));
+   }
+-  void record_inst(uint64_t pc, uint32_t inst, uint8_t en, uint8_t dest, uint64_t data, bool skip, bool delayed,
+-                   uint8_t lqidx, uint8_t sqidx, uint16_t robidx, uint8_t isLoad, uint8_t isStore) {
+-    push_back_trace(new InstrTrace(pc, inst, en, dest, data, lqidx, sqidx, robidx, isLoad, isStore, skip, delayed));
++  void record_inst(uint64_t pc, uint32_t inst, uint8_t en, char dest_type, uint8_t dest, uint64_t data, bool skip,
++                   bool delayed, uint8_t lqidx, uint8_t sqidx, uint16_t robidx, uint8_t isLoad, uint8_t isStore) {
++    push_back_trace(
++        new InstrTrace(pc, inst, en, dest_type, dest, data, lqidx, sqidx, robidx, isLoad, isStore, skip, delayed));
+   };
+   void record_exception(uint64_t pc, uint32_t inst, uint64_t cause) {
+     push_back_trace(new ExceptionTrace(pc, inst, cause));

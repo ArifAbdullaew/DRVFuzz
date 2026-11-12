@@ -1,0 +1,21 @@
+### A) default compose (no XiangShan mount)
+lrwxrwxrwx 1 root root        29 Nov 11 19:16 xiangshan_rv64 -> /opt/xiangshan/xiangshan_rv64
+lrwxrwxrwx 1 root root        45 Nov 11 19:16 xiangshan_rv64_no_unaligned_rw -> /opt/xiangshan/xiangshan_rv64_no_unaligned_rw
+lrwxrwxrwx 1 root root        42 Nov 11 19:16 xiangshan_rv64_ref_spike_so -> /opt/xiangshan/xiangshan_rv64_ref_spike_so
+no XS vars set
+== 1. files
+FAIL: RISCV_WRAPPER_XS_EMU is not set: /opt/xiangshan/ is not mounted or lacks the file (see docker-compose.xiangshan.yml)
+check_exit=1
+### B) override with empty XS_DIR
+== 1. files
+FAIL: RISCV_WRAPPER_XS_EMU is not set: /opt/xiangshan/ is not mounted or lacks the file (see docker-compose.xiangshan.yml)
+check_exit=1
+### C) override without XS_DIR
+error while interpolating services.drvfuzz.volumes.[]: required variable XS_DIR is missing a value: set XS_DIR to the directory with the XiangShan emu and reference .so
+### D) regression: smoke + diff 5
+smoke_spike exit=0
+diff_spike_rocket exit=0
+RISCV_WRAPPER_XS_DIFF_SO=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/xiangshan_rv64_ref_spike_so
+RISCV_WRAPPER_XS_EMU=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/xiangshan_rv64
+RISCV_WRAPPER_XS_EMU_NO_UNALIGNED_RW=/opt/drvfuzz/DRVFuzz/riscv_impls_bins/xiangshan_rv64_no_unaligned_rw
+touch: cannot touch '/opt/xiangshan/x': Read-only file system

@@ -16,4 +16,27 @@ release_assets/*.tar
 release_assets/*.tar.gz
 release_assets/*.tgz
 release_assets/*.zip
-CLAUDE.MD
+CLAUDE.md
+
+# Scratch run directory used by the README examples
+DRVFuzz/temp/
+
+# XiangShan server build (docker/XIANGSHAN_SERVER.md): sources and caches,
+# built emu, and the archives carried into the isolated environment
+/xiangshan-build/
+/xs-out/
+/drvfuzz-image.tar.gz
+/xs-env-image.tar.gz
+/xiangshan-build.tar.gz
+/xs-out.tar.gz
+/drvfuzz-repo.bundle
+/SHA256SUMS
+
+# Run outputs (docker/README.md): regenerated on every test run and fuzzing
+# campaign. Keep only the report, the logs and the small sample trace the docs
+# point to; the diff driver output of a campaign stays local.
+artifacts/*
+!artifacts/REPORT.md
+!artifacts/logs/
+!artifacts/xiangshan_patch/
+artifacts/logs/xs_diff.log

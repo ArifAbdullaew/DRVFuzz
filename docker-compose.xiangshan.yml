@@ -1,0 +1,14 @@
+# Optional override that makes a XiangShan emulator available to DRVFuzz.
+#
+#   XS_DIR=/path/to/xs docker compose -f docker-compose.yml -f docker-compose.xiangshan.yml run --rm drvfuzz ...
+#
+# $XS_DIR holds the files named in DRVFuzz/scripts/setup_riscv_env.sh, as produced by
+# docker/xiangshan/build_emu.sh:
+#   xiangshan_rv64                   emu used when unaligned access is allowed (RISCV_WRAPPER_XS_EMU)
+#   xiangshan_rv64_ref_spike_so      difftest reference model .so (RISCV_WRAPPER_XS_DIFF_SO)
+#   xiangshan_rv64_no_unaligned_rw   optional, emu used otherwise (RISCV_WRAPPER_XS_EMU_NO_UNALIGNED_RW)
+# See docker/README.md, section "XiangShan".
+services:
+  drvfuzz:
+    volumes:
+      - ${XS_DIR:?set XS_DIR to the directory with the XiangShan emu and reference .so}:/opt/xiangshan:ro
