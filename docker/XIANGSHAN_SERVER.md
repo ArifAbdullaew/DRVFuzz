@@ -244,7 +244,7 @@ $XS run --rm drvfuzz drvfuzz-xs-report /artifacts/diff_spike_xiangshan --log /ar
 | сборка в контуре пытается что-то скачать | снаружи не был выполнен прогон с `XS_OFFLINE=1` (шаг 1.2) |
 | `difftest is at …, expected ecdf41e…` | `xiangshan-build` от другой ревизии — пересоздать по шагу 1.2 |
 | `sha256sum: … FAILED` для эталонной модели (`riscv64-nemu-interpreter-so` / `riscv64-spike-so`) | повреждён `ready-to-run` в `xiangshan-build` |
-| `emu end state: ABORT` после 1–2 commit на `pc 0x10000000` | эталонная модель не принимает загрузочный код XiangShan; поставить NEMU: `XS_SKIP_BUILD=1 XS_REF=nemu docker/xiangshan/build_emu.sh …` |
+| `emu end state: ABORT` после 1–2 commit на `pc 0x10000000` (например, `tinfo different`) | эталонная модель расходится с XiangShan в CSR; поставить NEMU: `XS_SKIP_BUILD=1 XS_REF=nemu docker/xiangshan/build_emu.sh …` |
 | `RISCV_WRAPPER_XS_EMU is not set` | не задан `XS_DIR` или не указан `-f docker-compose.xiangshan.yml` |
 | `unresolved libraries for …` | `emu` собран в окружении, отличном от образа; собирать через `build_emu.sh` (xs-env на Ubuntu 24.04) |
 | `Permission denied` при записи в `/artifacts` | UID в образе не совпадает с серверным — пересобрать образ по шагу 1.1 с правильным `USER_UID` |

@@ -278,8 +278,9 @@ docker/xiangshan/build_emu.sh /data/xiangshan-build
    Второй — эталонная модель difftest из `ready-to-run`, SHA-256 проверяется:
    по умолчанию NEMU (`riscv64-nemu-interpreter-so`, как в примерах
    XiangShan), `XS_REF=spike` — `riscv64-spike-so`. Имя файла задано DRVFuzz
-   и от модели не зависит. Spike из `ready-to-run` останавливал `emu` на первой
-   инструкции загрузочного кода XiangShan (запись в CSR `mnstatus`). Туда же
+   и от модели не зависит. Со Spike из `ready-to-run` `emu` останавливался после первой
+   инструкции: `tinfo different … right = 0x40, wrong = 0x01000040` — XiangShan
+   сообщает Sdtrig 1.0 (поле `version`), а этот Spike — нет. Туда же
    пишется `BUILD_INFO.txt`. Лог сборки — `<WORK_DIR>/build_emu.log`.
 
 Учтите, что `xs-env` сам скачивает GraalVM JDK (`latest`) и исходники Verilator
