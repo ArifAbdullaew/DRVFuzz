@@ -1,0 +1,72 @@
+XiangShan changes for DRVFuzz (apply in the XiangShan checkout: git apply xiangshan-drvfuzz.patch).
+
+DRVFuzz attributes every register write to the PC of the instruction that made
+it, so it needs one difftest commit per instruction, and all commits before the
+good trap:
+  1. Configs.scala: DRVFuzzMinimalConfig / DRVFuzzDefaultConfig = MinimalConfig /
+     DefaultConfig with EnableRobCompression = false (like the existing
+     NoRobCompressionConfig). With ROB compression several instructions commit
+     as one difftest entry and only the group head is reported.
+  2. Rob.scala: DiffTrapEvent gets delay = 3 like DiffInstrCommit. Otherwise the
+     trap reaches difftest 3 cycles before the last commits, and the emu exits
+     without reporting them.
+  3. CSRCustom.scala: srnctl.FUSION_ENABLE resets to 0, so instruction fusion
+     is off; a fused pair also commits as one instruction.
+Observed on the server with the unpatched core: a DRVFuzz program of ~30
+instructions produced 16 commit lines; the 5 instructions from lui to add were
+one entry, and nothing after the sd before HIT GOOD TRAP.
+
+Made against XiangShan 182b2277c0e4115e39ae396f7d705bc4e20e0def (kunminghu-v3).
+
+diff --git a/src/main/scala/top/Configs.scala b/src/main/scala/top/Configs.scala
+index d1516ec..d189457 100644
+--- a/src/main/scala/top/Configs.scala
++++ b/src/main/scala/top/Configs.scala
+@@ -586,6 +586,20 @@ class NoRobCompressionConfig(n: Int = 1) extends Config(
+   })
+ )
+ 
++// DRVFuzz: one difftest commit per instruction, so that every register write
++// appears in the commit trace (ROB compression reports only the group head).
++class DRVFuzzMinimalConfig(n: Int = 1) extends Config(
++  new MinimalConfig(n).alter((site, here, up) => {
++    case XSTileKey => up(XSTileKey).map(_.copy(EnableRobCompression = false))
++  })
++)
++
++class DRVFuzzDefaultConfig(n: Int = 1) extends Config(
++  new DefaultConfig(n).alter((site, here, up) => {
++    case XSTileKey => up(XSTileKey).map(_.copy(EnableRobCompression = false))
++  })
++)
++
+ class CVMConfig(n: Int = 1) extends Config(
+   new CVMCompile
+     ++ new DefaultConfig(n)
+diff --git a/src/main/scala/xiangshan/backend/fu/NewCSR/CSRCustom.scala b/src/main/scala/xiangshan/backend/fu/NewCSR/CSRCustom.scala
+index 93f25c5..4e1f3bc 100644
+--- a/src/main/scala/xiangshan/backend/fu/NewCSR/CSRCustom.scala
++++ b/src/main/scala/xiangshan/backend/fu/NewCSR/CSRCustom.scala
+@@ -120,7 +120,7 @@ class SmblockctlBundle extends CSRBundle {
+ class SrnctlBundle extends CSRBundle {
+   val HIGH_DENSITY_ROB_COMPRESSION_ENABLE = RW(4).withReset(true.B).withDescription("Enable high-density ROB compression.")
+   val WFI_ENABLE     = RW(2).withReset(true.B).withDescription("Enable WFI execution.")
+-  val FUSION_ENABLE  = RW(0).withReset(true.B).withDescription("Enable instruction fusion.")
++  val FUSION_ENABLE  = RW(0).withReset(false.B).withDescription("Enable instruction fusion.") // DRVFuzz: off, a fused pair commits as one instruction
+ }
+ 
+ class McorepwrBundle extends CSRBundle {
+diff --git a/src/main/scala/xiangshan/backend/rob/Rob.scala b/src/main/scala/xiangshan/backend/rob/Rob.scala
+index 37426ec..d932462 100644
+--- a/src/main/scala/xiangshan/backend/rob/Rob.scala
++++ b/src/main/scala/xiangshan/backend/rob/Rob.scala
+@@ -2300,7 +2300,8 @@ class RobImp(override val wrapper: Rob)(implicit p: Parameters, params: BackendP
+       out.commits.isCommit && valid && uop.isXSTrap
+     }
+     val hitTrap = trapVec.reduce(_ || _)
+-    val difftest = DifftestModule(new DiffTrapEvent, dontCare = true)
++    // Same delay as DiffInstrCommit, so the commits before the trap reach difftest before it stops.
++    val difftest = DifftestModule(new DiffTrapEvent, delay = 3, dontCare = true)
+     difftest.coreid := in.hartId
+     difftest.hasTrap := hitTrap
+     difftest.cycleCnt := timer

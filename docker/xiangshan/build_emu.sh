@@ -7,8 +7,10 @@
 #
 # Environment:
 #   XS_DIR        output directory (required)
-#   XS_CONFIG     XiangShan config, default DefaultConfig (~100 GB RAM for Verilator,
-#                 see XiangShan README); MinimalConfig builds with less
+#   XS_CONFIG     XiangShan config, default DRVFuzzDefaultConfig (~100 GB RAM for
+#                 Verilator, see XiangShan README); DRVFuzzMinimalConfig builds
+#                 with less. Both come from xiangshan-drvfuzz.patch: Default /
+#                 MinimalConfig without ROB compression
 #   JOBS          parallel C++ compile jobs, default 16
 #   EMU_THREADS   Verilator model threads, default 8
 #   XS_NATIVE=1   build with the tools already on this host (an xs-env setup)
@@ -23,7 +25,8 @@
 # Steps:
 #   1. xs-env Docker image (official XiangShan build environment), pinned commit
 #   2. XiangShan at a pinned commit, `make init` (submodules)
-#   3. difftest-drvfuzz-commit-trace.patch applied to XiangShan/difftest
+#   3. xiangshan-drvfuzz.patch applied to XiangShan, difftest-drvfuzz-commit-trace.patch
+#      to XiangShan/difftest
 #   4. `make emu CONFIG=$XS_CONFIG`
 #   5. $XS_DIR/xiangshan_rv64 (emu) and $XS_DIR/xiangshan_rv64_ref_spike_so
 #      (ready-to-run/riscv64-nemu-interpreter-so or riscv64-spike-so, SHA-256
@@ -43,11 +46,12 @@ case "${XS_REF:-nemu}" in
 esac
 
 : "${XS_DIR:?set XS_DIR to the output directory}"
-XS_CONFIG="${XS_CONFIG:-DefaultConfig}"
+XS_CONFIG="${XS_CONFIG:-DRVFuzzDefaultConfig}"
 JOBS="${JOBS:-16}"
 EMU_THREADS="${EMU_THREADS:-8}"
 WORK="$(mkdir -p "${1:-$PWD/xiangshan-build}" && cd "${1:-$PWD/xiangshan-build}" && pwd)"
 PATCH="$(cd "$(dirname "$0")" && pwd)/difftest-drvfuzz-commit-trace.patch"
+XS_PATCH="$(cd "$(dirname "$0")" && pwd)/xiangshan-drvfuzz.patch"
 IMAGE="drvfuzz-xs-env:${XS_ENV_COMMIT:0:12}"
 mkdir -p "$XS_DIR"
 exec > >(tee -a "$WORK/build_emu.log") 2>&1
@@ -103,12 +107,17 @@ fi
 actual=$(git -C "$WORK/XiangShan/difftest" rev-parse HEAD)
 [[ "$actual" == "$DIFFTEST_COMMIT" ]] || { echo "difftest is at $actual, expected $DIFFTEST_COMMIT"; exit 1; }
 
-echo "== 3. difftest patch"
-if git -C "$WORK/XiangShan/difftest" apply --reverse --check "$PATCH" 2>/dev/null; then
-    echo "already applied"
-else
-    git -C "$WORK/XiangShan/difftest" apply "$PATCH"
-fi
+apply_patch() { # repo patch
+    if git -C "$1" apply --reverse --check "$2" 2>/dev/null; then
+        echo "$(basename "$2"): already applied"
+    else
+        git -C "$1" apply "$2"
+    fi
+}
+echo "== 3. patches"
+apply_patch "$WORK/XiangShan" "$XS_PATCH"
+apply_patch "$WORK/XiangShan/difftest" "$PATCH"
+git -C "$WORK/XiangShan" diff --stat -- src
 git -C "$WORK/XiangShan/difftest" diff --stat
 
 if [[ "${XS_SKIP_BUILD:-0}" == 1 ]]; then
@@ -132,7 +141,8 @@ install -m 0755 "$emu" "$XS_DIR/xiangshan_rv64"
 install -m 0644 "$ref" "$XS_DIR/xiangshan_rv64_ref_spike_so"
 cat >"$XS_DIR/BUILD_INFO.txt" <<EOF
 built: $(date -u +%FT%TZ) on $(hostname)
-XiangShan: $XIANGSHAN_COMMIT  CONFIG=$XS_CONFIG EMU_THREADS=$EMU_THREADS
+XiangShan: $XIANGSHAN_COMMIT + $(basename "$XS_PATCH") (sha256 $(sha256sum "$XS_PATCH" | cut -d' ' -f1))
+CONFIG=$XS_CONFIG EMU_THREADS=$EMU_THREADS$([[ "${XS_SKIP_BUILD:-0}" == 1 ]] && echo " (XS_SKIP_BUILD=1: as passed, not checked against the built emu)")
 difftest: $DIFFTEST_COMMIT + $(basename "$PATCH") (sha256 $(sha256sum "$PATCH" | cut -d' ' -f1))
 xs-env: $XS_ENV_COMMIT (native=${XS_NATIVE:-0})
 reference: ready-to-run/$REF_SO_NAME sha256 $REF_SO_SHA256 (installed as xiangshan_rv64_ref_spike_so)

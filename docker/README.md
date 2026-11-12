@@ -252,6 +252,28 @@ misaligned (`0x4`/`0x6`) встретились в 12 из 13 тестов. Xian
   `EnvVarNotSet { var: "RISCV_WRAPPER_XS_EMU_NO_UNALIGNED_RW" }` вместо ложных
   расхождений.
 
+### Патч XiangShan
+
+Первый запуск на сервере (`MinimalConfig` без патча XiangShan) показал, что
+штатное ядро сообщает в difftest не все инструкции. Программа DRVFuzz
+примерно из 30 инструкций дала 16 строк трассы: пять инструкций от `lui` до
+`add` ушли одной записью, а после `sd` до `HIT GOOD TRAP` не было ничего.
+[`xiangshan/xiangshan-drvfuzz.patch`](xiangshan/xiangshan-drvfuzz.patch)
+(3 файла, +17/−2) это исправляет:
+
+- `DRVFuzzMinimalConfig` / `DRVFuzzDefaultConfig` — `MinimalConfig` /
+  `DefaultConfig` с `EnableRobCompression = false`, как штатный
+  `NoRobCompressionConfig`. При сжатии ROB несколько инструкций коммитятся
+  одной записью, и в трассе виден только первый PC группы.
+- `DiffTrapEvent` получает `delay = 3`, как у `DiffInstrCommit`. Иначе trap
+  доходит до difftest на 3 такта раньше последних коммитов, и `emu` выходит,
+  не напечатав их.
+- `srnctl.FUSION_ENABLE` по умолчанию 0: слияние пар инструкций выключено.
+  Слитая пара тоже коммитится как одна инструкция.
+
+Это меняет микроархитектуру: ошибки в логике сжатия ROB и слияния инструкций
+такой сборкой не найти.
+
 ### Сборка `emu` на сервере
 
 Нужен сервер x86-64 с git и Docker; образ DRVFuzz тоже amd64.
@@ -260,7 +282,7 @@ misaligned (`0x4`/`0x6`) встретились в 12 из 13 тестов. Xian
 export XS_DIR=/data/xs              # куда положить emu и reference .so
 docker/xiangshan/build_emu.sh /data/xiangshan-build
 # для пробы быстрее и с меньшим объёмом памяти:
-# XS_CONFIG=MinimalConfig docker/xiangshan/build_emu.sh /data/xiangshan-build
+# XS_CONFIG=DRVFuzzMinimalConfig docker/xiangshan/build_emu.sh /data/xiangshan-build
 ```
 
 [`xiangshan/build_emu.sh`](xiangshan/build_emu.sh) делает следующее:
@@ -270,10 +292,11 @@ docker/xiangshan/build_emu.sh /data/xiangshan-build
    `XS_NATIVE=1` — собирать инструментами, уже установленными на хосте.
 2. Клонирует XiangShan `kunminghu-v3` на коммите `182b227` и выполняет
    `make init`. Затем проверяет, что difftest стоит на `ecdf41e`.
-3. Применяет патч к `difftest`. При повторном запуске уже применённый патч
-   пропускается.
+3. Применяет два патча: `xiangshan-drvfuzz.patch` к XiangShan и
+   `difftest-drvfuzz-commit-trace.patch` к `difftest`. При повторном запуске уже
+   применённые патчи пропускаются.
 4. Выполняет `make emu CONFIG=$XS_CONFIG EMU_THREADS=$EMU_THREADS -j$JOBS`
-   (по умолчанию `DefaultConfig`, 8, 16) в контейнере xs-env, без root.
+   (по умолчанию `DRVFuzzDefaultConfig`, 8, 16) в контейнере xs-env, без root.
 5. Кладёт в `$XS_DIR` файлы `xiangshan_rv64` и `xiangshan_rv64_ref_spike_so`.
    Второй — эталонная модель difftest из `ready-to-run`, SHA-256 проверяется:
    по умолчанию NEMU (`riscv64-nemu-interpreter-so`, как в примерах
@@ -340,12 +363,10 @@ docker compose -f docker-compose.yml -f docker-compose.xiangshan.yml run --rm dr
 
 Оставшиеся риски, которые выявит шаг 4 или `--diff`:
 
-- **Слияние инструкций.** XiangShan коммитит пару слитых инструкций одной
-  записью (`nFused`), и запись регистра относится к PC первой из них. Если
-  DRVFuzz сгенерирует такую пару, возможны ложные расхождения.
-- **Последние store'ы.** Store попадает в лог при переходе в `Sbuffer`. Шаблон
-  DRVFuzz ставит перед good trap несколько инструкций паддинга, но потерю
-  последнего store до выхода `emu` здесь проверить нельзя.
+- **Store'ы.** Store попадает в лог при переходе в `Sbuffer`. На сервере store
+  из проверочной программы записался с правильными PC, адресом и данными,
+  память совпала со Spike. Как ведут себя store'ы в длинных программах, покажет
+  `--diff`.
 - **Расхождение DUT и REF.** Штатный difftest останавливает `emu` на первом
   расхождении с REF. Трасса до этой точки сохраняется, и DRVFuzz покажет
   расхождение со Spike на следующих инструкциях.

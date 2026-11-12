@@ -24,7 +24,7 @@
 | Что | Зачем | Как |
 |---|---|---|
 | Архитектура `x86_64` | образ DRVFuzz и `emu` собираются под amd64 | `uname -m` |
-| ОЗУ и ядра | `DefaultConfig` требует около 128 ГБ, `MinimalConfig` меньше | `free -g`, `nproc` |
+| ОЗУ и ядра | `DRVFuzzDefaultConfig` требует около 128 ГБ, `DRVFuzzMinimalConfig` меньше | `free -g`, `nproc` |
 | Docker с BuildKit и Compose v2 | всё запускается через `docker compose` | `docker version`, `docker compose version` |
 | UID/GID пользователя, от которого будет запуск | контейнер пишет в `artifacts/` от этого UID | `id -u`, `id -g` |
 | Свободное место | архивы и сборка XiangShan — десятки ГБ | `df -h` |
@@ -132,7 +132,7 @@ XS_OFFLINE=1 JOBS=$(nproc) EMU_THREADS=8 docker/xiangshan/build_emu.sh /data/xia
 cat $XS_DIR/BUILD_INFO.txt
 ```
 
-Для первой пробы можно задать `XS_CONFIG=MinimalConfig`: так быстрее и
+Для первой пробы можно задать `XS_CONFIG=DRVFuzzMinimalConfig`: так быстрее и
 требуется меньше памяти. Лог сборки — `/data/xiangshan-build/build_emu.log`.
 
 ### 3.2. Готовность (минуты)
