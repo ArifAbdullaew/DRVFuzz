@@ -16,6 +16,7 @@
 #   XS_OFFLINE=1  no downloads: WORK_DIR and the xs-env image must already be
 #                 prepared by an online run; the build container gets
 #                 --network none (see docker/XIANGSHAN_SERVER.md)
+#   XS_SKIP_BUILD=1 skip `make emu`, only (re)install an already built emu
 #
 # Steps:
 #   1. xs-env Docker image (official XiangShan build environment), pinned commit
@@ -100,13 +101,22 @@ else
 fi
 git -C "$WORK/XiangShan/difftest" diff --stat
 
-echo "== 4. make emu CONFIG=$XS_CONFIG"
-in_xs_env make emu CONFIG="$XS_CONFIG" EMU_THREADS="$EMU_THREADS" -j"$JOBS"
+if [[ "${XS_SKIP_BUILD:-0}" == 1 ]]; then
+    echo "== 4. skipped (XS_SKIP_BUILD=1)"
+else
+    echo "== 4. make emu CONFIG=$XS_CONFIG"
+    in_xs_env make emu CONFIG="$XS_CONFIG" EMU_THREADS="$EMU_THREADS" -j"$JOBS"
+fi
 
 echo "== 5. install into $XS_DIR"
 ref="$WORK/XiangShan/ready-to-run/riscv64-spike-so"
 echo "$REF_SO_SHA256  $ref" | sha256sum -c -
-install -m 0755 "$WORK/XiangShan/build/emu" "$XS_DIR/xiangshan_rv64"
+# difftest links build/emu to the binary with an absolute path, which is
+# /xs/... when built in the container; take the Verilator output directly.
+emu="$WORK/XiangShan/build/verilator-compile/emu"
+[[ -x "$emu" ]] || emu="$WORK/XiangShan/build/emu"
+[[ -x "$emu" ]] || { echo "no built emu in $WORK/XiangShan/build"; exit 1; }
+install -m 0755 "$emu" "$XS_DIR/xiangshan_rv64"
 install -m 0644 "$ref" "$XS_DIR/xiangshan_rv64_ref_spike_so"
 cat >"$XS_DIR/BUILD_INFO.txt" <<EOF
 built: $(date -u +%FT%TZ) on $(hostname)
