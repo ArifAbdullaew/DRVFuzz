@@ -65,13 +65,29 @@ if [[ "${XS_NATIVE:-0}" != 1 ]]; then
     fi
 fi
 
+# Run a command in the XiangShan checkout: natively, or in the xs-env image
+# (the host then needs only git and Docker). Non-root, only the checkout is
+# mounted; HOME inside it keeps the mill/coursier caches with the sources.
+in_xs_env() {
+    if [[ "${XS_NATIVE:-0}" == 1 ]]; then
+        (cd "$WORK/XiangShan" && NOOP_HOME="$WORK/XiangShan" "$@")
+    else
+        local net=()
+        [[ "$OFFLINE" == 1 ]] && net=(--network none)
+        mkdir -p "$WORK/XiangShan/.home"
+        docker run --rm "${net[@]}" --user "$(id -u):$(id -g)" \
+            -v "$WORK/XiangShan:/xs" -w /xs -e NOOP_HOME=/xs -e HOME=/xs/.home \
+            "$IMAGE" "$@"
+    fi
+}
+
 echo "== 2. XiangShan $XIANGSHAN_COMMIT"
 checkout https://github.com/OpenXiangShan/XiangShan.git "$WORK/XiangShan" "$XIANGSHAN_COMMIT"
 if [[ "$OFFLINE" == 1 ]]; then
     git -C "$WORK/XiangShan" submodule status --recursive | grep -q '^-' \
         && { echo "offline: uninitialized submodules in $WORK/XiangShan"; exit 1; }
 else
-    make -C "$WORK/XiangShan" init
+    in_xs_env make init
 fi
 actual=$(git -C "$WORK/XiangShan/difftest" rev-parse HEAD)
 [[ "$actual" == "$DIFFTEST_COMMIT" ]] || { echo "difftest is at $actual, expected $DIFFTEST_COMMIT"; exit 1; }
@@ -85,16 +101,7 @@ fi
 git -C "$WORK/XiangShan/difftest" diff --stat
 
 echo "== 4. make emu CONFIG=$XS_CONFIG"
-build=(make emu CONFIG="$XS_CONFIG" EMU_THREADS="$EMU_THREADS" -j"$JOBS")
-if [[ "${XS_NATIVE:-0}" == 1 ]]; then
-    (cd "$WORK/XiangShan" && NOOP_HOME="$WORK/XiangShan" "${build[@]}")
-else
-    # Non-root, only the XiangShan checkout mounted; HOME inside it for mill/coursier caches.
-    net=(); [[ "$OFFLINE" == 1 ]] && net=(--network none)
-    docker run --rm "${net[@]}" --user "$(id -u):$(id -g)" \
-        -v "$WORK/XiangShan:/xs" -w /xs -e NOOP_HOME=/xs -e HOME=/xs/.home \
-        "$IMAGE" "${build[@]}"
-fi
+in_xs_env make emu CONFIG="$XS_CONFIG" EMU_THREADS="$EMU_THREADS" -j"$JOBS"
 
 echo "== 5. install into $XS_DIR"
 ref="$WORK/XiangShan/ready-to-run/riscv64-spike-so"
