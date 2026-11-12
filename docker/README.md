@@ -275,7 +275,11 @@ docker/xiangshan/build_emu.sh /data/xiangshan-build
 4. Выполняет `make emu CONFIG=$XS_CONFIG EMU_THREADS=$EMU_THREADS -j$JOBS`
    (по умолчанию `DefaultConfig`, 8, 16) в контейнере xs-env, без root.
 5. Кладёт в `$XS_DIR` файлы `xiangshan_rv64` и `xiangshan_rv64_ref_spike_so`.
-   Второй — это `ready-to-run/riscv64-spike-so`, SHA-256 проверяется. Туда же
+   Второй — эталонная модель difftest из `ready-to-run`, SHA-256 проверяется:
+   по умолчанию NEMU (`riscv64-nemu-interpreter-so`, как в примерах
+   XiangShan), `XS_REF=spike` — `riscv64-spike-so`. Имя файла задано DRVFuzz
+   и от модели не зависит. Spike из `ready-to-run` останавливал `emu` на первой
+   инструкции загрузочного кода XiangShan (запись в CSR `mnstatus`). Туда же
    пишется `BUILD_INFO.txt`. Лог сборки — `<WORK_DIR>/build_emu.log`.
 
 Учтите, что `xs-env` сам скачивает GraalVM JDK (`latest`) и исходники Verilator

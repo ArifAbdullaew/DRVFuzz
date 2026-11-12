@@ -17,6 +17,8 @@
 #                 prepared by an online run; the build container gets
 #                 --network none (see docker/XIANGSHAN_SERVER.md)
 #   XS_SKIP_BUILD=1 skip `make emu`, only (re)install an already built emu
+#   XS_REF        difftest reference model run inside the emu: nemu (default,
+#                 the one XiangShan's own examples use) or spike
 #
 # Steps:
 #   1. xs-env Docker image (official XiangShan build environment), pinned commit
@@ -24,13 +26,21 @@
 #   3. difftest-drvfuzz-commit-trace.patch applied to XiangShan/difftest
 #   4. `make emu CONFIG=$XS_CONFIG`
 #   5. $XS_DIR/xiangshan_rv64 (emu) and $XS_DIR/xiangshan_rv64_ref_spike_so
-#      (ready-to-run/riscv64-spike-so, SHA-256 checked) + BUILD_INFO.txt
+#      (ready-to-run/riscv64-nemu-interpreter-so or riscv64-spike-so, SHA-256
+#      checked) + BUILD_INFO.txt
 set -euo pipefail
 
 XS_ENV_COMMIT=7507284549cccbd9217dfbc7c690475435ba8527
 XIANGSHAN_COMMIT=182b2277c0e4115e39ae396f7d705bc4e20e0def # kunminghu-v3, 2026-11-11
 DIFFTEST_COMMIT=ecdf41e225a93699b9a1141ec4d0fc1ff485b890  # its difftest submodule
-REF_SO_SHA256=45329fdec4c8ae8cfd3f931cdd2636745d0575c6179cc4cc0f90576c340442eb # ready-to-run 4cf9983 riscv64-spike-so
+# Reference models in ready-to-run 4cf9983569432035d41956c65e6a58724b5954be
+case "${XS_REF:-nemu}" in
+    nemu) REF_SO_NAME=riscv64-nemu-interpreter-so
+          REF_SO_SHA256=9188e7dda30709962f0bfbc1dd87cea73d88a18c92c30892f93ed529c22def43 ;;
+    spike) REF_SO_NAME=riscv64-spike-so
+           REF_SO_SHA256=45329fdec4c8ae8cfd3f931cdd2636745d0575c6179cc4cc0f90576c340442eb ;;
+    *) echo "XS_REF must be nemu or spike"; exit 1 ;;
+esac
 
 : "${XS_DIR:?set XS_DIR to the output directory}"
 XS_CONFIG="${XS_CONFIG:-DefaultConfig}"
@@ -109,7 +119,9 @@ else
 fi
 
 echo "== 5. install into $XS_DIR"
-ref="$WORK/XiangShan/ready-to-run/riscv64-spike-so"
+# Installed under the file name DRVFuzz/scripts/setup_riscv_env.sh looks for,
+# whichever model it is.
+ref="$WORK/XiangShan/ready-to-run/$REF_SO_NAME"
 echo "$REF_SO_SHA256  $ref" | sha256sum -c -
 # difftest links build/emu to the binary with an absolute path, which is
 # /xs/... when built in the container; take the Verilator output directly.
@@ -123,7 +135,7 @@ built: $(date -u +%FT%TZ) on $(hostname)
 XiangShan: $XIANGSHAN_COMMIT  CONFIG=$XS_CONFIG EMU_THREADS=$EMU_THREADS
 difftest: $DIFFTEST_COMMIT + $(basename "$PATCH") (sha256 $(sha256sum "$PATCH" | cut -d' ' -f1))
 xs-env: $XS_ENV_COMMIT (native=${XS_NATIVE:-0})
-reference: ready-to-run/riscv64-spike-so sha256 $REF_SO_SHA256
+reference: ready-to-run/$REF_SO_NAME sha256 $REF_SO_SHA256 (installed as xiangshan_rv64_ref_spike_so)
 xiangshan_rv64_no_unaligned_rw: not built (see docker/README.md, XiangShan)
 EOF
 ls -l "$XS_DIR"

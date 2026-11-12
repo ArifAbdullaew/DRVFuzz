@@ -94,10 +94,16 @@ exec_pair() {
         if (( total > 0 && parsed == 0 )); then
             fail "commit trace has no 'dst x08'-style lines: the emu was built without docker/xiangshan/difftest-drvfuzz-commit-trace.patch"
         fi
+        end=$(sed 's/\x1b\[[0-9;]*m//g' "$trace" | grep -o -E 'HIT GOOD TRAP|HIT BAD TRAP|ABORT|EXCEEDING CYCLE/INSTR LIMIT|SOME SIGNAL STOPS THE PROGRAM' | tail -1)
+        echo "emu end state: ${end:-none}"
+        if [[ "$end" != "HIT GOOD TRAP" ]]; then
+            echo "emu log without commit/store lines (last 40):"
+            sed 's/\x1b\[[0-9;]*m//g' "$trace" | grep -v -E '^\[[0-9]+\] commit pc |^mem pc ' | tail -40 | sed 's/^/   emu: /'
+            fail "emu stopped with '${end:-no end state}' after $total commits, before the DRVFuzz program finished (log above, full log in $OUT/runs.tar.gz)"
+        fi
         if (( total > 0 && mem == 0 )); then
             fail "no 'mem pc' store lines although the program stores: the emu was built without docker/xiangshan/difftest-drvfuzz-commit-trace.patch"
         fi
-        grep -m3 -i -E 'mismatch|different at|ABORT' "$trace" | sed 's/^/   emu: /'
     fi
     (( rc == 0 )) || fail "DRVFuzz exec on XiangShan failed: $(tail -2 "$WORK/$name/xs.log" | cut -c1-400)"
 
