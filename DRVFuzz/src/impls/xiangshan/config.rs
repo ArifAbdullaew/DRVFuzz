@@ -102,6 +102,13 @@ _start:
     csrw    mstatus, t0
     csrw    fcsr, x0
 
+    # Relax PMP as the Spike and BOOM templates do: XiangShan resets with PMP off,
+    # so S/U and HLV/HSV accesses would fault where Spike's grant everything
+    li      t0, -1
+    csrw    pmpaddr0, t0
+    li      t0, 0x1f             # R|W|X | A=NAPOT
+    csrw    pmpcfg0, t0
+
     j       user_code
 
 user_code:

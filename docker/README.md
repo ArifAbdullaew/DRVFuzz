@@ -274,6 +274,18 @@ misaligned (`0x4`/`0x6`) встретились в 12 из 13 тестов. Xian
 Это меняет микроархитектуру: ошибки в логике сжатия ROB и слияния инструкций
 такой сборкой не найти.
 
+### Шаблон программы XiangShan в DRVFuzz: PMP
+
+Шаблоны DRVFuzz для Spike и BOOM в начале программы открывают PMP одной
+записью NAPOT на всё адресное пространство. В шаблоне XiangShan
+(`DRVFuzz/src/impls/xiangshan/config.rs`) этого не было, а XiangShan по
+спецификации стартует с выключенным PMP. В результате HLV/HSV, которые
+выполняются с привилегией виртуального S/U-режима, давали на XiangShan access
+fault, а на Spike и на NEMU (эталонная модель внутри `emu`) — нет. Difftest
+останавливал `emu` (`ABORT`), и в коротком diff так закончились 25 из 46
+итераций. В шаблон XiangShan добавлены те же 4 строки, что и в шаблон Spike.
+Это единственная правка исходников DRVFuzz.
+
 ### Сборка `emu` на сервере
 
 Нужен сервер x86-64 с git и Docker; образ DRVFuzz тоже amd64.
@@ -323,7 +335,7 @@ docker compose -f docker-compose.yml -f docker-compose.xiangshan.yml run --rm dr
 1. файлы на месте и исполняемые, `ldd` без `not found`;
 2. `emu --help` знает `-i`, `--diff`, `--dump-commit-trace`;
 3. `DRVFuzz generate --riscv-impl xiang-shan` работает;
-4. программа (`lui/slli/addi/add/sd/ld` и невыровненный `ld`) прогоняется через
+4. программа (`lui/slli/addi/add/sd/ld/hlv.bu` и невыровненный `ld`) прогоняется через
    `exec --allow-unaligned` на XiangShan:
    - трасса в нужном формате, есть строки `mem pc`; если `emu` собран без патча,
      скрипт так и скажет;

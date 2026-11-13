@@ -61,7 +61,8 @@ DRVFuzz generate --config configs/rv64_unligned.toml --riscv-impl xiang-shan --r
 echo "generated: $(cd "$WORK/generate" && ls)"
 
 # x5 = 0x80002000, the start of the DRVFuzz user memory range for XiangShan
-# (DRVFuzz/src/impls/xiangshan/config.rs); the last load is misaligned.
+# (DRVFuzz/src/impls/xiangshan/config.rs); hlv.bu needs the template's PMP
+# setup (XiangShan resets with PMP off); the last load is misaligned.
 cat >"$WORK/user_instructions.asm" <<'EOF'
 lui x5, 0x40001
 slli x5, x5, 1
@@ -70,6 +71,7 @@ addi x2, x0, 2
 add x3, x1, x2
 sd x3, 0(x5)
 ld x4, 0(x5)
+hlv.bu x7, 0(x5)
 ld x6, 1(x5)
 EOF
 

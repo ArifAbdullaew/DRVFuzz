@@ -1,0 +1,9 @@
+14:    # Relax PMP as the Spike and BOOM templates do: XiangShan resets with PMP off,
+15-    # so S/U and HLV/HSV accesses would fault where Spike's grant everything
+16-    li      t0, -1
+17-    csrw    pmpaddr0, t0
+18-    li      t0, 0x1f             # R|W|X | A=NAPOT
+19-    csrw    pmpcfg0, t0
+    80000020:	3b029073          	csrw	pmpaddr0,t0
+    80000026:	3a029073          	csrw	pmpcfg0,t0
+Spike HLV/HSV exceptions: [] [{'name': 'x6', 'value': 0}]

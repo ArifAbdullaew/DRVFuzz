@@ -45,7 +45,8 @@ RE_EXCEPTION = re.compile(r"^\[\d+\] exception pc [0-9a-fA-F]{16} inst [0-9a-fA-
 RE_MEM = re.compile(r"^mem pc [0-9a-fA-F]{16} addr [0-9a-fA-F]{16} data [0-9a-fA-F]{16} mask 0x[0-9a-fA-F]{2}$")
 # End states printed by difftest emu.cpp
 EMU_END = re.compile(r"(HIT GOOD TRAP|HIT BAD TRAP|ABORT|EXCEEDING CYCLE/INSTR LIMIT|SOME SIGNAL STOPS THE PROGRAM|EXIT) at pc = (0x[0-9a-fA-F]+)")
-RE_MISMATCH = re.compile(r"mismatch|different at", re.I)
+# difftest reports: "<reg> different at pc = ...", "Mismatch for store commits"
+RE_MISMATCH = re.compile(r"different at pc|Mismatch for store")
 RE_CYCLES = re.compile(r"Guest cycle spent: ([\d,']+)")
 RE_HOST_MS = re.compile(r"Host time spent: ([\d,']+)ms")
 RE_LOG_PROBLEM = re.compile(r"TimedOut|EmptyTrace|NoPcMapping|panicked|\bERROR\b|\berror\b")
