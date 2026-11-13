@@ -40,3 +40,6 @@ artifacts/*
 !artifacts/logs/
 !artifacts/xiangshan_patch/
 artifacts/logs/xs_diff.log
+
+# Python bytecode
+__pycache__/
